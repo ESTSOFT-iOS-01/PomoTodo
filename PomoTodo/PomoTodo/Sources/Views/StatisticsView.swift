@@ -39,7 +39,7 @@ struct StatisticsView: View {
             
             //날짜  ‼️임의 고정값임 데이터랑 연결 필요‼️
             Text("2025년 2월 2주")
-              .bold()
+              .font(.system(size: 14, weight: .bold))
             
             // 다음 날짜 버튼
             Button {
@@ -53,7 +53,7 @@ struct StatisticsView: View {
           
           // 누적 포모도로 & 세션 뷰
           SectionView {
-            HStack(spacing: 77) {
+            HStack {
               VStack(alignment: .leading, spacing: 16) {
                 Text("누적 포모도로")
                   .font(.system(size: 13))
@@ -65,6 +65,8 @@ struct StatisticsView: View {
               .padding(.bottom, 13)
               .padding(.leading, 24)
               
+              Spacer()
+              
               VStack(alignment: .leading, spacing: 16) {
                 Text("누적 세션")
                   .font(.system(size: 13))
@@ -74,6 +76,8 @@ struct StatisticsView: View {
               }
               .padding(.top, 13)
               .padding(.bottom, 13)
+              .padding(.leading, 24)
+              
               Spacer()
             }
             
@@ -82,7 +86,7 @@ struct StatisticsView: View {
           // 차트 뷰
           SectionView {
             VStack {
-              HStack(spacing: 77) {
+              HStack {
                 VStack(alignment: .leading, spacing: 16) {
                   Text("주간 집중 시간")
                     .font(.system(size: 13))
@@ -91,6 +95,9 @@ struct StatisticsView: View {
                     .font(.system(size: 24, weight: .bold))
                 }
                 .padding(.top, 24)
+                .padding(.leading, 24)
+                
+                Spacer()
                 
                 VStack(alignment: .leading, spacing: 16) {
                   Text("누적 집중 시간")
@@ -100,11 +107,14 @@ struct StatisticsView: View {
                     .font(.system(size: 24, weight: .bold))
                 }
                 .padding(.top, 24)
-
+                .padding(.leading, 24)
+                
+                Spacer()
               }
-              .padding(.bottom, 32)
+              
               BarChartView()
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 32)
                 .padding(.leading, 24)
                 .padding(.bottom, 32)
             }
@@ -112,7 +122,7 @@ struct StatisticsView: View {
           
           // 주간 평균 세션 & 평균 집중 시간
           SectionView {
-            HStack(spacing: 77) {
+            HStack {
               VStack(alignment: .leading, spacing: 16) {
                 Text("주간 평균 세션")
                   .font(.system(size: 13))
@@ -124,6 +134,8 @@ struct StatisticsView: View {
               .padding(.bottom, 13)
               .padding(.leading, 24)
               
+              Spacer()
+              
               VStack(alignment: .leading, spacing: 16) {
                 Text("주간 평균 집중 시간")
                   .font(.system(size: 13))
@@ -133,6 +145,8 @@ struct StatisticsView: View {
               }
               .padding(.top, 13)
               .padding(.bottom, 13)
+              .padding(.leading, 24)
+              
               Spacer()
             }
             
@@ -140,6 +154,7 @@ struct StatisticsView: View {
           
         }
       }
+      .navigationTitle("통계")
     }
   }
 }
