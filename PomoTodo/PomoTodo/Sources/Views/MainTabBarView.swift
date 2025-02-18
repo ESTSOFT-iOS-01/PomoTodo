@@ -10,13 +10,9 @@ import SwiftUI
 struct MainTabBarView: View {
     @State private var selectedTab: Tab = .Pomo
     
-    init() {
-        setupTabBarAppearance()
-    }
-    
     var body: some View {
         TabView(selection: $selectedTab) {
-            ContentView()
+            PomoView()
                 .tabItem {
                     tabItemView(for: .Pomo)
                 }
@@ -41,6 +37,9 @@ struct MainTabBarView: View {
                 .tag(Tab.Setting)
         }
         .tint(.indigoNormal)
+        .onAppear {
+            setupTabBarAppearance()
+        }
     }
     
     //MARK: - Funcs
@@ -54,7 +53,7 @@ struct MainTabBarView: View {
                 .environment(\.symbolVariants, .none)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(isSelected ? .primary : .secondary)
-                .scaleEffect(isSelected ? 1.2 : 1.0)
+                .scaleEffect(isSelected ? 1.1 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isSelected)
             
             Text(currentTab.labelName)
@@ -66,9 +65,8 @@ struct MainTabBarView: View {
     /// 탭바 스타일 세팅
     private func setupTabBarAppearance() {
         let appearance = UITabBarAppearance()
-        appearance.stackedLayoutAppearance.selected.iconColor = .indigoNormal
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.indigoNormal]
-
+        appearance.configureWithOpaqueBackground()
+        
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
