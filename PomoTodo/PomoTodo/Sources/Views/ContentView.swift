@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  PomoTodo
-//
-//  Created by 신승재 on 2/17/25.
-//
 
 import SwiftUI
 
@@ -21,6 +15,8 @@ struct ContentView: View {
                 .font(.system(size: 16, weight: .black))
         }
         .padding()
+
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
