@@ -53,18 +53,18 @@ struct ToDoView: View {
   }
   
   var body: some View {
-    NavigationView{
-      List{
-        ForEach(tags, id: \.id){ tag in
+    NavigationView {
+      List {
+        ForEach(tags, id: \.id) { tag in
           // 섹션 헤더 설정
-          Section(header: HeaderView(headerText: tag.name, todoArr: $todoArr, tag: tag))
-          { // 섹션에 들어가는 리스트
-            ForEach(todoArr, id: \.id){ todo in
+          Section(header: HeaderView(headerText: tag.name, todoArr: $todoArr, tag: tag)) {
+            // 섹션에 들어가는 리스트 생성
+            ForEach(todoArr, id: \.id) { todo in
               if todo.tagId == tag.id {
                 TodoRow(isCompleted: todo.isCompleted, name: todo.name, color: color[tag.colorId])
                   .frame(width: UIScreen.main.bounds.width-48)
                   .swipeActions(content: {
-                    Button(role: .destructive){
+                    Button(role: .destructive) {
                       let idx = todoArr.firstIndex(where: { todo.id == $0.id })!
                       todoArr.remove(at: idx)
                     } label: {
@@ -94,7 +94,7 @@ fileprivate struct HeaderView: View {
         .font(.system(size: 20))
       Spacer()
       
-      Button{
+      Button {
         todoArr.append(Todo(tagId: tag.id, name: ""))
       } label: {
         Label("", systemImage: "plus")
