@@ -33,30 +33,28 @@ final class PomoDayDTO {
     self.tagTimeRecords = tagTimeRecords
     self.todos = todos
   }
-}
-
-@Model
-final class TagTimeRecordDTO {
-  var tagId: String
-  var focusTime: TimeInterval
   
-  init(tagId: String, focusTime: TimeInterval) {
-    self.tagId = tagId
-    self.focusTime = focusTime
+  convenience init(_ data: PomoDay) {
+    self.init(
+      date: data.date,
+      tomatoCnt: data.tomatoCnt,
+      cycleCnt: data.cycleCnt,
+      tagTimeRecords: data.tagTimeRecords.map { TagTimeRecordDTO($0) },
+      todos: data.todos.map { TodoDTO($0) }
+    )
   }
 }
 
-@Model
-final class TodoDTO {
-  var createAt: Date
-  var tagId: String
-  var name: String
-  var isCompleted: Bool
-  
-  init(createAt: Date, tagId: String, name: String, isCompleted: Bool) {
-    self.createAt = createAt
-    self.tagId = tagId
-    self.name = name
-    self.isCompleted = isCompleted
+extension PomoDayDTO {
+  func toEntity() -> PomoDay {
+    return PomoDay(
+      date: self.date,
+      tomatoCnt: self.tomatoCnt,
+      cycleCnt: self.cycleCnt,
+      tagTimeRecords: self.tagTimeRecords.map { $0.toEntity() },
+      todos: self.todos
+        .map { $0.toEntity() }
+        .sorted { $0.createAt < $1.createAt }
+    )
   }
 }

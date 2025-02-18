@@ -21,43 +21,24 @@ final class AppConfigDTO {
     self.pomoTimers = pomoTimers
     self.tags = tags
   }
-}
-
-@Model
-final class PomoTimerDTO {
-  var index: Int
-  var focusTimeUnit: TimeInterval
-  var tomatoPerCycle: Int
-  var shortBreakUnit: TimeInterval
-  var longBreakUnit: TimeInterval
   
-  init(
-    index: Int,
-    focusTimeUnit: TimeInterval,
-    tomatoPerCycle: Int,
-    shortBreakUnit: TimeInterval,
-    longBreakUnit: TimeInterval
-  ) {
-    self.index = index
-    self.focusTimeUnit = focusTimeUnit
-    self.tomatoPerCycle = tomatoPerCycle
-    self.shortBreakUnit = shortBreakUnit
-    self.longBreakUnit = longBreakUnit
+  convenience init(_ data: AppConfig) {
+    self.init(
+      pomoTimers: data.pomoTimers.map { PomoTimerDTO($0) },
+      tags: data.tags.map { TagDTO($0) }
+    )
   }
 }
 
-
-@Model
-final class TagDTO {
-  var id: String
-  var index: Int
-  var name: String
-  var colorId: Int
-  
-  init(id: String, index: Int, name: String, colorId: Int) {
-    self.id = id
-    self.index = index
-    self.name = name
-    self.colorId = colorId
+extension AppConfigDTO {
+  func toEntity() -> AppConfig {
+    return AppConfig(
+      pomoTimers: self.pomoTimers
+        .map { $0.toEntity() }
+        .sorted { $0.index < $1.index },
+      tags: self.tags
+        .map { $0.toEntity() }
+        .sorted { $0.index < $1.index }
+      )
   }
 }
