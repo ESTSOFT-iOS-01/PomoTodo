@@ -22,7 +22,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
     let pomoTimersDTO = DefaultPreset.pomoTimers.map { PomoTimerDTO($0) }
     let tagsDTO = DefaultPreset.tags.map { TagDTO($0) }
     
-    let result = getAppConfig()
+    let result = findAppConfig()
     switch result {
     case .success:
       print(SwiftDataError.modelAlreadyExist)
@@ -34,6 +34,17 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
     }
   }
   
+  func getAppConfig() -> Result<AppConfig, SwiftDataError> {
+    print("Impl:", #function)
+    
+    let result = findAppConfig()
+    switch result {
+    case .success(let model):
+      return .success(model.toEntity())
+    case .failure(let error):
+      return .failure(error)
+    }
+  }
   
   func setFocusTimeUnit(pomoTimer: PomoTimer, time: TimeInterval) {
     print("Impl:", #function)
@@ -90,7 +101,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   func setTags(_ tags: [Tag]) {
     print("Impl:", #function)
     
-    let result = getAppConfig()
+    let result = findAppConfig()
     switch result {
     case .success(let model):
       model.tags.forEach { modelContext.delete($0) }
@@ -101,7 +112,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   }
   
   
-  func getAppConfig() -> Result<AppConfigDTO, SwiftDataError> {
+  func findAppConfig() -> Result<AppConfigDTO, SwiftDataError> {
     print("Impl:", #function)
     
     let descriptor = FetchDescriptor<AppConfigDTO>()
