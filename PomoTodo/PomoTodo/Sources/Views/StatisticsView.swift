@@ -10,7 +10,7 @@ import Charts
 
 // MARK: - 통계 탭 전체 뷰
 struct StatisticsView: View {
-  @State private var selectedPeriod = "일"
+  @State private var selectedPeriod = "주"
   let periods = ["일", "주", "월"]
   
   var body: some View {
@@ -53,30 +53,90 @@ struct StatisticsView: View {
           
           // 누적 포모도로 & 세션 뷰
           SectionView {
-            HStack {
-              VStack(spacing: 16) {
+            HStack(spacing: 77) {
+              VStack(alignment: .leading, spacing: 16) {
                 Text("누적 포모도로")
                   .font(.system(size: 13))
                 // ‼️뷰모델 작성시 수정 필요
                 Text("18")
                   .font(.system(size: 24, weight: .bold))
-                  .bold()
               }
-              Spacer()
-              VStack(spacing: 16) {
+              .padding(.top, 13)
+              .padding(.bottom, 13)
+              .padding(.leading, 24)
+              
+              VStack(alignment: .leading, spacing: 16) {
                 Text("누적 세션")
                   .font(.system(size: 13))
                 // ‼️뷰모델 작성시 수정 필요
                 Text("18")
                   .font(.system(size: 24, weight: .bold))
-                  .bold()
               }
+              .padding(.top, 13)
+              .padding(.bottom, 13)
+              Spacer()
             }
-            .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 24))
+            
           }
           
           // 차트 뷰
+          SectionView {
+            VStack {
+              HStack(spacing: 77) {
+                VStack(alignment: .leading, spacing: 16) {
+                  Text("주간 집중 시간")
+                    .font(.system(size: 13))
+                  // ‼️뷰모델 작성시 수정 필요
+                  Text("12h 24m")
+                    .font(.system(size: 24, weight: .bold))
+                }
+                .padding(.top, 24)
+                
+                VStack(alignment: .leading, spacing: 16) {
+                  Text("누적 집중 시간")
+                    .font(.system(size: 13))
+                  // ‼️뷰모델 작성시 수정 필요
+                  Text("12h 24m")
+                    .font(.system(size: 24, weight: .bold))
+                }
+                .padding(.top, 24)
+
+              }
+              .padding(.bottom, 32)
+              BarChartView()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 24)
+                .padding(.bottom, 32)
+            }
+          }
           
+          // 주간 평균 세션 & 평균 집중 시간
+          SectionView {
+            HStack(spacing: 77) {
+              VStack(alignment: .leading, spacing: 16) {
+                Text("주간 평균 세션")
+                  .font(.system(size: 13))
+                // ‼️뷰모델 작성시 수정 필요
+                Text("18")
+                  .font(.system(size: 24, weight: .bold))
+              }
+              .padding(.top, 13)
+              .padding(.bottom, 13)
+              .padding(.leading, 24)
+              
+              VStack(alignment: .leading, spacing: 16) {
+                Text("주간 평균 집중 시간")
+                  .font(.system(size: 13))
+                // ‼️뷰모델 작성시 수정 필요
+                Text("26.5")
+                  .font(.system(size: 24, weight: .bold))
+              }
+              .padding(.top, 13)
+              .padding(.bottom, 13)
+              Spacer()
+            }
+            
+          }
           
         }
       }

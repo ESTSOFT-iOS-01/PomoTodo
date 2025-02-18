@@ -9,58 +9,64 @@ import SwiftUI
 import Charts
 
 struct BarChartView: View {
-    struct ChartData: Identifiable {
-        let id = UUID()
-        let category: String
-        let percentage: Double
-        let time: String
-    }
-
-    // 샘플 데이터
-    let data: [ChartData] = [
-        ChartData(category: "취미", percentage: 50, time: "4h 12m"),
-        ChartData(category: "공부", percentage: 30, time: "2h 59m"),
-        ChartData(category: "독서", percentage: 20, time: "1h 24m"),
-        ChartData(category: "운동", percentage: 10, time: "49m")
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("주간 집중 시간")
-                .font(.headline)
-                .padding(.bottom, 5)
-
-            Chart {
-                ForEach(data) { item in
-                    BarMark(
-                        x: .value("비율", item.percentage),
-                        y: .value("카테고리", item.category)
-                    )
-                    .foregroundStyle(getColor(for: item.category))
-                }
-            }
-            .frame(height: 200) // 차트 높이 설정
-            .chartXAxis(.hidden) // X축 숨김 (선택 사항)
-            .chartYAxis {
-                AxisMarks(position: .leading) // Y축 왼쪽 정렬
-            }
-            .padding(.horizontal)
+  struct ChartData: Identifiable {
+    let id = UUID()
+    let tagName: String
+    let focusTime: TimeInterval  // 초 단위
+    let percentage: Double
+    let color: Color
+  }
+  
+  let data: [ChartData] = [
+    ChartData(tagName: "취미", focusTime: 4 * 3600 + 12 * 60, percentage: 50, color: .indigoNormal),
+    ChartData(tagName: "공부", focusTime: 2 * 3600 + 59 * 60, percentage: 30, color: .blueNormal),
+    ChartData(tagName: "독서", focusTime: 1 * 3600 + 24 * 60, percentage: 20, color: .cyanNormal),
+    ChartData(tagName: "운동", focusTime: 49 * 60, percentage: 10, color: .tealNormal)
+  ]
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      ForEach(data) { item in
+        HStack(spacing: 12) {
+          ZStack(alignment: .leading) {
+            // 바 차트 (비율에 따라 너비 조절)
+            RoundedRectangle(cornerRadius: 16)
+              .fill(item.color)
+              .frame(width: max(CGFloat(item.percentage) * 2.5, 50), height: 48) // ‼️ 최소 너비 임시로 50 설정
+            
+            // 퍼센트 텍스트 (바 안쪽)
+            Text("\(Int(item.percentage))%")
+              .font(.system(size: 14, weight: .bold))
+              .foregroundColor(.white)
+              .padding(.top, 15)
+              .padding(.leading, 12)
+              .padding(.bottom, 15)
+          }
+          
+          // 태그명 & 시간
+          VStack(alignment: .leading) {
+            Text(item.tagName)
+              .font(.system(size: 16, weight: .bold))
+            Text(formatTime(item.focusTime))
+              .font(.system(size: 14, weight: .semibold))
+          }
         }
+      }
     }
-
-    // 카테고리별 색상 지정
-    private func getColor(for category: String) -> Color {
-        switch category {
-        case "취미": return .blue
-        case "공부": return .indigo
-        case "독서": return .cyan
-        case "운동": return .teal
-        default: return .gray
-        }
-    }
+    .background(
+      RoundedRectangle(cornerRadius: 12)
+        .fill(Color.clear)
+    )
+  }
+  
+  // 초 -> "xh ym" 포맷 변환 함수
+  func formatTime(_ seconds: TimeInterval) -> String {
+    let hours = Int(seconds) / 3600
+    let minutes = (Int(seconds) % 3600) / 60
+    return "\(hours)h \(minutes)m"
+  }
 }
 
-
 #Preview {
-    BarChartView()
+  BarChartView()
 }
