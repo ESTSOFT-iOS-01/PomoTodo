@@ -10,12 +10,20 @@ import SwiftData
 
 @Model
 final class TodoDTO {
+  var id: String
   var createAt: Date
   var tagId: String
   var name: String
   var isCompleted: Bool
   
-  init(createAt: Date, tagId: String, name: String, isCompleted: Bool) {
+  init(
+    id: String,
+    createAt: Date,
+    tagId: String,
+    name: String,
+    isCompleted: Bool
+  ) {
+    self.id = id
     self.createAt = createAt
     self.tagId = tagId
     self.name = name
@@ -24,6 +32,7 @@ final class TodoDTO {
   
   convenience init(_ data: Todo) {
     self.init(
+      id: data.id,
       createAt: data.createAt,
       tagId: data.tagId,
       name: data.name,
@@ -35,6 +44,7 @@ final class TodoDTO {
 extension TodoDTO {
   func toEntity() -> Todo {
     return Todo(
+      id: self.id,
       createAt: self.createAt,
       tagId: self.tagId,
       name: self.name,

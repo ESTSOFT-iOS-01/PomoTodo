@@ -24,7 +24,8 @@ struct TagTimeRecord {
   var focusTime: TimeInterval
 }
 
-struct Todo {
+struct Todo: Identifiable {
+  var id: String = UUID().uuidString
   var createAt: Date = Date()
   var tagId: String
   var name: String
