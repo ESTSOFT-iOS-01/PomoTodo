@@ -150,17 +150,3 @@ extension AppConfigRepositoryImpl {
 }
 
 
-enum DefaultPreset {
-  static let pomoTimers: [PomoTimer] = [
-    PomoTimer(index: 0, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
-    PomoTimer(index: 1, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
-    PomoTimer(index: 2, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
-  ]
-  
-  static let tags: [Tag] = [
-    Tag(index: 0, name: "공부", colorId: 0),
-    Tag(index: 1, name: "운동", colorId: 1),
-    Tag(index: 2, name: "독서", colorId: 2),
-    Tag(index: 3, name: "휴식", colorId: 3)
-  ]
-}
