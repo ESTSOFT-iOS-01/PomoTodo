@@ -12,7 +12,7 @@ struct PomoBottomView: View {
     // 여기에 뷰모델 선언
     
     var body: some View {
-        HStack(alignment: .center, spacing: 32) {
+        HStack(alignment: .center, spacing: DynamicPadding.getWidth(32)) {
             Button {
                 // UI 변경
                 // 카운트 스타트
@@ -20,12 +20,12 @@ struct PomoBottomView: View {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
                         .foregroundStyle(backgroundColor)
-                        .frame(width: 128, height: 88, alignment: .center)
+                        .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
                     Image(systemName: "play.fill")
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(.white)
-                        .frame(height: 24)
+                        .frame(height: DynamicPadding.getHeight(24))
                 }
             }
             Button {
@@ -34,12 +34,12 @@ struct PomoBottomView: View {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
                         .foregroundStyle(backgroundColor)
-                        .frame(width: 128, height: 88, alignment: .center)
+                        .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
                     Image(systemName: "forward.fill")
                         .resizable()
                         .scaledToFit()
                         .foregroundStyle(.white)
-                        .frame(height: 24)
+                        .frame(height: DynamicPadding.getHeight(24))
                 }
             }
         }

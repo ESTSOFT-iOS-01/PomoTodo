@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct PomoView: View {
-    var options = ["취미", "짧은 옵션", "중간 길이의 옵션", "정말 길~~~~~~~~~어 보이는 선택 옵션"]
+    // dummy datas
+    var options = ["취미", "짧은 옵션", "중간 길이의 옵션", "정말 길~~~~~~~~~~~~~어 보이는 선택 옵션"]
+    let timers = ["25 : 00", "40 : 00", "50 : 00" ]
+    
+    
     @State private var selectionTag = 0
     @State private var curTomato = 1
     @State private var totalTomato = 4
+    @State private var currentPage = 0
     
     var body: some View {
         VStack(alignment: .center) {
@@ -21,16 +26,14 @@ struct PomoView: View {
                 curTomato: curTomato,
                 totalTomato: totalTomato
             )
+            Spacer().frame(height: DynamicPadding.getHeight(36))
             
-            // 센터 뷰
-            // 타이머뷰
-            // 페이지 컨트롤
+            PomoTimerView(timers: timers, currentPage: $currentPage)
+            Spacer().frame(height: DynamicPadding.getHeight(64))
             
-            // 버튼 뷰
             PomoBottomView()
         }
-        .padding(.horizontal, 12)
-        
+        Spacer().frame(height: DynamicPadding.getHeight(60))
     }
 }
 

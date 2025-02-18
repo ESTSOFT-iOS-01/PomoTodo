@@ -14,7 +14,7 @@ struct PomoTopView: View {
     let totalTomato: Int
     
     var body: some View {
-        VStack(alignment: .center, spacing: 16) {
+        VStack(alignment: .center, spacing: DynamicPadding.getHeight(16)) {
             // 타이머 진행 상태 텍스트
             Text("\(curTomato) / \(totalTomato)")
                 .font(.pretendard(.semiBold, size: 18))
@@ -38,7 +38,7 @@ struct PomoTopView: View {
                             .fill(.indigoNormal)
                     )
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: DynamicPadding.getWidth(354))
             }
         }
     }
