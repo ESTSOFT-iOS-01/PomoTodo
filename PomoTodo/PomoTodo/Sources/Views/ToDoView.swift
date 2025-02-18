@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ToDoView: View {
-  let color: [Color] = [Color.indigoNormal, Color.blue, Color.cyan, Color.teal ]
-  var tags: [Tag] = [
+  @State private var todoArr: [Todo]
+  
+  private let color: [Color] = [Color.indigoNormal, Color.blue, Color.cyan, Color.teal ]
+  private var tags: [Tag] = [
     Tag(index: 0, name: "공부", colorId: 0),
     Tag(index: 1, name: "취미", colorId: 1),
     Tag(index: 2, name: "독서", colorId: 2),
     Tag(index: 3, name: "운동", colorId: 3)
   ]
-  @State var todoArr: [Todo]
-  
-  var today: String = Date().formattedDate
+  private var today: String = Date().formattedDate
   
   init() {
     //        // 더미데이터
@@ -57,7 +57,7 @@ struct ToDoView: View {
       List {
         ForEach(tags, id: \.id) { tag in
           // 섹션 헤더 설정
-          Section(header: HeaderView(headerText: tag.name, todoArr: $todoArr, tag: tag)) {
+          Section(header: HeaderView(todoArr: $todoArr, headerText: tag.name, tag: tag)) {
             // 섹션에 들어가는 리스트 생성
             ForEach(todoArr, id: \.id) { todo in
               if todo.tagId == tag.id {
@@ -83,9 +83,10 @@ struct ToDoView: View {
 }
 
 fileprivate struct HeaderView: View {
-  let headerText: String
   @Binding var todoArr: [Todo]
+  let headerText: String
   let tag: Tag
+  
   var body: some View {
     HStack{
       Text(headerText)
@@ -109,6 +110,7 @@ fileprivate struct TodoRow: View {
   @State var isCompleted: Bool = false
   @State var name: String = "확인용 테스트 문자열입니다"
   var color: Color
+  
   var body: some View {
     HStack {
       Button {
