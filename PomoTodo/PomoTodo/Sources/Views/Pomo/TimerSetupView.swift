@@ -13,10 +13,9 @@ struct TimerSetupView: View {
     let curTomato: Int
     let totalTomato: Int
     
-    let timers: [String]
+    let timers: [Int]
     @Binding var currentPage: Int
-    
-    var onStart: () -> Void // 실행 버튼 눌렀을 때 동작
+    @Binding var isTimerRunning : Bool
     
     var body: some View {
         VStack(alignment: .center) {
@@ -31,7 +30,7 @@ struct TimerSetupView: View {
             PomoTimerView(timers: timers, currentPage: $currentPage)
             Spacer().frame(height: DynamicPadding.getHeight(64))
             
-            PomoBottomView(onStart: onStart)
+            PomoBottomView(isTimerRunning: $isTimerRunning)
         }
     }
 }

@@ -14,25 +14,25 @@ struct MainTabBarView: View {
         TabView(selection: $selectedTab) {
             PomoView()
                 .tabItem {
-                    tabItemView(for: .Pomo)
+                    tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
                 }
                 .tag(Tab.Pomo)
             
             ContentView()
                 .tabItem {
-                    tabItemView(for: .Chart)
+                    tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
                 }
                 .tag(Tab.Chart)
             
             ContentView()
                 .tabItem {
-                    tabItemView(for: .Todo)
+                    tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
                 }
                 .tag(Tab.Todo)
             
             ContentView()
                 .tabItem {
-                    tabItemView(for: .Setting)
+                    tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
                 }
                 .tag(Tab.Setting)
         }
@@ -45,10 +45,8 @@ struct MainTabBarView: View {
     //MARK: - Funcs
     
     /// 탭바 아이템 세팅
-    private func tabItemView(for currentTab: Tab) -> some View {
-        let isSelected = selectedTab == currentTab
-        
-        return VStack {
+    private func tabItemView(for currentTab: Tab, isSelected: Bool) -> some View {
+        VStack {
             Image(systemName: isSelected ? currentTab.selectedIcon : currentTab.unselectedIcon)
                 .environment(\.symbolVariants, .none)
                 .symbolRenderingMode(.hierarchical)
