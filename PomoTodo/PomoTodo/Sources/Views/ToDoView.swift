@@ -72,9 +72,7 @@ struct ToDoView: View {
                 }
             }
             .navigationTitle(today)
-            .onTapGesture {
-                self.endTextEditing()
-            }
+            .onAppear(perform: UIApplication.shared.hideKeyboard)
         }
     }
     func onAdd(_ tag: Tag) {
