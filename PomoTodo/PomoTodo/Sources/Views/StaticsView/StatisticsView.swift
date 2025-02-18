@@ -112,7 +112,7 @@ struct StatisticsView: View {
                 Spacer()
               }
               
-              BarChartView()
+              BarChartView(pomoDay: samplePomoDay)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 32)
                 .padding(.leading, 24)

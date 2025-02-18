@@ -26,7 +26,7 @@ struct SectionView<Content: View>: View {
   }
 }
 
-//
+
 //#Preview {
-//    SectionView()
+//    SectionView
 //}
