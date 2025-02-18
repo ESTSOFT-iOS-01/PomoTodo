@@ -21,6 +21,7 @@ struct TodoRow: View {
             
             
             TextField("내용을 입력해주세요", text: $name)
+                .font(.system(size: 17))
                 .strikethrough(isCompleted ? true : false)
                 .disableAutocorrection(true)
         }
