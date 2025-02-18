@@ -26,6 +26,7 @@ struct TagTimeRecord {
 
 struct Todo {
   var createAt: Date = Date()
-  var name: String
   var tagId: String
+  var name: String
+  var isCompleted: Bool = false
 }
