@@ -8,8 +8,8 @@
 import Foundation
 import SwiftData
 
-final class AppConfigRepositoryImpl: AppConfigRepository {
-
+final class AppConfigRepositoryImpl {
+  
   private let modelContext: ModelContext
   
   init(modelContext: ModelContext) {
@@ -49,7 +49,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   func setFocusTimeUnit(pomoTimer: PomoTimer, time: TimeInterval) {
     print("Impl:", #function)
     
-    let result = getPomoTimers(pomoTimer: pomoTimer)
+    let result = findPomoTimer(pomoTimer: pomoTimer)
     switch result {
     case .success(let model):
       model.focusTimeUnit = time
@@ -62,7 +62,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   func setTomatoPerCycle(pomoTimer: PomoTimer, tomato: Int) {
     print("Impl:", #function)
     
-    let result = getPomoTimers(pomoTimer: pomoTimer)
+    let result = findPomoTimer(pomoTimer: pomoTimer)
     switch result {
     case .success(let model):
       model.tomatoPerCycle = tomato
@@ -75,7 +75,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   func setShortBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
     print("Impl:", #function)
     
-    let result = getPomoTimers(pomoTimer: pomoTimer)
+    let result = findPomoTimer(pomoTimer: pomoTimer)
     switch result {
     case .success(let model):
       model.shortBreakUnit = time
@@ -88,7 +88,7 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
   func setLongBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
     print("Impl:", #function)
     
-    let result = getPomoTimers(pomoTimer: pomoTimer)
+    let result = findPomoTimer(pomoTimer: pomoTimer)
     switch result {
     case .success(let model):
       model.longBreakUnit = time
@@ -110,9 +110,11 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
       print(error)
     }
   }
+}
+
+extension AppConfigRepositoryImpl {
   
-  
-  func findAppConfig() -> Result<AppConfigDTO, SwiftDataError> {
+  private func findAppConfig() -> Result<AppConfigDTO, SwiftDataError> {
     print("Impl:", #function)
     
     let descriptor = FetchDescriptor<AppConfigDTO>()
@@ -126,10 +128,8 @@ final class AppConfigRepositoryImpl: AppConfigRepository {
       return .failure(.fetchError)
     }
   }
-}
-
-extension AppConfigRepositoryImpl {
-  private func getPomoTimers(
+  
+  private func findPomoTimer(
     pomoTimer: PomoTimer
   ) -> Result<PomoTimerDTO, SwiftDataError> {
     print("Impl:", #function)

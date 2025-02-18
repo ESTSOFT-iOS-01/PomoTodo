@@ -12,7 +12,7 @@ protocol AppConfigRepository {
   func initializeAppConfig()
   
   /// 앱 설정 데이터를 가져오는 메서드.
-  /// - Returns: `AppConfigDTO` 데이터를 포함하는 `Result` 타입
+  /// - Returns: `AppConfig` 데이터를 포함하는 `Result` 타입
   func getAppConfig() -> Result<AppConfig, SwiftDataError>
   
   /// 포커스 시간 단위를 설정하는 메서드.
