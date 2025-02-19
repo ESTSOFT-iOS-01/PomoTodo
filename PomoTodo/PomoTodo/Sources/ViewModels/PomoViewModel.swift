@@ -89,15 +89,17 @@ class PomoViewModel: ObservableObject {
                 self.remainingTime -= 1
                 self.progress = CGFloat(self.remainingTime) / CGFloat(self.totalTime)
             } else {
+                // 타이머 종료
                 self.stopTimer()
                 self.forwardNextTimer()
             }
         }
     }
     
+    // 타이머 멈춤
     func stopTimer() {
         timer?.invalidate()
-        saveFocusTime()
+        saveFocusTime() // 시간 기록
         isTimerRunning = false
         progress = 1.0
     }
@@ -136,8 +138,4 @@ class PomoViewModel: ObservableObject {
         remainingTime = totalTime
         progress = 1.0
     }
-}
-
-enum TimerPhase {
-    case focus, shortBreak, longBreak
 }
