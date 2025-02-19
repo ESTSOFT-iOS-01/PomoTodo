@@ -8,69 +8,87 @@
 import Foundation
 import SwiftData
 
-final class PomoDayRepositoryImpl {
+final class PomoDayRepositoryImpl: PomoDayRepository {
+
   private let modelContext: ModelContext
   
   init(modelContext: ModelContext) {
     self.modelContext = modelContext
   }
   
-  
-  func createPomoDay() {
-    print("Impl:", #function)
-    
-    let today = Date().formattedDate
-    
-    let result = findPomoDayByDate(today)
+  func createPomoDay(_ pomoDay: PomoDay) {
+    let result = findPomoDayByDate(pomoDay.date)
     switch result {
     case .success:
       print(SwiftDataError.modelAlreadyExist)
     case .failure(.modelNotFound):
-      let model = PomoDayDTO(
-        date: today,
-        tomatoCnt: 0,
-        cycleCnt: 0.0,
-        tagTimeRecords: [],
-        todos: []
-      )
+      let model = PomoDayDTO(pomoDay)
       modelContext.insert(model)
     case .failure(let error):
       print(error)
     }
   }
-  
-  func getPomoDayByDate(_ date: Date) -> Result<PomoDay, SwiftDataError> {
-    print("Impl:", #function)
+
+  func fetchPomoDay(date: Date) -> Result<PomoDay?, any Error> {
     
-    let result = findPomoDayByDate(date.formattedDate)
-    switch result {
-    case .success(let model):
-      return .success(model.toEntity())
-    case .failure(let error):
-       return .failure(error)
+    let targetDate = date
+    let predicate = #Predicate<PomoDayDTO> { $0.date == targetDate }
+    let descriptor = FetchDescriptor<PomoDayDTO>(predicate: predicate)
+    
+    do {
+      guard let data = try modelContext.fetch(descriptor).first else {
+        print(SwiftDataError.modelNotFound)
+        return .success(nil)
+      }
+      return .success(data.toEntity())
+    } catch {
+      return .failure(SwiftDataError.fetchError)
     }
   }
-  
-  func addTagTimeRecords(pomoDay: PomoDay, tagTimeRecord: TagTimeRecord) {
+
+  func fetchAllPomoDays() -> Result<[PomoDay], any Error> {
     print("Impl:", #function)
     
-    let newPomoDay = PomoDay(
-      date: pomoDay.date,
-      tomatoCnt: pomoDay.tomatoCnt + 1,
-      cycleCnt: <#T##Double#>,
-      tagTimeRecords: <#T##[TagTimeRecord]#>,
-      todos: <#T##[Todo]#>
-    )
+    let now = Date().formattedDate
+    let predicate = #Predicate<PomoDayDTO> { $0.date >= now }
+    let sort = SortDescriptor(\PomoDayDTO.date, order: .forward)
+    let descriptor = FetchDescriptor(predicate: predicate, sortBy: [sort])
     
-//    let result = findPomoDayByDate(pomoDay.date)
-//    switch result {
-//      case .success(let model)
-//      model.tagTimeRecords.append(tagTimeRecord)
-//    case .failure(let error):
-//      print(error)):
-//    }
+    do {
+      let datas = try modelContext.fetch(descriptor)
+      return .success(datas.map { $0.toEntity() })
+    } catch {
+      return .failure(SwiftDataError.fetchError)
+    }
+  }
+
+  func updatePomoDay(_ pomoDay: PomoDay) {
+    print("Impl:", #function)
+    
+    let result = findPomoDayByDate(pomoDay.date)
+    switch result {
+    case .success(let model):
+      modelContext.delete(model)
+      modelContext.insert(model)
+    case .failure(let error):
+      print(error)
+    }
+  }
+
+  func setTodos(pomoDay: PomoDay, todos: [Todo]) {
+    print("Impl:", #function)
+    
+    let result = findPomoDayByDate(pomoDay.date)
+    switch result {
+    case .success(let model):
+      model.todos.forEach { modelContext.delete($0) }
+      model.todos = todos.map { TodoDTO($0) }
+    case .failure(let error):
+      print(error)
+    }
   }
 }
+
 
 extension PomoDayRepositoryImpl {
   private func findPomoDayByDate(

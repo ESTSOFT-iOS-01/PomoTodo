@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-final class AppConfigRepositoryImpl {
+final class AppConfigRepositoryImpl: AppConfigRepository {
   
   private let modelContext: ModelContext
   
@@ -16,98 +16,64 @@ final class AppConfigRepositoryImpl {
     self.modelContext = modelContext
   }
   
-  func initializeAppConfig() {
+  func createAppConfig(_ appConfig: AppConfig) {
     print("Impl:", #function)
-    
-    let pomoTimersDTO = DefaultPreset.pomoTimers.map { PomoTimerDTO($0) }
-    let tagsDTO = DefaultPreset.tags.map { TagDTO($0) }
     
     let result = findAppConfig()
     switch result {
     case .success:
       print(SwiftDataError.modelAlreadyExist)
     case .failure(.modelNotFound):
-      let model = AppConfigDTO(pomoTimers: pomoTimersDTO, tags: tagsDTO)
+      let model = AppConfigDTO(appConfig)
       modelContext.insert(model)
     case .failure(let error):
       print(error)
     }
   }
-  
-  func getAppConfig() -> Result<AppConfig, SwiftDataError> {
+
+  func fetchAppConfig() -> Result<AppConfig?, any Error> {
+    print("Impl:", #function)
+    
+    let descriptor = FetchDescriptor<AppConfigDTO>()
+    
+    do {
+      guard let data = try modelContext.fetch(descriptor).first else {
+        print(SwiftDataError.modelNotFound)
+        return .success(nil)
+      }
+      return .success(data.toEntity())
+    } catch {
+      return .failure(SwiftDataError.fetchError)
+    }
+  }
+
+  func updateAppConfig(_ appConfig: AppConfig) {
     print("Impl:", #function)
     
     let result = findAppConfig()
     switch result {
     case .success(let model):
-      return .success(model.toEntity())
-    case .failure(let error):
-      return .failure(error)
-    }
-  }
-  
-  func setFocusTimeUnit(pomoTimer: PomoTimer, time: TimeInterval) {
-    print("Impl:", #function)
-    
-    let result = findPomoTimer(pomoTimer: pomoTimer)
-    switch result {
-    case .success(let model):
-      model.focusTimeUnit = time
+      model.pomoTimers = appConfig.pomoTimers.map { PomoTimerDTO($0) }
+      model.tags = appConfig.tags.map { TagDTO($0) }
     case .failure(let error):
       print(error)
     }
   }
-  
-  
-  func setTomatoPerCycle(pomoTimer: PomoTimer, tomato: Int) {
+
+  func fetchPomoTimer(index: Int) -> Result<PomoTimer, any Error> {
     print("Impl:", #function)
     
-    let result = findPomoTimer(pomoTimer: pomoTimer)
-    switch result {
-    case .success(let model):
-      model.tomatoPerCycle = tomato
-    case .failure(let error):
-      print(error)
-    }
-  }
-  
-  
-  func setShortBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
-    print("Impl:", #function)
+    let targetIndex = index
+    let predicate = #Predicate<PomoTimerDTO> { $0.index ==  targetIndex }
+    let descriptor = FetchDescriptor<PomoTimerDTO>(predicate: predicate)
     
-    let result = findPomoTimer(pomoTimer: pomoTimer)
-    switch result {
-    case .success(let model):
-      model.shortBreakUnit = time
-    case .failure(let error):
-      print(error)
-    }
-  }
-  
-  
-  func setLongBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
-    print("Impl:", #function)
-    
-    let result = findPomoTimer(pomoTimer: pomoTimer)
-    switch result {
-    case .success(let model):
-      model.longBreakUnit = time
-    case .failure(let error):
-      print(error)
-    }
-  }
-  
-  
-  func setTags(_ tags: [Tag]) {
-    print("Impl:", #function)
-    
-    let result = findAppConfig()
-    switch result {
-    case .success(let model):
-      model.tags.forEach { modelContext.delete($0) }
-      model.tags = tags.map { TagDTO($0) }
-    case .failure(let error):
-      print(error)
+    do {
+      guard let data = try modelContext.fetch(descriptor).first else {
+        return .failure(SwiftDataError.modelNotFound)
+      }
+      return .success(data.toEntity())
+    } catch {
+      return .failure(SwiftDataError.fetchError)
     }
   }
 }
@@ -118,25 +84,6 @@ extension AppConfigRepositoryImpl {
     print("Impl:", #function)
     
     let descriptor = FetchDescriptor<AppConfigDTO>()
-    
-    do {
-      guard let data = try modelContext.fetch(descriptor).first else {
-        return .failure(.modelNotFound)
-      }
-      return .success(data)
-    } catch {
-      return .failure(.fetchError)
-    }
-  }
-  
-  private func findPomoTimer(
-    pomoTimer: PomoTimer
-  ) -> Result<PomoTimerDTO, SwiftDataError> {
-    print("Impl:", #function)
-    
-    let index = pomoTimer.index
-    let predicate = #Predicate<PomoTimerDTO> { $0.index ==  index }
-    let descriptor = FetchDescriptor<PomoTimerDTO>(predicate: predicate)
     
     do {
       guard let data = try modelContext.fetch(descriptor).first else {

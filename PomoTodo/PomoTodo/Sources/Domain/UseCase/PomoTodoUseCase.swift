@@ -61,31 +61,7 @@ protocol PomoTodoUseCase {
   /// - Returns: 현재 앱의 설정 데이터(`AppConfig`)
   func getAppConfig() -> AppConfig
   
-  /// 특정 타이머 프리셋의 집중 시간을 설정하는 메서드
-  /// - Parameters:
-  ///   - pomoTimer: 변경할 `PomoTimer`
-  ///   - time: 변경할 시간(`TimeInterval`)
-  func setFocusTimeUnit(pomoTimer: PomoTimer, time: TimeInterval)
-  
-  /// 특정 타이머 프리셋의 `토마토 개수`를 설정하는 메서드
-  /// - Parameters:
-  ///   - pomoTimer: 변경할 `PomoTimer`
-  ///   - tomatoCnt: 변경할 토마토 개수
-  func setTomatoPerCycle(pomoTimer: PomoTimer, tomatoCnt: Int)
-  
-  /// 특정 타이머 프리셋의 `짧은 휴식 시간`을 설정하는 메서드
-  /// - Parameters:
-  ///   - pomoTimer: 변경할 `PomoTimer`
-  ///   - time: 변경할 시간(`TimeInterval`)
-  func setShortBreakUnit(pomoTimer: PomoTimer, time: TimeInterval)
-  
-  /// 특정 타이머 프리셋의 `긴 휴식 시간`을 설정하는 메서드
-  /// - Parameters:
-  ///   - pomoTimer: 변경할 `PomoTimer`
-  ///   - time: 변경할 시간(`TimeInterval`)
-  func setLongBreakUnit(pomoTimer: PomoTimer, time: TimeInterval)
-  
-  /// `Tag` 목록을 설정하는 메서드
-  /// - Parameter tags: 저장할 `Tag` 리스트
-  func setTags(_ tags: [Tag])
+  /// 앱의 기본 설정(`AppConfig`)을 업데이트하는 메서드
+  /// - Parameter appConfig: 변경할 앱 설정 데이터(`AppConfig`)
+  func setAppConfig(_ appConfig: AppConfig)
 }

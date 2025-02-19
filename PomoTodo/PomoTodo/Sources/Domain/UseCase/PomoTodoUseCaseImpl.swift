@@ -144,65 +144,11 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
     }
   }
   
-  func setFocusTimeUnit(pomoTimer: PomoTimer, time: TimeInterval) {
+  func setAppConfig(_ appConfig: AppConfig) {
     print("Impl:", #function)
     
-    let updatedPomoTimer = PomoTimer(
-      index: pomoTimer.index,
-      focusTimeUnit: time,
-      tomatoPerCycle: pomoTimer.tomatoPerCycle,
-      shortBreakUnit: pomoTimer.shortBreakUnit,
-      longBreakUnit: pomoTimer.longBreakUnit
-    )
-    appConfigRepository.updatePomoTimer(updatedPomoTimer)
+    appConfigRepository.updateAppConfig(appConfig)
   }
-  
-  func setTomatoPerCycle(pomoTimer: PomoTimer, tomatoCnt: Int) {
-    print("Impl:", #function)
-    
-    let updatedPomoTimer = PomoTimer(
-      index: pomoTimer.index,
-      focusTimeUnit: pomoTimer.focusTimeUnit,
-      tomatoPerCycle: tomatoCnt,
-      shortBreakUnit: pomoTimer.shortBreakUnit,
-      longBreakUnit: pomoTimer.longBreakUnit
-    )
-    appConfigRepository.updatePomoTimer(updatedPomoTimer)
-  }
-  
-  func setShortBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
-    print("Impl:", #function)
-    
-    let updatedPomoTimer = PomoTimer(
-      index: pomoTimer.index,
-      focusTimeUnit: pomoTimer.focusTimeUnit,
-      tomatoPerCycle: pomoTimer.tomatoPerCycle,
-      shortBreakUnit: time,
-      longBreakUnit: pomoTimer.longBreakUnit
-    )
-    appConfigRepository.updatePomoTimer(updatedPomoTimer)
-  }
-  
-  func setLongBreakUnit(pomoTimer: PomoTimer, time: TimeInterval) {
-    print("Impl:", #function)
-    
-    let updatedPomoTimer = PomoTimer(
-      index: pomoTimer.index,
-      focusTimeUnit: pomoTimer.focusTimeUnit,
-      tomatoPerCycle: pomoTimer.tomatoPerCycle,
-      shortBreakUnit: pomoTimer.shortBreakUnit,
-      longBreakUnit: time
-    )
-    appConfigRepository.updatePomoTimer(updatedPomoTimer)
-  }
-  
-  func setTags(_ tags: [Tag]) {
-    print("Impl:", #function)
-    
-    appConfigRepository.updateTags(tags)
-  }
-  
-  
 }
 
 

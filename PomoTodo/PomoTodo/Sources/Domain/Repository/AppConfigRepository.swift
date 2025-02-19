@@ -12,6 +12,6 @@ protocol AppConfigRepository {
   func fetchAppConfig() -> Result<AppConfig?, Error>
   func updateAppConfig(_ appConfig: AppConfig)
   func fetchPomoTimer(index: Int) -> Result<PomoTimer, Error>
-  func updatePomoTimer(_ pomoTimer: PomoTimer)
-  func updateTags(_ tags: [Tag])
+  //func updatePomoTimer(_ pomoTimer: PomoTimer)
+  //func updateTags(_ tags: [Tag])
 }
