@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PomoDay {
+struct PomoDay: Equatable {
   var date: Date
   var tomatoCnt: Int
   var cycleCnt: Double
@@ -19,15 +19,22 @@ struct PomoDay {
   var todos: [Todo]
 }
 
-struct TagTimeRecord {
+struct TagTimeRecord: Equatable {
   var tagId: String
   var focusTime: TimeInterval
 }
 
-struct Todo: Identifiable {
+struct Todo: Identifiable, Equatable {
   var id: String = UUID().uuidString
   var createAt: Date = Date()
   var tagId: String
   var name: String
   var isCompleted: Bool = false
+  
+  static func == (lhs: Todo, rhs: Todo) -> Bool {
+    return lhs.createAt == rhs.createAt &&
+           lhs.tagId == rhs.tagId &&
+           lhs.name == rhs.name &&
+           lhs.isCompleted == rhs.isCompleted
+  }
 }

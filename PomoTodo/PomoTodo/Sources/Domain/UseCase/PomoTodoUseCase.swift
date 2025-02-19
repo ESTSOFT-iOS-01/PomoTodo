@@ -45,6 +45,10 @@ protocol PomoTodoUseCase {
   /// - Returns: 기준 날짜가 속한 월의 `PomoDay` 리스트
   func getMonthlyPomoDaysByDate(_ date: Date) -> [PomoDay]
   
+  /// 저장된 모든 `PomoDay` 데이터를 가져오는 메서드
+  /// - Returns: 저장된 모든 `PomoDay` 리스트
+  func getAllPomoDays() -> [PomoDay]
+  
   // MARK: - TodoUseCase
   
   /// 오늘의 `Todo` 목록을 가져오는 메서드

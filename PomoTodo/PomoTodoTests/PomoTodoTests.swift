@@ -1,75 +1,60 @@
-////
-////  PomoTodoTests.swift
-////  PomoTodoTests
-////
-////  Created by 신승재 on 2/18/25.
-////
 //
-//import XCTest
-//@testable import PomoTodo
+//  PomoTodoTests.swift
+//  PomoTodoTests
 //
-//final class PomoTodoTests: XCTestCase {
-//  
-//  var appConfigRepository: AppConfigRepository?
-//  
-//  override func setUpWithError() throws {
-//    try super.setUpWithError()
-//    let testSwiftDataStorage = SwiftDataStorage()
-//    appConfigRepository = AppConfigRepositoryImpl(
-//      modelContext: testSwiftDataStorage.modelContext
-//    )
-//  }
-//  
-//  override func tearDownWithError() throws {
-//    appConfigRepository = nil
-//    try super.tearDownWithError()
-//  }
-//  
-//  // MARK: - AppConfigRepository 테스트
-//  func testAppConfigRepository() throws {
-//    guard let appConfigRepository = appConfigRepository else {
-//      XCTFail("appConfigRepository should not be nil")
-//      return
-//    }
-//    
-//    // appconfig initialize & fetch Test
-//    appConfigRepository.initializeAppConfig()
-//    let initialFetchResult = appConfigRepository.getAppConfig()
-//    switch initialFetchResult {
-//    case .success(let appConfig):
-//      XCTAssertEqual(appConfig.pomoTimers, DefaultPreset.pomoTimers)
-//      XCTAssertEqual(appConfig.tags, DefaultPreset.tags)
-//    case .failure(let error):
-//      XCTFail("appConfig fetch error: \(error)")
-//    }
-//    
-//    // set Test
-//    let mokTag = Tag(index: 0, name: "hello", colorId: 120)
-//    appConfigRepository.setTags([mokTag])
-//    appConfigRepository.setFocusTimeUnit(
-//      pomoTimer: DefaultPreset.pomoTimers[0],
-//      time: .minute * 120
-//    )
-//    appConfigRepository.setLongBreakUnit(
-//      pomoTimer: DefaultPreset.pomoTimers[0],
-//      time: .minute * 120
-//    )
-//    appConfigRepository.setShortBreakUnit(
-//      pomoTimer: DefaultPreset.pomoTimers[0],
-//      time: .minute * 120
-//    )
-//    appConfigRepository.setTomatoPerCycle(
-//      pomoTimer: DefaultPreset.pomoTimers[0],
-//      tomato: 120
-//    )
-//    
-//    appConfigRepository.initializeAppConfig()
-//    let fetchResult = appConfigRepository.getAppConfig()
-//    switch fetchResult {
-//    case .success(let appConfig):
-//      print(appConfig)
-//    case .failure(let error):
-//      XCTFail("appConfig fetch error: \(error)")
-//    }
-//  }
-//}
+//  Created by 신승재 on 2/18/25.
+//
+
+import XCTest
+@testable import PomoTodo
+
+final class PomoTodoTests: XCTestCase {
+  
+  var pomoTodoUseCase: PomoTodoUseCase?
+  
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+    let testSwiftDataStorage = SwiftDataStorage()
+    let appConfigRepository = AppConfigRepositoryImpl(
+      modelContext: testSwiftDataStorage.modelContext
+    )
+    let pomoDayRepository = PomoDayRepositoryImpl(
+      modelContext: testSwiftDataStorage.modelContext
+    )
+    pomoTodoUseCase = PomoTodoUseCaseImpl(
+      pomoDayRepository: pomoDayRepository,
+      appConfigRepository: appConfigRepository
+    )
+  }
+  
+  override func tearDownWithError() throws {
+    pomoTodoUseCase = nil
+    try super.tearDownWithError()
+  }
+  
+  // MARK: - PomoTodoUseCase 테스트
+  func testPomoTodoUseCase() throws {
+    guard let pomoTodoUseCase = pomoTodoUseCase else {
+      XCTFail("pomoTodoUseCase should not be nil")
+      return
+    }
+    
+    // appConfig create test
+    let appConfig = pomoTodoUseCase.getAppConfig()
+    print(appConfig)
+    
+    // appConfig fetch test
+    let fetchAppConfig = pomoTodoUseCase.getAppConfig()
+    XCTAssertEqual(appConfig, fetchAppConfig, "appConfig가 일치하지 않습니다.")
+    
+    // pomoDay create test
+    let pomoDay = pomoTodoUseCase.getTodayPomoDay()
+    print(pomoDay)
+    
+    // pomoDay fetch test
+    let fetchTodayPomoDay = pomoTodoUseCase.getTodayPomoDay()
+    XCTAssertEqual(pomoDay, fetchTodayPomoDay, "오늘의 Pomodoro Day가 일치하지 않습니다.")
+    
+    
+  }
+}

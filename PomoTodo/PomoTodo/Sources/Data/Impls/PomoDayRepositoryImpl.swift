@@ -17,6 +17,8 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
   }
   
   func createPomoDay(_ pomoDay: PomoDay) {
+    print("Impl:", #function)
+    
     let result = findPomoDayByDate(pomoDay.date)
     switch result {
     case .success:
@@ -30,6 +32,7 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
   }
 
   func fetchPomoDay(date: Date) -> Result<PomoDay?, any Error> {
+    print("Impl:", #function)
     
     let targetDate = date
     let predicate = #Predicate<PomoDayDTO> { $0.date == targetDate }

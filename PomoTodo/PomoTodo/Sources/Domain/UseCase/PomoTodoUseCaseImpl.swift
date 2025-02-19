@@ -91,6 +91,17 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
     return []
   }
   
+  func getAllPomoDays() -> [PomoDay] {
+    let result = pomoDayRepository.fetchAllPomoDays()
+    switch result {
+    case .success(let pomoDays):
+      return pomoDays
+    case .failure(let error):
+      print(error)
+      return []
+    }
+  }
+  
   func getTodayTodos() -> [Todo] {
     print("Impl:", #function)
     
