@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct CircularProgressView: View {
-    @EnvironmentObject var pomoVM: PomoViewModel
-
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            // progress bar
-            CircularProgressBar()
-            
-            // Texts
-            TimerDisplayView()
-        }
+  @EnvironmentObject var pomoVM: PomoViewModel
+  
+  var body: some View {
+    ZStack(alignment: .bottom) {
+      // progress bar
+      CircularProgressBar()
+      
+      // Texts
+      TimerDisplayView()
     }
+  }
 }

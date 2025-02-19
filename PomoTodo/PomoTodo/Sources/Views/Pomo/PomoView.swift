@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PomoView: View {
-  
+  @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
     VStack {
@@ -21,7 +21,6 @@ struct PomoView: View {
       }
       Spacer().frame(height: DynamicPadding.getHeight(40))
     } // : vstack
-    .environmentObject(pomoVM)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning)
     .toolbar(pomoVM.isTimerRunning ? .hidden : .visible, for: .tabBar)

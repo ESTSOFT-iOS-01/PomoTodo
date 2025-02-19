@@ -10,11 +10,12 @@ import SwiftUI
 struct MainTabBarView: View {
   @State private var selectedTab: Tab = .Pomo
   @Environment(DIContainer.self) private var container: DIContainer
-  //    @StateObject private var pomoVM = PomoViewModel(pomoTodoUseCase: )
+  @StateObject private var pomoVM: PomoViewModel // 여기에 할당,,?
   
   var body: some View {
     TabView(selection: $selectedTab) {
       PomoView()
+        .environmentObject(pomoVM)
         .tabItem {
           tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
@@ -74,6 +75,7 @@ struct MainTabBarView: View {
     UITabBar.appearance().standardAppearance = appearance
     UITabBar.appearance().scrollEdgeAppearance = appearance
   }
+  
 }
 
 #Preview {

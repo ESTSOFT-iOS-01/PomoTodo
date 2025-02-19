@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct TimerTagLabelView: View {
-    @EnvironmentObject var pomoVM: PomoViewModel
-    
-    var body: some View {
-        Text(pomoVM.options[pomoVM.selectionTag].name)
-            .font(.pretendard(.bold, size: 18))
-    }
+  @EnvironmentObject var pomoVM: PomoViewModel
+  
+  var body: some View {
+    Text(pomoVM.options[pomoVM.selectionTag].name)
+      .font(.pretendard(.bold, size: 18))
+  }
 }
 
 struct PauseButtonView: View {
-    @EnvironmentObject var pomoVM: PomoViewModel
-    
-    var body: some View {
-        Button {
-            pomoVM.stopTimer()
-        } label: {
-            Image(systemName: "pause.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 36)
-                .foregroundStyle(pomoVM.selectedColorSet.normalColor)
-        }
+  @EnvironmentObject var pomoVM: PomoViewModel
+  
+  var body: some View {
+    Button {
+      pomoVM.stopTimer()
+    } label: {
+      Image(systemName: "pause.fill")
+        .resizable()
+        .scaledToFit()
+        .frame(height: 36)
+        .foregroundStyle(pomoVM.selectedColorSet.normalColor)
     }
+  }
 }
