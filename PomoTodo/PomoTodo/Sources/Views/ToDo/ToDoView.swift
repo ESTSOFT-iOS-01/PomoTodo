@@ -20,7 +20,7 @@ struct ToDoView: View {
   
   var body: some View {
     
-    let tags = viewModel.state.appConfig.tags
+    let tags = viewModel.state.tags
     let todos = viewModel.state.todos
     
     NavigationView {

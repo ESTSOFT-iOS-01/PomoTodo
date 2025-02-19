@@ -11,7 +11,7 @@ import Foundation
 final class ToDoViewModel {
   struct State {
     var todos: [Todo] = []
-    var appConfig: AppConfig = AppConfig(pomoTimers: [], tags: DefaultPreset.tags)
+    var tags: [Tag] = []
   }
   
   enum Action {
@@ -26,7 +26,7 @@ final class ToDoViewModel {
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
-    self.state.appConfig = pomoTodoUseCase.getAppConfig()
+    self.state.tags = pomoTodoUseCase.getAppConfig().tags
     self.state.todos = pomoTodoUseCase.getTodayTodos()
   }
   
