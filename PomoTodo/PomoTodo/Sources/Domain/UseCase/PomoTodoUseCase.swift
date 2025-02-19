@@ -30,21 +30,6 @@ protocol PomoTodoUseCase {
   
   // MARK: - StatsUseCase
   
-  /// 특정 날짜의 `PomoDay` 데이터를 가져오는 메서드
-  /// - Parameter date: 조회할 날짜
-  /// - Returns: 해당 날짜의 `PomoDay`, 존재하지 않으면 `nil`
-  func getPomoDayByDate(_ date: Date) -> PomoDay?
-  
-  /// 특정 날짜를 기준으로 해당 주의 `PomoDay` 데이터를 가져오는 메서드
-  /// - Parameter date: 기준 날짜
-  /// - Returns: 기준 날짜가 속한 주의 `PomoDay` 리스트
-  func getWeeklyPomoDaysByDate(_ date: Date) -> [PomoDay]
-  
-  /// 특정 날짜를 기준으로 해당 월의 `PomoDay` 데이터를 가져오는 메서드
-  /// - Parameter date: 기준 날짜
-  /// - Returns: 기준 날짜가 속한 월의 `PomoDay` 리스트
-  func getMonthlyPomoDaysByDate(_ date: Date) -> [PomoDay]
-  
   /// 저장된 모든 `PomoDay` 데이터를 가져오는 메서드
   /// - Returns: 저장된 모든 `PomoDay` 리스트
   func getAllPomoDays() -> [PomoDay]

@@ -66,31 +66,6 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
     }
   }
   
-  func getPomoDayByDate(_ date: Date) -> PomoDay? {
-    print("Impl:", #function)
-    
-    let result = pomoDayRepository.fetchPomoDay(date: date.formattedDate)
-    switch result {
-    case .success(let pomoDay):
-      return pomoDay
-    case .failure(let error):
-      print(error)
-      return nil
-    }
-  }
-  
-  func getWeeklyPomoDaysByDate(_ date: Date) -> [PomoDay] {
-    // TODO: 협의 필요
-    print("Impl:", #function)
-    return []
-  }
-  
-  func getMonthlyPomoDaysByDate(_ date: Date) -> [PomoDay] {
-    // TODO: 협의 필요
-    print("Impl:", #function)
-    return []
-  }
-  
   func getAllPomoDays() -> [PomoDay] {
     let result = pomoDayRepository.fetchAllPomoDays()
     switch result {
