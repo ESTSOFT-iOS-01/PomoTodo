@@ -8,33 +8,29 @@
 import SwiftUI
 
 struct TimerRunningView: View {
-    // 타이머 진행...
-    var tag : String
-
-    @State var totalTime: Int
-    @State var tintColor: Color
-    @State var textColor: Color
-    @Binding var timerActive: Bool
+    @EnvironmentObject var pomoVM: PomoViewModel
     
     var body: some View {
         VStack(alignment : .center) {
-            Text(tag)
+            Text(pomoVM.options[pomoVM.selectionTag].name)
                 .font(.pretendard(.bold, size: 18))
             Spacer().frame(height: DynamicPadding.getHeight(72))
-            CircularProgressView(totalTime: $totalTime, progressColor: $tintColor, textColor: $textColor, timerActive: $timerActive, remainingTime: totalTime)
+            
+            CircularProgressView()
+            
             Spacer().frame(height: DynamicPadding.getHeight(110))
             Button {
-                timerActive.toggle()
+                pomoVM.isTimerRunning.toggle()
             } label: {
                 Image(systemName: "pause.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 36)
-                    .foregroundStyle(tintColor)
+                    .foregroundStyle(pomoVM.selectedColorSet.normalColor)
             }
         }
         .onAppear {
-            timerActive = true
+            pomoVM.isTimerRunning = true
         }
     }
 }

@@ -8,29 +8,17 @@
 import SwiftUI
 
 struct TimerSetupView: View {
-    let options: [String]
-    @Binding var selectionTag: Int
-    let curTomato: Int
-    let totalTomato: Int
-    
-    let timers: [Int]
-    @Binding var currentPage: Int
-    @Binding var isTimerRunning : Bool
+    @EnvironmentObject var pomoVM: PomoViewModel
     
     var body: some View {
         VStack(alignment: .center) {
-            PomoTopView(
-                options: options,
-                selectionTag: $selectionTag,
-                curTomato: curTomato,
-                totalTomato: totalTomato
-            )
+            PomoTopView()
             Spacer().frame(height: DynamicPadding.getHeight(36))
             
-            PomoTimerView(timers: timers, currentPage: $currentPage)
+            PomoTimerView()
             Spacer().frame(height: DynamicPadding.getHeight(64))
             
-            PomoBottomView(isTimerRunning: $isTimerRunning)
+            PomoBottomView()
         }
     }
 }

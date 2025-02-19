@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct PomoBottomView: View {
-    var backgroundColor: Color = .indigoNormal
-    // 여기에 뷰모델 선언
-    @Binding var isTimerRunning : Bool
+    @EnvironmentObject var pomoVM: PomoViewModel
     
     var body: some View {
         HStack(alignment: .center, spacing: DynamicPadding.getWidth(32)) {
             Button {
-                isTimerRunning.toggle()
+                pomoVM.isTimerRunning.toggle()
                 // 카운트 스타트
             } label: {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(backgroundColor)
+                        .foregroundStyle(pomoVM.selectedColorSet.normalColor)
                         .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
                     Image(systemName: "play.fill")
                         .resizable()
@@ -34,7 +32,7 @@ struct PomoBottomView: View {
             } label: {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(backgroundColor)
+                        .foregroundStyle(pomoVM.selectedColorSet.normalColor)
                         .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
                     Image(systemName: "forward.fill")
                         .resizable()

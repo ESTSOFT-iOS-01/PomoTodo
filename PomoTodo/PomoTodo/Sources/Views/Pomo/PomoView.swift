@@ -8,49 +8,55 @@
 import SwiftUI
 
 struct PomoView: View {
-    // dummy datas
-    var options = ["취미", "짧은 옵션", "중간 길이의 옵션", "정말 길~~~~~~~~~~~~~어 보이는 선택 옵션"]
-    let timers = [100, 2000, 4000]
-    
-    @State private var isTimerRunning = false
-    @State private var tabBarOpacity: Double = 1.0
-    
-    @State private var selectionTag = 0
-    @State private var curTomato = 3
-    @State private var totalTomato = 6
-    @State private var currentPage = 0
+//    @State private var tabBarOpacity: Double = 1.0
+    @StateObject private var pomoVM = PomoViewModel()
     
     var body: some View {
         VStack {
-            if isTimerRunning {
-                TimerRunningView(
-                    tag: options[selectionTag],
-                    totalTime: timers[currentPage],
-                    tintColor: .indigoNormal,
-                    textColor: .indigoDarker,
-                    timerActive: $isTimerRunning
-                )
+            if pomoVM.isTimerRunning {
+                TimerRunningView()
                 .transition(.scale(scale: 1.05).combined(with: .opacity))
             } else {
-                TimerSetupView(
-                    options: options,
-                    selectionTag: $selectionTag,
-                    curTomato: curTomato,
-                    totalTomato: totalTomato,
-                    timers: timers,
-                    currentPage: $currentPage,
-                    isTimerRunning: $isTimerRunning
-                )
+                TimerSetupView()
                 .transition(.scale(scale: 0.95).combined(with: .opacity))
             }
             Spacer().frame(height: DynamicPadding.getHeight(40))
         } // : vstack
+        .environmentObject(pomoVM)
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 🔹 부드러운 애니메이션을 위해 추가
-        .animation(.easeInOut(duration: 0.8), value: isTimerRunning) // 🔹 애니메이션 적용
-        .toolbar(isTimerRunning ? .hidden : .visible, for: .tabBar)
+        .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning) // 🔹 애니메이션 적용
+        .toolbar(pomoVM.isTimerRunning ? .hidden : .visible, for: .tabBar)
     }
 }
 
 #Preview {
     PomoView()
+}
+
+struct DummyTag: Identifiable {
+    let id = UUID()
+    let idx : Int
+    let name: String
+    let colorId : Int
+    
+    init(idx: Int, name: String, colorId: Int) {
+        self.idx = idx
+        self.name = name
+        self.colorId = colorId
+    }
+}
+
+struct TimerDummy : Identifiable {
+    let id = UUID()
+    let focusTime : Int
+    let shortBreakTime : Int
+    let longBreakTime : Int
+    let focusCount : Int
+    
+    init(focusTime: Int, shortBreakTime: Int, longBreakTime: Int, focusCount: Int) {
+        self.focusTime = focusTime
+        self.shortBreakTime = shortBreakTime
+        self.longBreakTime = longBreakTime
+        self.focusCount = focusCount
+    }
 }

@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct PomoTimerView: View {
-    let timers: [Int]
-    @Binding var currentPage: Int
+    @EnvironmentObject var pomoVM: PomoViewModel
     
     var body: some View {
         VStack(alignment: .center, spacing: DynamicPadding.getHeight(24)) {
-            TabView(selection: $currentPage) {
-                ForEach(0..<timers.count, id: \.self) { index in
-                    Text(timeString(timers[currentPage]))
+            TabView(selection: $pomoVM.currentPage) {
+                ForEach(0..<pomoVM.timers.count, id: \.self) { index in
+                    Text(timeString(pomoVM.timers[index].focusTime))
                         .font(.pretendard(.extraBold, size: 56))
                         .multilineTextAlignment(.center)
                         .padding()
@@ -25,7 +24,7 @@ struct PomoTimerView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(width: 300, height: 240)
             
-            PageControl(numberOfPages: timers.count, currentPage: $currentPage)
+            PageControl(numberOfPages: pomoVM.timers.count, currentPage: $pomoVM.currentPage)
         }
     }
     
