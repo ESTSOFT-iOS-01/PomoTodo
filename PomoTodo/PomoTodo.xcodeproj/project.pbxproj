@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		359B365D2D64AC9500F0A124 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35BD250E2D6360BD000BEF24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35BD25152D6360BD000BEF24;
+			remoteInfo = PomoTodo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		359B36592D64AC9500F0A124 /* PomoTodoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PomoTodoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35BD25162D6360BD000BEF24 /* PomoTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomoTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +32,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		359B365A2D64AC9500F0A124 /* PomoTodoTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PomoTodoTests;
+			sourceTree = "<group>";
+		};
 		35BD25182D6360BD000BEF24 /* PomoTodo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		359B36562D64AC9500F0A124 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		35BD25132D6360BD000BEF24 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				35BD25182D6360BD000BEF24 /* PomoTodo */,
+				359B365A2D64AC9500F0A124 /* PomoTodoTests */,
 				35BD25172D6360BD000BEF24 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				35BD25162D6360BD000BEF24 /* PomoTodo.app */,
+				359B36592D64AC9500F0A124 /* PomoTodoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		359B36582D64AC9500F0A124 /* PomoTodoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 359B36612D64AC9500F0A124 /* Build configuration list for PBXNativeTarget "PomoTodoTests" */;
+			buildPhases = (
+				359B36552D64AC9500F0A124 /* Sources */,
+				359B36562D64AC9500F0A124 /* Frameworks */,
+				359B36572D64AC9500F0A124 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				359B365E2D64AC9500F0A124 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				359B365A2D64AC9500F0A124 /* PomoTodoTests */,
+			);
+			name = PomoTodoTests;
+			packageProductDependencies = (
+			);
+			productName = PomoTodoTests;
+			productReference = 359B36592D64AC9500F0A124 /* PomoTodoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		35BD25152D6360BD000BEF24 /* PomoTodo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35BD25242D6360BF000BEF24 /* Build configuration list for PBXNativeTarget "PomoTodo" */;
@@ -93,6 +141,10 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					359B36582D64AC9500F0A124 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 35BD25152D6360BD000BEF24;
+					};
 					35BD25152D6360BD000BEF24 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -113,11 +165,19 @@
 			projectRoot = "";
 			targets = (
 				35BD25152D6360BD000BEF24 /* PomoTodo */,
+				359B36582D64AC9500F0A124 /* PomoTodoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		359B36572D64AC9500F0A124 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		35BD25142D6360BD000BEF24 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		359B36552D64AC9500F0A124 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		35BD25122D6360BD000BEF24 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +204,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		359B365E2D64AC9500F0A124 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35BD25152D6360BD000BEF24 /* PomoTodo */;
+			targetProxy = 359B365D2D64AC9500F0A124 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		359B365F2D64AC9500F0A124 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C3P52YR8KJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = shin.PomoTodoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PomoTodo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PomoTodo";
+			};
+			name = Debug;
+		};
+		359B36602D64AC9500F0A124 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C3P52YR8KJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = shin.PomoTodoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PomoTodo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PomoTodo";
+			};
+			name = Release;
+		};
 		35BD25222D6360BF000BEF24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -320,6 +431,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		359B36612D64AC9500F0A124 /* Build configuration list for PBXNativeTarget "PomoTodoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				359B365F2D64AC9500F0A124 /* Debug */,
+				359B36602D64AC9500F0A124 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		35BD25112D6360BD000BEF24 /* Build configuration list for PBXProject "PomoTodo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

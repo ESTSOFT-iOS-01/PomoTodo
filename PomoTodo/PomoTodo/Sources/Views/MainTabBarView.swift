@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainTabBarView: View {
     @State private var selectedTab: Tab = .Pomo
+    @Environment(DIContainer.self) private var container: DIContainer
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -18,19 +19,23 @@ struct MainTabBarView: View {
                 }
                 .tag(Tab.Pomo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
                 }
                 .tag(Tab.Chart)
             
-            ContentView()
-                .tabItem {
+            ToDoView(
+              viewModel: ToDoViewModel(
+                pomoTodoUseCase: container.pomoTodoUseCase
+              )
+            )
+          .tabItem {
                     tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
                 }
                 .tag(Tab.Todo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
                 }
@@ -38,7 +43,8 @@ struct MainTabBarView: View {
         }
         .tint(.indigoNormal)
         .onAppear {
-            setupTabBarAppearance()
+          setupTabBarAppearance()
+          let _ = container.pomoTodoUseCase.getTodayPomoDay()
         }
     }
     
@@ -70,5 +76,6 @@ struct MainTabBarView: View {
 }
 
 #Preview {
-    MainTabBarView()
+  MainTabBarView()
+    .environment(DIContainer())
 }
