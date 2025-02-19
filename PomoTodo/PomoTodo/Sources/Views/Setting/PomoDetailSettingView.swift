@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PomoDetailSettingView: View {
-  @EnvironmentObject var pomoVM: PomoViewModelSetting
+  @EnvironmentObject var pomoVM: SettingViewModel
   @Binding var pomo: PomoTimer
   @State private var showModal: Bool = false
   @State private var selectedBnt: Int = 0 // 누른 메뉴 번호
@@ -76,7 +76,7 @@ fileprivate struct DetailRow: View {
 
 // 뽀모도로 내부의 정보 변경하는 모달
 fileprivate struct SettingModal: View {
-  @EnvironmentObject var pomoVM: PomoViewModelSetting
+  @EnvironmentObject var pomoVM: SettingViewModel
   @Environment(\.dismiss) var dismiss
   @Binding var pomo: PomoTimer
   let range: [ClosedRange<Int>] = [0...100, 1...8, 1...30, 1...100]

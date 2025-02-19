@@ -1,5 +1,5 @@
 //
-//  PomoViewModelSetting.swift
+//  SettingViewModel.swift
 //  PomoTodo
 //
 //  Created by 심근웅 on 2/19/25.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class PomoViewModelSetting: ObservableObject {
+class SettingViewModel: ObservableObject {
   @Published var options: [Tag] = [
     Tag(index: 0, name: "공부", colorId: 0),
     Tag(index: 1, name: "취미", colorId: 1),

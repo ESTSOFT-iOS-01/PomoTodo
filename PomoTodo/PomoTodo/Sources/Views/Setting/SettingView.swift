@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingView: View {
-  @StateObject var pomoVM: PomoViewModelSetting = PomoViewModelSetting()
+  @StateObject var pomoVM: SettingViewModel = SettingViewModel()
   @State private var isEditMode: Bool = false // 편집모드
   
   var body: some View {
@@ -22,7 +22,6 @@ struct SettingView: View {
             }
           }
         }
-//        .modifier(HeaderMdifier(fontsize: 15))
         // 투두 태그 섹션
         Section(header:TagSettingHeader(isEditMode: $isEditMode).environmentObject(pomoVM)) {
           ForEach($pomoVM.options, id: \.id) { tag in
@@ -52,7 +51,7 @@ fileprivate struct HeaderMdifier: ViewModifier {
 
 // 뽀모도로 설정 Row
 fileprivate struct PomoSettingRow: View {
-  @EnvironmentObject var pomoVM: PomoViewModelSetting
+  @EnvironmentObject var pomoVM: SettingViewModel
   @Binding var pomo: PomoTimer // 타이머 설정 정보
   
   var body: some View {
@@ -66,7 +65,7 @@ fileprivate struct PomoSettingRow: View {
 }
 
 fileprivate struct TagSettingHeader: View {
-  @EnvironmentObject var pomoVM: PomoViewModelSetting
+  @EnvironmentObject var pomoVM: SettingViewModel
   @Binding var isEditMode: Bool
   var body: some View {
     HStack {

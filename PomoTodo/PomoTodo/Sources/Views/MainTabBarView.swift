@@ -8,72 +8,72 @@
 import SwiftUI
 
 struct MainTabBarView: View {
-    @State private var selectedTab: Tab = .Pomo
-    @Environment(DIContainer.self) private var container: DIContainer
-    
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            PomoView()
-                .tabItem {
-                    tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
-                }
-                .tag(Tab.Pomo)
-            
-            EmptyView()
-                .tabItem {
-                    tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
-                }
-                .tag(Tab.Chart)
-            
-            ToDoView(
-              viewModel: ToDoViewModel(
-                pomoTodoUseCase: container.pomoTodoUseCase
-              )
-            )
-          .tabItem {
-                    tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
-                }
-                .tag(Tab.Todo)
-            
-            EmptyView()
-                .tabItem {
-                    tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
-                }
-                .tag(Tab.Setting)
-          
+  @State private var selectedTab: Tab = .Pomo
+  @Environment(DIContainer.self) private var container: DIContainer
+  
+  var body: some View {
+    TabView(selection: $selectedTab) {
+      PomoView()
+        .tabItem {
+          tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
-        .tint(.indigoNormal)
-        .onAppear {
-          setupTabBarAppearance()
-          let _ = container.pomoTodoUseCase.getTodayPomoDay()
+        .tag(Tab.Pomo)
+      
+      StatisticsView()
+        .tabItem {
+          tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
         }
-    }
-    
-    //MARK: - Funcs
-    
-    /// 탭바 아이템 세팅
-    private func tabItemView(for currentTab: Tab, isSelected: Bool) -> some View {
-        VStack {
-            Image(systemName: isSelected ? currentTab.selectedIcon : currentTab.unselectedIcon)
-                .environment(\.symbolVariants, .none)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(isSelected ? .primary : .secondary)
-                .scaleEffect(isSelected ? 1.1 : 1.0)
-                .animation(.easeInOut(duration: 0.2), value: isSelected)
-            
-            Text(currentTab.labelName)
-                .font(.caption)
-                .foregroundStyle(isSelected ? .primary : .secondary)
+        .tag(Tab.Chart)
+      
+      ToDoView(
+        viewModel: ToDoViewModel(
+          pomoTodoUseCase: container.pomoTodoUseCase
+        )
+      )
+      .tabItem {
+        tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
+      }
+      .tag(Tab.Todo)
+      
+      SettingView()
+        .tabItem {
+          tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
         }
+        .tag(Tab.Setting)
+      
     }
-    
-    /// 탭바 스타일 세팅
-    private func setupTabBarAppearance() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
+    .tint(.indigoNormal)
+    .onAppear {
+      setupTabBarAppearance()
+      let _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
+  }
+  
+  //MARK: - Funcs
+  
+  /// 탭바 아이템 세팅
+  private func tabItemView(for currentTab: Tab, isSelected: Bool) -> some View {
+    VStack {
+      Image(systemName: isSelected ? currentTab.selectedIcon : currentTab.unselectedIcon)
+        .environment(\.symbolVariants, .none)
+        .symbolRenderingMode(.hierarchical)
+        .foregroundStyle(isSelected ? .primary : .secondary)
+        .scaleEffect(isSelected ? 1.1 : 1.0)
+        .animation(.easeInOut(duration: 0.2), value: isSelected)
+      
+      Text(currentTab.labelName)
+        .font(.caption)
+        .foregroundStyle(isSelected ? .primary : .secondary)
+    }
+  }
+  
+  /// 탭바 스타일 세팅
+  private func setupTabBarAppearance() {
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    UITabBar.appearance().standardAppearance = appearance
+    UITabBar.appearance().scrollEdgeAppearance = appearance
+  }
 }
 
 #Preview {

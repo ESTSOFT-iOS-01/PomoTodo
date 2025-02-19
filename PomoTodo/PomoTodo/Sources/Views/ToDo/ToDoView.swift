@@ -111,7 +111,7 @@ fileprivate struct TodoRow: View {
       } label: {
         Label("삭제", systemImage: "trash.fill")
       }
-    })
+    }).tint(.red)
   }
 }
 
