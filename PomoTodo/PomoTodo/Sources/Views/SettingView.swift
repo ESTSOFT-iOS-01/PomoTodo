@@ -15,14 +15,14 @@ struct SettingView: View {
     NavigationView {
       List {
         // 뽀모도로 타이머 섹션
-        Section(header: Text("뽀모도로 설정").modifier(HeaderMdifier(fontsize: 15))) {
+        Section(header: Text("뽀모도로 설정")) {
           ForEach($pomoVM.timers, id: \.index) { pomo in
             NavigationLink(destination: PomoDetailSettingView(pomo: pomo).environmentObject(pomoVM)) {
               PomoSettingRow(pomo: pomo).environmentObject(pomoVM)
             }
           }
         }
-        
+//        .modifier(HeaderMdifier(fontsize: 15))
         // 투두 태그 섹션
         Section(header:TagSettingHeader(isEditMode: $isEditMode).environmentObject(pomoVM)) {
           ForEach($pomoVM.options, id: \.id) { tag in
@@ -30,8 +30,9 @@ struct SettingView: View {
           }
         }
       }
+      .headerProminence(.increased)
       .navigationTitle("설정")
-    }
+    }.tint(.indigoNormal)
   }
 }
 
@@ -42,9 +43,10 @@ fileprivate struct HeaderMdifier: ViewModifier {
   
   func body(content: Content) -> some View {
     content
+      .font(.system(size: fontsize))
       .foregroundStyle(.secondary)
       .fontWeight(.semibold)
-      .font(.system(size: fontsize))
+      
   }
 }
 
@@ -69,13 +71,15 @@ fileprivate struct TagSettingHeader: View {
   var body: some View {
     HStack {
       Text("태그 설정")
-        .modifier(HeaderMdifier(fontsize: 15))
+        
       Spacer()
       Button {
         editBntTouch()
       } label: {
         Text(isEditMode ? "완료" : "편집")
           .foregroundStyle(Color.indigoNormal)
+          
+          .font(.caption)
       }
     }
   }

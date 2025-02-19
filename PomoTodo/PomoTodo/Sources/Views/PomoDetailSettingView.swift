@@ -11,15 +11,16 @@ struct PomoDetailSettingView: View {
   @EnvironmentObject var pomoVM: PomoViewModelSetting
   @Binding var pomo: PomoTimer
   @State private var showModal: Bool = false
-  @State var selectedBnt: Int = 0 // 누른 메뉴 번호
+  @State private var selectedBnt: Int = 0 // 누른 메뉴 번호
   
   var body: some View {
+    
     NavigationView {
       List{
+        
         Button {
           showModal = true
           selectedBnt = 0
-//          info = Int(pomo.focusTimeUnit / 60)
         } label: {
           DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
         }.foregroundStyle(.primary)
@@ -27,7 +28,6 @@ struct PomoDetailSettingView: View {
         Button {
           showModal = true
           selectedBnt = 1
-//          info = pomo.tomatoPerCycle
         } label: {
           DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
         }.foregroundStyle(.primary)
@@ -35,7 +35,6 @@ struct PomoDetailSettingView: View {
         Button {
           showModal = true
           selectedBnt = 2
-//          info = Int(pomo.shortBreakUnit / 60)
         } label: {
           DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
         }.foregroundStyle(.primary)
@@ -43,11 +42,9 @@ struct PomoDetailSettingView: View {
         Button {
           showModal = true
           selectedBnt = 3
-//          info = Int(pomo.longBreakUnit / 60)
         } label: {
           DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
         }.foregroundStyle(.primary)
-        
         
       }
       .sheet(isPresented: $showModal){
@@ -118,7 +115,6 @@ fileprivate struct SettingModal: View {
       .frame(height: 60)
       .background(Color.indigoDark)
       .cornerRadius(40)
-      
     }
     .frame(width: 200)
     .onAppear {
