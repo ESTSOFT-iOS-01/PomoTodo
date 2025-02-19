@@ -10,81 +10,55 @@ import SwiftUI
 struct PomoDetailSettingView: View {
   @EnvironmentObject var pomoVM: PomoViewModelSetting
   @Binding var pomo: PomoTimer
-  
-  
-  
-  
   @State private var showModal: Bool = false
-  @State var selectedButton: Int = 0
-  @State var info: Int = 0
-  var name: String = ""
+  @State var selectedBnt: Int = 0 // 누른 메뉴 번호
   
   var body: some View {
     NavigationView {
       List{
         Button {
           showModal = true
-          selectedButton = 0
-          info = Int(pomo.focusTimeUnit / 60)
+          selectedBnt = 0
+//          info = Int(pomo.focusTimeUnit / 60)
         } label: {
           DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
         }.foregroundStyle(.primary)
         
+        Button {
+          showModal = true
+          selectedBnt = 1
+//          info = pomo.tomatoPerCycle
+        } label: {
+          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
+        }.foregroundStyle(.primary)
         
+        Button {
+          showModal = true
+          selectedBnt = 2
+//          info = Int(pomo.shortBreakUnit / 60)
+        } label: {
+          DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
+        }.foregroundStyle(.primary)
         
+        Button {
+          showModal = true
+          selectedBnt = 3
+//          info = Int(pomo.longBreakUnit / 60)
+        } label: {
+          DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
+        }.foregroundStyle(.primary)
         
         
       }
+      .sheet(isPresented: $showModal){
+        SettingModal(pomo: $pomo, selectedBnt: selectedBnt).environmentObject(pomoVM)
+          .presentationDetents([.medium])
+      }
     }
+    .navigationTitle(pomoVM.pomoName[pomo.index])
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
-//    NavigationView {
-//      List {
-//        Button {
-//          showModal = true
-//          selectedButton = 0
-//          info = Int(pomo.focusTimeUnit / 60)
-//        } label: {
-//          DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
-//        }.foregroundStyle(.primary)
-//        
-//        Button {
-//          showModal = true
-//          selectedButton = 1
-//          info = pomo.tomatoPerCycle
-//        } label: {
-//          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
-//        }.foregroundStyle(.primary)
-//        
-//        Button {
-//          showModal = true
-//          selectedButton = 2
-//          info = Int(pomo.shortBreakUnit / 60)
-//        } label: {
-//          DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
-//        }.foregroundStyle(.primary)
-//          
-//        Button {
-//          showModal = true
-//          selectedButton = 3
-//          info = Int(pomo.longBreakUnit / 60)
-//        } label: {
-//          DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
-//        }.foregroundStyle(.primary)
-//          
-//      }
-//      .sheet(isPresented: $showModal){
-//        SettingModal(pomo: $pomo, selected: $info, selectedButton: selectedButton)
-//          .presentationDetents([.medium, .large]) // medium 사이즈의 화면, large 사이즈의 버튼
-//          .cornerRadius(32)
-//      }
-//      
-//    }
-//    .navigationTitle(name)
-//    .navigationBarTitleDisplayMode(.inline)
-//    
-//  }
-//}
 
 fileprivate struct DetailRow: View {
   var name: String
@@ -104,31 +78,36 @@ fileprivate struct DetailRow: View {
 
 // 뽀모도로 내부의 정보 변경하는 모달
 fileprivate struct SettingModal: View {
+  @EnvironmentObject var pomoVM: PomoViewModelSetting
   @Environment(\.dismiss) var dismiss
   @Binding var pomo: PomoTimer
-  @Binding var selected: Int
-  var selectedButton: Int
-  
-  
   let range: [ClosedRange<Int>] = [0...100, 1...8, 1...30, 1...100]
   let names: [String] = ["집중 시간", "한 사이클의 토마토 개수", "짧은 휴식시간", "긴 휴식시간"]
+  var selectedBnt: Int
+  @State var info: Int = 0
   
   var body: some View {
     VStack {
-      Text(names[selectedButton])
+      Text(names[selectedBnt])
         .fontWeight(.semibold)
         .font(.system(size: 18))
       
-      Picker("", selection: $selected) {
-        ForEach(range[selectedButton], id: \.self) {
+      Picker("", selection: $info) {
+        ForEach(range[selectedBnt], id: \.self) {
           Text("\($0)")
         }
       }
       .pickerStyle(.wheel)
       
-      Button{
-        // 여기서 뽀모타이머 설정 변경 저장
-        print($selected)
+      Button {
+        switch selectedBnt {
+        case 0: pomoVM.timers[pomo.index].focusTimeUnit = Double(info * 60)
+        case 1: pomoVM.timers[pomo.index].tomatoPerCycle = info
+        case 2: pomoVM.timers[pomo.index].shortBreakUnit = Double(info * 60)
+        case 3: pomoVM.timers[pomo.index].longBreakUnit = Double(info * 60)
+        default: print()
+        }
+        pomoVM.timerSave()
         dismiss()
       } label: {
         Text("완료")
@@ -139,7 +118,18 @@ fileprivate struct SettingModal: View {
       .frame(height: 60)
       .background(Color.indigoDark)
       .cornerRadius(40)
+      
     }
     .frame(width: 200)
+    .onAppear {
+      switch selectedBnt {
+      case 0: self.info = Int(pomo.focusTimeUnit / 60)
+      case 1: self.info = pomo.tomatoPerCycle
+      case 2: self.info = Int(pomo.shortBreakUnit / 60)
+      case 3: self.info = Int(pomo.longBreakUnit / 60)
+      default: print()
+      }
+    }
+
   }
 }

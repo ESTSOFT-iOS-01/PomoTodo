@@ -83,9 +83,8 @@ fileprivate struct TagSettingHeader: View {
     isEditMode.toggle()
     print(isEditMode ? "편집모드" : "편집불가")
     if !isEditMode {
-      print(pomoVM.options)
+      pomoVM.optionsSave()
     }
-    // DB에 VM의 options를 저장 하면 됨
   }
 }
 // 태그 설정 Row
