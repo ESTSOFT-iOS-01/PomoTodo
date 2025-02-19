@@ -16,25 +16,25 @@ struct MainTabBarView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Pomo)
                 }
                 .tag(Tab.Pomo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Chart)
                 }
                 .tag(Tab.Chart)
             
-            ContentView()
+            ToDoView()
                 .tabItem {
                     tabItemView(for: .Todo)
                 }
                 .tag(Tab.Todo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Setting)
                 }

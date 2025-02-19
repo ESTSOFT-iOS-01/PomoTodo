@@ -17,7 +17,7 @@ struct ToDoView: View {
     Tag(index: 2, name: "독서", colorId: 2),
     Tag(index: 3, name: "운동", colorId: 3)
   ]
-  private var today: String = Date().formattedDate
+  private var today: String = Date().formattedDateToString
   
   init() {
     //        // 더미데이터
