@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct PomoView: View {
-//    @State private var tabBarOpacity: Double = 1.0
-    @StateObject private var pomoVM = PomoViewModel()
+    
     
     var body: some View {
         VStack {

@@ -28,21 +28,22 @@ struct PomoTimerView: View {
     //MARK: - UI setting funcs
     
     @ViewBuilder
-    private func timerText(for timer: TimerDummy) -> some View {
+    private func timerText(for timer: PomoTimer) -> some View {
         Text(formatTime(timeForPhase(timer)))
             .font(.pretendard(.extraBold, size: 56))
             .multilineTextAlignment(.center)
             .padding()
     }
     
-    private func timeForPhase(_ timer: TimerDummy) -> Int {
+    private func timeForPhase(_ timer: PomoTimer) -> Int {
         switch pomoVM.currentPhase {
         case .focus:
-            return timer.focusTime
+            return timer.focusTimeUnit.asInt
         case .shortBreak:
-            return timer.shortBreakTime
+            return timer.shortBreakUnit.asInt
         case .longBreak:
-            return timer.longBreakTime
+            return timer.longBreakUnit.asInt
+            
         }
     }
     

@@ -8,6 +8,7 @@
 import SwiftUI
 
 final class PomoViewModel: ObservableObject {
+    private var pomoTodoUseCase: PomoTodoUseCase
     
     @Published var selectionTag = 0 {
         didSet {
@@ -40,18 +41,8 @@ final class PomoViewModel: ObservableObject {
     @Published var remainingTime: Int = 1500
     @Published var progress: CGFloat = 1.0
     
-    @Published var options: [DummyTag] = [
-        DummyTag(idx: 0, name: "옵션 1", colorId: 0),
-        DummyTag(idx: 1, name: "옵션 2", colorId: 1),
-        DummyTag(idx: 2, name: "옵션 3", colorId: 2),
-        DummyTag(idx: 3, name: "옵션 4", colorId: 3)
-    ]
-    
-    @Published var timers: [TimerDummy] = [
-        TimerDummy(focusTime: 2, shortBreakTime: 1, longBreakTime: 4, focusCount: 2),
-        TimerDummy(focusTime: 20, shortBreakTime: 10, longBreakTime: 30, focusCount: 4),
-        TimerDummy(focusTime: 5, shortBreakTime: 2, longBreakTime: 8, focusCount: 8)
-    ]
+    @Published var options: [Tag]
+    @Published var timers: [PomoTimer]
     
     var selectedColorSet: TimerColorSet {
         Constants.Timer.colorSets.first { $0.id == options[selectionTag].colorId } ?? Constants.Timer.indigoSet
@@ -62,7 +53,12 @@ final class PomoViewModel: ObservableObject {
     private var accumulatedTotalTime: Int = 0
     
     //MARK: - UI Funcs
-    init() {
+    init (pomoTodoUseCase: PomoTodoUseCase) {
+        // 데이터 세팅
+        self.pomoTodoUseCase = pomoTodoUseCase
+        self.options = pomoTodoUseCase.getAppConfig().tags
+        self.timers = pomoTodoUseCase.getAppConfig().pomoTimers
+        
         updateTotalTime()
     }
     
@@ -71,15 +67,15 @@ final class PomoViewModel: ObservableObject {
         
         switch currentPhase {
         case .focus:
-            totalTime = selectedTimer.focusTime
+            totalTime = selectedTimer.focusTimeUnit.asInt
         case .shortBreak:
-            totalTime = selectedTimer.shortBreakTime
+            totalTime = selectedTimer.shortBreakUnit.asInt
         case .longBreak:
-            totalTime = selectedTimer.longBreakTime
+            totalTime = selectedTimer.longBreakUnit.asInt
         }
         
         remainingTime = totalTime
-        totalTomato = selectedTimer.focusCount
+        totalTomato = selectedTimer.tomatoPerCycle
         progress = 1.0
     }
     
@@ -114,10 +110,9 @@ final class PomoViewModel: ObservableObject {
         if currentPhase == .focus {
             if curTomato < totalTomato {
                 currentPhase = .shortBreak
-                totalTime = timers[currentPage].shortBreakTime
-            } else {
+                totalTime = timers[currentPage].shortBreakUnit.asInt
                 currentPhase = .longBreak
-                totalTime = timers[currentPage].longBreakTime
+                totalTime = timers[currentPage].longBreakUnit.asInt
             }
             
             if isEnd {
@@ -125,7 +120,7 @@ final class PomoViewModel: ObservableObject {
             }
         } else {
             currentPhase = .focus
-            totalTime = timers[currentPage].focusTime
+            totalTime = timers[currentPage].focusTimeUnit.asInt
             
             if curTomato == totalTomato {
                 curTomato = 1
@@ -155,7 +150,4 @@ final class PomoViewModel: ObservableObject {
         print("🍅 완료된 토마토 개수: \(completedTomatoes) / 단위 토마토 개수: \(totalTomato)")
     }
     
-    // 더 필요한 것? : 데이터 연동
-    // 저장된 태그 세트 가져오기
-    // 저장된 타이머 세트 가져오기
 }
