@@ -12,17 +12,20 @@ struct PomoTopView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: DynamicPadding.getHeight(16)) {
-            // 타이머 진행 상태 텍스트
             Text("\(pomoVM.curTomato) / \(pomoVM.totalTomato)")
                 .font(.pretendard(.semiBold, size: 18))
             
-            // 메뉴 버튼 (드롭다운)
             Menu {
                 ForEach(0..<pomoVM.options.count, id: \.self) { index in
                     Button(action: {
                         pomoVM.selectionTag = index
                     }) {
-                        Label(pomoVM.options[index].name, systemImage: pomoVM.selectionTag == index ? "checkmark" : "")
+                        HStack {
+                            Text(pomoVM.options[index].name)
+                            if pomoVM.selectionTag == index {
+                                Image(systemName: "checkmark")
+                            }
+                        }
                     }
                 }
             } label: {

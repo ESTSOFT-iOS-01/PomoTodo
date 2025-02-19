@@ -13,8 +13,7 @@ struct PomoBottomView: View {
     var body: some View {
         HStack(alignment: .center, spacing: DynamicPadding.getWidth(32)) {
             Button {
-                pomoVM.isTimerRunning.toggle()
-                // 카운트 스타트
+                pomoVM.startTimer()
             } label: {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
@@ -28,7 +27,7 @@ struct PomoBottomView: View {
                 }
             }
             Button {
-                // 다음 세션으로 넘어가기
+                pomoVM.forwardNextTimer()
             } label: {
                 ZStack(alignment: .center) {
                     RoundedRectangle(cornerRadius: 30)
@@ -45,6 +44,6 @@ struct PomoBottomView: View {
     }
 }
 
-#Preview {
+//#Preview {
 //    PomoBottomView(backgroundColor: .tealNormal)
-}
+//}

@@ -20,7 +20,7 @@ struct TimerRunningView: View {
             
             Spacer().frame(height: DynamicPadding.getHeight(110))
             Button {
-                pomoVM.isTimerRunning.toggle()
+                pomoVM.stopTimer()
             } label: {
                 Image(systemName: "pause.fill")
                     .resizable()
@@ -28,9 +28,6 @@ struct TimerRunningView: View {
                     .frame(height: 36)
                     .foregroundStyle(pomoVM.selectedColorSet.normalColor)
             }
-        }
-        .onAppear {
-            pomoVM.isTimerRunning = true
         }
     }
 }
