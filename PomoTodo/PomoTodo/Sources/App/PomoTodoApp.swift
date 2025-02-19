@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct PomoTodoApp: App {
-    var body: some Scene {
-        WindowGroup {
-          SettingView()
-        }
+  private var container = DIContainer()
+  
+  var body: some Scene {
+    WindowGroup {
+      MainTabBarView()
+        .environment(container)
     }
+  }
 }

@@ -23,40 +23,12 @@ struct PomoView: View {
             Spacer().frame(height: DynamicPadding.getHeight(40))
         } // : vstack
         .environmentObject(pomoVM)
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // 🔹 부드러운 애니메이션을 위해 추가
-        .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning) // 🔹 애니메이션 적용
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning)
         .toolbar(pomoVM.isTimerRunning ? .hidden : .visible, for: .tabBar)
     }
 }
 
 #Preview {
     PomoView()
-}
-
-struct DummyTag: Identifiable {
-    let id = UUID()
-    let idx : Int
-    let name: String
-    let colorId : Int
-    
-    init(idx: Int, name: String, colorId: Int) {
-        self.idx = idx
-        self.name = name
-        self.colorId = colorId
-    }
-}
-
-struct TimerDummy : Identifiable {
-    let id = UUID()
-    let focusTime : Int
-    let shortBreakTime : Int
-    let longBreakTime : Int
-    let focusCount : Int
-    
-    init(focusTime: Int, shortBreakTime: Int, longBreakTime: Int, focusCount: Int) {
-        self.focusTime = focusTime
-        self.shortBreakTime = shortBreakTime
-        self.longBreakTime = longBreakTime
-        self.focusCount = focusCount
-    }
 }

@@ -11,26 +11,17 @@ struct TimerRunningView: View {
     @EnvironmentObject var pomoVM: PomoViewModel
     
     var body: some View {
-        VStack(alignment : .center) {
-            Text(pomoVM.options[pomoVM.selectionTag].name)
-                .font(.pretendard(.bold, size: 18))
+        VStack(alignment: .center) {
+            // 상단 태구
+            TimerTagLabelView()
             Spacer().frame(height: DynamicPadding.getHeight(72))
             
+            // 타이머
             CircularProgressView()
-            
             Spacer().frame(height: DynamicPadding.getHeight(110))
-            Button {
-                pomoVM.isTimerRunning.toggle()
-            } label: {
-                Image(systemName: "pause.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 36)
-                    .foregroundStyle(pomoVM.selectedColorSet.normalColor)
-            }
-        }
-        .onAppear {
-            pomoVM.isTimerRunning = true
-        }
+            
+            // 버튼
+            PauseButtonView()
+        } // : vstack
     }
 }
