@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class PomoViewModel: ObservableObject {
+final class PomoViewModel: ObservableObject {
     
     @Published var selectionTag = 0 {
         didSet {
@@ -133,7 +133,7 @@ class PomoViewModel: ObservableObject {
                 curTomato += 1
             }
         }
-
+        
         remainingTime = totalTime
         progress = 1.0
     }
@@ -146,7 +146,7 @@ class PomoViewModel: ObservableObject {
         } else {
             accumulatedTotalTime += (totalTime - remainingTime)
         }
-        print("집중시간/전체시간 : \(accumulatedFocusTime)초 / \(accumulatedFocusTime + accumulatedTotalTime)")
+        print("\(options[selectionTag].name)의 집중시간/전체시간 : \(accumulatedFocusTime)초 / \(accumulatedFocusTime + accumulatedTotalTime)")
         
     }
     
