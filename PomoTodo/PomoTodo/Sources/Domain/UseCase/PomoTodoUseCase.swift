@@ -53,4 +53,5 @@ protocol PomoTodoUseCase {
   /// 앱의 기본 설정(`AppConfig`)을 업데이트하는 메서드
   /// - Parameter appConfig: 변경할 앱 설정 데이터(`AppConfig`)
   func setAppConfig(_ appConfig: AppConfig)
+  
 }

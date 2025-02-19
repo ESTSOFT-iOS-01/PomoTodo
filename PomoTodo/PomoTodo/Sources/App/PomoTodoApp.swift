@@ -10,26 +10,12 @@ import SwiftData
 
 @main
 struct PomoTodoApp: App {
-  // TODO: DI 리팩토링
-  let pomoTodoUseCase: PomoTodoUseCase
-  
-  init() {
-    let storage = SwiftDataStorage()
-    let appConfigRepository = AppConfigRepositoryImpl(
-      modelContext: storage.modelContext
-    )
-    let pomoDayRepository = PomoDayRepositoryImpl(
-      modelContext: storage.modelContext
-    )
-    pomoTodoUseCase = PomoTodoUseCaseImpl(
-      pomoDayRepository: pomoDayRepository,
-      appConfigRepository: appConfigRepository
-    )
-  }
+  private var container = DIContainer()
   
   var body: some Scene {
     WindowGroup {
-      MainTabBarView(pomoTodoUseCase: pomoTodoUseCase)
+      MainTabBarView()
+        .environment(container)
     }
   }
 }
