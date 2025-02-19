@@ -40,6 +40,7 @@ struct MainTabBarView: View {
                     tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
                 }
                 .tag(Tab.Setting)
+          
         }
         .tint(.indigoNormal)
         .onAppear {
