@@ -88,8 +88,8 @@ fileprivate struct TodoRow: View {
   var body: some View {
     HStack {
       Button {
+        isCompleted.toggle()
         viewModel.send(.toggleTodo(id: todoId, status: isCompleted))
-        
       } label: {
         Label("", systemImage: isCompleted ? "checkmark.circle" : "circle")
       }.foregroundStyle(color)
