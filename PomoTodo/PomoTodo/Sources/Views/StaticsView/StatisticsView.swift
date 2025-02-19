@@ -63,9 +63,7 @@ struct StatisticsView: View {
                 Text("\(viewModel.totalPomodoro)")
                   .font(.system(size: 24, weight: .bold))
               }
-              .padding(.top, 13)
-              .padding(.bottom, 13)
-              .padding(.leading, 24)
+              .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
               
               Spacer()
               
@@ -76,9 +74,7 @@ struct StatisticsView: View {
                 Text(String(format: "%.1f", viewModel.totalSessions))
                   .font(.system(size: 24, weight: .bold))
               }
-              .padding(.top, 13)
-              .padding(.bottom, 13)
-              .padding(.leading, 24)
+              .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
               
               Spacer()
             }
@@ -92,31 +88,27 @@ struct StatisticsView: View {
                 VStack(alignment: .leading, spacing: 16) {
                   Text("\(viewModel.selectedPeriod)간 집중 시간")
                     .font(.system(size: 13))
-                  Text("\(viewModel.formatTime(viewModel.totalFocusTime))")
+                  Text("\(viewModel.totalFocusTime.formattedTime())")
                     .font(.system(size: 24, weight: .bold))
                 }
-                .padding(.top, 24)
-                .padding(.leading, 24)
+                .padding(EdgeInsets(top: 24, leading: 24, bottom: 0, trailing: 0))
                 
                 Spacer()
                 
                 VStack(alignment: .leading, spacing: 16) {
                   Text("누적 집중 시간")
                     .font(.system(size: 13))
-                  Text("\(viewModel.formatTime(viewModel.allFocusTime))")
+                  Text("\(viewModel.allFocusTime.formattedTime())")
                     .font(.system(size: 24, weight: .bold))
                 }
-                .padding(.top, 24)
-                .padding(.leading, 24)
+                .padding(EdgeInsets(top: 24, leading: 24, bottom: 0, trailing: 0))
                 
                 Spacer()
               }
               
               BarChartView(viewModel: viewModel)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 32)
-                .padding(.leading, 24)
-                .padding(.bottom, 32)
+                .padding(EdgeInsets(top: 24, leading: 24, bottom: 32, trailing: 0))
             }
           }
           
@@ -129,21 +121,17 @@ struct StatisticsView: View {
                 Text(String(format: "%.1f", viewModel.averageSessions))
                   .font(.system(size: 24, weight: .bold))
               }
-              .padding(.top, 13)
-              .padding(.bottom, 13)
-              .padding(.leading, 24)
+              .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
               
               Spacer()
               
               VStack(alignment: .leading, spacing: 16) {
                 Text("\(viewModel.selectedPeriod)간 평균 집중 시간")
                   .font(.system(size: 13))
-                Text("\(viewModel.formatTime(viewModel.averageFocusTime))")
+                Text("\(viewModel.averageFocusTime.formattedTime())")
                   .font(.system(size: 24, weight: .bold))
               }
-              .padding(.top, 13)
-              .padding(.bottom, 13)
-              .padding(.leading, 24)
+              .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
               
               Spacer()
             }

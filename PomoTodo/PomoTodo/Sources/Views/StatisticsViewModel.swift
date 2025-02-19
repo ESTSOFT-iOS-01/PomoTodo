@@ -123,7 +123,7 @@ class StatisticsViewModel: ObservableObject {
     }
     
     print("사용한 총 일수: \(usedDays), 주 수: \(usedWeeks), 월 수: \(usedMonths)")
-    print("평균 집중 시간 (일간 기준): \(formatTime(averageFocusTime))")
+    print("평균 집중 시간 (일간 기준): \(averageFocusTime.formattedTime())")
     print("평균 세션 (일간 기준): \(averageSessions)")
     
     // 태그별 집중시간 데이터 정렬
@@ -312,11 +312,4 @@ class StatisticsViewModel: ObservableObject {
     
     return color
   }
-  
-  func formatTime(_ seconds: TimeInterval) -> String {
-    let hours = Int(seconds) / 3600
-    let minutes = (Int(seconds) % 3600) / 60
-    return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
-  }
-  
 }
