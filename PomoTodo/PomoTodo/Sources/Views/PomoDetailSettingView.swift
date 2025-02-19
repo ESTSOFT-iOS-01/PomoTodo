@@ -50,6 +50,7 @@ struct PomoDetailSettingView: View {
       .sheet(isPresented: $showModal){
         SettingModal(pomo: $pomo, selectedBnt: selectedBnt).environmentObject(pomoVM)
           .presentationDetents([.medium])
+          .presentationCornerRadius(48)
       }
     }
     .navigationTitle(pomoVM.pomoName[pomo.index])
