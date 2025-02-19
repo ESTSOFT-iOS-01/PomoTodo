@@ -27,12 +27,11 @@ struct SettingView: View {
       List {
         Section(header: Text("뽀모도로 설정").modifier(HeaderMdifier(fontsize: 15))) {
           ForEach($pomoTimerArr, id: \.index) { pomoTimer in
-            NavigationLink(destination: Text("hello")) {
+            NavigationLink(destination: PomoDetailSettingView(pomo: pomoTimer, name: pomoName[pomoTimer.index.wrappedValue])) {
               PomoSettingRow(pomoTimer: pomoTimer, name: pomoName[pomoTimer.index.wrappedValue])
             }
           }
         }
-          
         
         Section(header:TagSettingHeader(isEditMode: $isEditMode, headerText: "태그 설정")) {
           ForEach($tags, id: \.id) { tag in
@@ -40,7 +39,8 @@ struct SettingView: View {
             TagSettingRow(name: tag.name, isEditMode: $isEditMode)
           }
         }
-      }.navigationTitle("설정")
+      }
+      .navigationTitle("설정")
     }
   }
 }
@@ -51,9 +51,23 @@ fileprivate struct HeaderMdifier: ViewModifier {
   
   func body(content: Content) -> some View {
     content
-    .fontWeight(.semibold)
-    .foregroundStyle(.secondary)
-    .font(.system(size: fontsize))
+      .foregroundStyle(.secondary)
+      .fontWeight(.semibold)
+      .font(.system(size: fontsize))
+  }
+}
+
+// 뽀모도로 설정 Row
+fileprivate struct PomoSettingRow: View {
+  @Binding var pomoTimer: PomoTimer // 타이머 설정 정보
+  var name: String // 타이머 이름
+  var body: some View {
+    VStack(alignment: .leading) {
+      Text(name)
+        .foregroundStyle(.primary)
+      Text("\(Int(pomoTimer.focusTimeUnit/60))분 / \(Int(pomoTimer.tomatoPerCycle))개 / \(Int(pomoTimer.shortBreakUnit/60))분 / \(Int(pomoTimer.longBreakUnit/60))분")
+        .foregroundStyle(.secondary)
+    }
   }
 }
 
@@ -68,27 +82,19 @@ fileprivate struct TagSettingHeader: View {
         .modifier(HeaderMdifier(fontsize: 15))
       Spacer()
       Button {
-        print("편집 버튼 실행")
-        isEditMode.toggle()
-        print(isEditMode ? "편집모드" : "편집불가")
+        editBntTouch()
       } label: {
         Text(isEditMode ? "완료" : "편집")
+          .foregroundStyle(Color.indigoNormal)
       }
     }
   }
-}
-
-// 뽀모도로 설정 Row
-fileprivate struct PomoSettingRow: View {
-  @Binding var pomoTimer: PomoTimer // 타이머 설정 정보
-  var name: String // 타이머 이름
-  var body: some View {
-    VStack(alignment: .leading) {
-      Text(name)
-        .foregroundStyle(.primary)
-      Text("\(Int(pomoTimer.focusTimeUnit/60))분/\(Int(pomoTimer.tomatoPerCycle))개/\(Int(pomoTimer.shortBreakUnit/60))분/\(Int(pomoTimer.longBreakUnit/60))분")
-        .foregroundStyle(.secondary)
-    }
+  func editBntTouch() {
+    print("편집 버튼 실행")
+    isEditMode.toggle()
+    print(isEditMode ? "편집모드" : "편집불가")
+    
+    // 편집 후 여기서 데이터 수정하면 될듯
   }
 }
 
