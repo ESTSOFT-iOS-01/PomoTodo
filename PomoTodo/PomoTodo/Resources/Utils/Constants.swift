@@ -16,4 +16,3 @@ public struct Constants {
         public static let tealSet = TimerColorSet(id: 3, normalColor: .tealNormal, darkColor: .tealDark, darkerColor: .tealDarker)
     }
 }
-

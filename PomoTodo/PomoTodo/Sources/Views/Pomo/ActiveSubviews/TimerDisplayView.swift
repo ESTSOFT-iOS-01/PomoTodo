@@ -24,8 +24,10 @@ struct TimerDisplayView: View {
             }
 
             Spacer().frame(height: 62)
-        }
+        } // : vstack
     }
+    
+    //MARK: - UI settings funcs
 
     private func timeString(from time: Int) -> String {
         let minutes = time / 60
@@ -36,28 +38,28 @@ struct TimerDisplayView: View {
     @ViewBuilder
     private func tomatoIcons() -> some View {
         ForEach(0..<(pomoVM.curTomato - 1), id: \.self) { _ in
-            Image(systemName: "circle.fill")
-                .resizable()
-                .foregroundColor(pomoVM.selectedColorSet.darkColor)
-                .frame(width: 15, height: 15)
+            createTomatoIcon(systemName: "circle.fill")
         }
-
+        
         if pomoVM.curTomato > 0 {
-            Image(systemName: "circle.righthalf.filled.inverse")
-                .resizable()
-                .foregroundColor(pomoVM.selectedColorSet.darkColor)
-                .frame(width: 15, height: 15)
+            createTomatoIcon(systemName: "circle.righthalf.filled.inverse")
         }
 
         ForEach(0..<(pomoVM.totalTomato - pomoVM.curTomato), id: \.self) { _ in
-            Image(systemName: "circle")
-                .resizable()
-                .foregroundColor(pomoVM.selectedColorSet.darkColor)
-                .frame(width: 15, height: 15)
+            createTomatoIcon(systemName: "circle")
         }
+    }
+    
+    @ViewBuilder
+    private func createTomatoIcon(systemName: String) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .scaledToFit()
+            .foregroundColor(pomoVM.selectedColorSet.darkColor)
+            .frame(height: 15)
     }
 }
 
-#Preview {
-    TimerDisplayView()
-}
+//#Preview {
+//    TimerDisplayView()
+//}

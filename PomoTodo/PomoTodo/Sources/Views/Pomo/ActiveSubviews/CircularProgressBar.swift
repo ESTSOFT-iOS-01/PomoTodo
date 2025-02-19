@@ -12,10 +12,12 @@ struct CircularProgressBar: View {
 
     var body: some View {
         ZStack {
+            // background Circle
             Circle()
                 .stroke(lineWidth: 10)
                 .foregroundStyle(.timerGray)
-
+            
+            // progress Circle
             Circle()
                 .trim(from: 0.0, to: pomoVM.progress)
                 .stroke(pomoVM.selectedColorSet.normalColor, style: StrokeStyle(lineWidth: 10, lineCap: .round))
@@ -26,6 +28,6 @@ struct CircularProgressBar: View {
     }
 }
 
-#Preview {
-    CircularProgressBar()
-}
+//#Preview {
+//    CircularProgressBar()
+//}

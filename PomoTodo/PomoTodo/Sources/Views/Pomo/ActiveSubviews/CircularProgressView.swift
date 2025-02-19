@@ -12,7 +12,10 @@ struct CircularProgressView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
+            // progress bar
             CircularProgressBar()
+            
+            // Texts
             TimerDisplayView()
         }
     }

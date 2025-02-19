@@ -27,7 +27,7 @@ struct PageControl: View {
                         }
                     }
             }
-        }
+        } // : hstack
         .animation(.linear, value: pomoVM.currentPage)
     }
 }

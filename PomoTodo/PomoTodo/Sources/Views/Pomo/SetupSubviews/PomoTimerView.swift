@@ -25,6 +25,8 @@ struct PomoTimerView: View {
         }
     }
     
+    //MARK: - UI setting funcs
+    
     @ViewBuilder
     private func timerText(for timer: TimerDummy) -> some View {
         Text(formatTime(timeForPhase(timer)))

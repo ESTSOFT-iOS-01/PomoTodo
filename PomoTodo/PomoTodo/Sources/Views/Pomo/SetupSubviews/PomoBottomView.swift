@@ -25,7 +25,7 @@ struct PomoBottomView: View {
                 action: { pomoVM.forwardNextTimer() },
                 backgroundColor: pomoVM.selectedColorSet.normalColor
             )
-        }
+        } // : hstack
     }
 }
 
