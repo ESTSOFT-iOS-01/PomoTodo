@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabBarView: View {
-    @State private var selectedTab: Tab = .Pomo
+  @State private var selectedTab: Tab = .Setting
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -24,17 +24,18 @@ struct MainTabBarView: View {
                 }
                 .tag(Tab.Chart)
             
-            ContentView()
+          ContentView()
                 .tabItem {
                     tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
                 }
                 .tag(Tab.Todo)
             
-            ContentView()
+          ContentView()
                 .tabItem {
                     tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
                 }
                 .tag(Tab.Setting)
+          
         }
         .tint(.indigoNormal)
         .onAppear {

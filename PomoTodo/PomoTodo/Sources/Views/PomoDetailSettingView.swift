@@ -8,15 +8,20 @@
 import SwiftUI
 
 struct PomoDetailSettingView: View {
+  @EnvironmentObject var pomoVM: PomoViewModelSetting
   @Binding var pomo: PomoTimer
+  
+  
+  
+  
   @State private var showModal: Bool = false
   @State var selectedButton: Int = 0
   @State var info: Int = 0
-  var name: String
+  var name: String = ""
   
   var body: some View {
     NavigationView {
-      List {
+      List{
         Button {
           showModal = true
           selectedButton = 0
@@ -25,43 +30,61 @@ struct PomoDetailSettingView: View {
           DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
         }.foregroundStyle(.primary)
         
-        Button {
-          showModal = true
-          selectedButton = 1
-          info = pomo.tomatoPerCycle
-        } label: {
-          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
-        }.foregroundStyle(.primary)
         
-        Button {
-          showModal = true
-          selectedButton = 2
-          info = Int(pomo.shortBreakUnit / 60)
-        } label: {
-          DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
-        }.foregroundStyle(.primary)
-          
-        Button {
-          showModal = true
-          selectedButton = 3
-          info = Int(pomo.longBreakUnit / 60)
-        } label: {
-          DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
-        }.foregroundStyle(.primary)
-          
+        
+        
+        
       }
-      .sheet(isPresented: $showModal){
-        SettingModal(pomo: $pomo, selected: $info, selectedButton: selectedButton)
-          .presentationDetents([.medium, .large]) // medium 사이즈의 화면, large 사이즈의 버튼
-          .cornerRadius(32)
-      }
-      
     }
-    .navigationTitle(name)
-    .navigationBarTitleDisplayMode(.inline)
-    
   }
 }
+//    NavigationView {
+//      List {
+//        Button {
+//          showModal = true
+//          selectedButton = 0
+//          info = Int(pomo.focusTimeUnit / 60)
+//        } label: {
+//          DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
+//        }.foregroundStyle(.primary)
+//        
+//        Button {
+//          showModal = true
+//          selectedButton = 1
+//          info = pomo.tomatoPerCycle
+//        } label: {
+//          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
+//        }.foregroundStyle(.primary)
+//        
+//        Button {
+//          showModal = true
+//          selectedButton = 2
+//          info = Int(pomo.shortBreakUnit / 60)
+//        } label: {
+//          DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
+//        }.foregroundStyle(.primary)
+//          
+//        Button {
+//          showModal = true
+//          selectedButton = 3
+//          info = Int(pomo.longBreakUnit / 60)
+//        } label: {
+//          DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
+//        }.foregroundStyle(.primary)
+//          
+//      }
+//      .sheet(isPresented: $showModal){
+//        SettingModal(pomo: $pomo, selected: $info, selectedButton: selectedButton)
+//          .presentationDetents([.medium, .large]) // medium 사이즈의 화면, large 사이즈의 버튼
+//          .cornerRadius(32)
+//      }
+//      
+//    }
+//    .navigationTitle(name)
+//    .navigationBarTitleDisplayMode(.inline)
+//    
+//  }
+//}
 
 fileprivate struct DetailRow: View {
   var name: String
