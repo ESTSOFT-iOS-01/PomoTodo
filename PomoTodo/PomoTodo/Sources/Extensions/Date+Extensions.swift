@@ -2,11 +2,7 @@
 //  Date+Extensions.swift
 //  PomoTodo
 //
-<<<<<<< HEAD
 //  Created by 신승재 on 2/18/25.
-=======
-//  Created by 심근웅 on 2/18/25.
->>>>>>> 6334db537da0929cf57f1e61ab636204cfa55c3f
 //
 
 import Foundation
