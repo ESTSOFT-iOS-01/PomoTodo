@@ -25,6 +25,7 @@ struct TagTimeRecord {
 }
 
 struct Todo {
+  var id: String = UUID().uuidString
   var createAt: Date = Date()
   var tagId: String
   var name: String
