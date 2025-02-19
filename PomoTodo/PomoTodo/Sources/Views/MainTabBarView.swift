@@ -9,10 +9,13 @@ import SwiftUI
 
 struct MainTabBarView: View {
     @State private var selectedTab: Tab = .Pomo
+    private var pomoTodoUseCase: PomoTodoUseCase
     
-    init() {
-        setupTabBarAppearance()
-    }
+  init(pomoTodoUseCase: PomoTodoUseCase) {
+    
+    self.pomoTodoUseCase = pomoTodoUseCase
+    setupTabBarAppearance()
+  }
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -28,11 +31,15 @@ struct MainTabBarView: View {
                 }
                 .tag(Tab.Chart)
             
-            ToDoView()
-                .tabItem {
-                    tabItemView(for: .Todo)
-                }
-                .tag(Tab.Todo)
+            ToDoView(
+              viewModel: ToDoViewModel(
+                pomoTodoUseCase: pomoTodoUseCase
+              )
+            )
+            .tabItem {
+              tabItemView(for: .Todo)
+            }
+            .tag(Tab.Todo)
             
             EmptyView()
                 .tabItem {
@@ -41,6 +48,9 @@ struct MainTabBarView: View {
                 .tag(Tab.Setting)
         }
         .tint(.indigoNormal)
+        .onAppear {
+          pomoTodoUseCase.getTodayPomoDay()
+        }
     }
     
     //MARK: - Funcs
@@ -75,5 +85,16 @@ struct MainTabBarView: View {
 }
 
 #Preview {
-    MainTabBarView()
+  let storage = SwiftDataStorage()
+  let appConfigRepository = AppConfigRepositoryImpl(
+    modelContext: storage.modelContext
+  )
+  let pomoDayRepository = PomoDayRepositoryImpl(
+    modelContext: storage.modelContext
+  )
+  let pomoTodoUseCase = PomoTodoUseCaseImpl(
+    pomoDayRepository: pomoDayRepository,
+    appConfigRepository: appConfigRepository
+  )
+  MainTabBarView(pomoTodoUseCase: pomoTodoUseCase)
 }
