@@ -174,6 +174,6 @@ enum DefaultPreset {
     Tag(index: 0, name: "공부", colorId: 0),
     Tag(index: 1, name: "운동", colorId: 1),
     Tag(index: 2, name: "독서", colorId: 2),
-    Tag(index: 3, name: "휴식", colorId: 3)
+    Tag(index: 3, name: "취미", colorId: 3)
   ]
 }
