@@ -9,38 +9,46 @@ import SwiftUI
 
 struct MainTabBarView: View {
     @State private var selectedTab: Tab = .Pomo
+    @Environment(DIContainer.self) private var container: DIContainer
     
     init() {
-        setupTabBarAppearance()
+      setupTabBarAppearance()
     }
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Pomo)
                 }
                 .tag(Tab.Pomo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Chart)
                 }
                 .tag(Tab.Chart)
             
-            ContentView()
-                .tabItem {
-                    tabItemView(for: .Todo)
-                }
-                .tag(Tab.Todo)
+            ToDoView(
+              viewModel: ToDoViewModel(
+                pomoTodoUseCase: container.pomoTodoUseCase
+              )
+            )
+            .tabItem {
+              tabItemView(for: .Todo)
+            }
+            .tag(Tab.Todo)
             
-            ContentView()
+            EmptyView()
                 .tabItem {
                     tabItemView(for: .Setting)
                 }
                 .tag(Tab.Setting)
         }
         .tint(.indigoNormal)
+        .onAppear {
+          let _ = container.pomoTodoUseCase.getTodayPomoDay()
+        }
     }
     
     //MARK: - Funcs
@@ -75,5 +83,6 @@ struct MainTabBarView: View {
 }
 
 #Preview {
-    MainTabBarView()
+  MainTabBarView()
+    .environment(DIContainer())
 }

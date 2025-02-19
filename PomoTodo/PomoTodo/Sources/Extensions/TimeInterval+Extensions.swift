@@ -8,9 +8,12 @@
 import Foundation
 
 extension TimeInterval {
-    func formattedTime() -> String {
-        let hours = Int(self) / 3600
-        let minutes = (Int(self) % 3600) / 60
-        return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
-    }
+/// TimeInterval의 1분 (60초)
+static var minute: TimeInterval { return 60 }
+  
+func formattedTime() -> String {
+  let hours = Int(self) / 3600
+  let minutes = (Int(self) % 3600) / 60
+  return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
+  }
 }
