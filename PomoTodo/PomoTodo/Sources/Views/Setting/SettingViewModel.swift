@@ -9,33 +9,59 @@ import Foundation
 import SwiftUI
 import Combine
 
-class SettingViewModel: ObservableObject {
-  @Published var options: [Tag] = [
-    Tag(index: 0, name: "공부", colorId: 0),
-    Tag(index: 1, name: "취미", colorId: 1),
-    Tag(index: 2, name: "독서", colorId: 2),
-    Tag(index: 3, name: "운동", colorId: 3)
-  ]
-  @Published var timers: [PomoTimer] = [
-    PomoTimer(index: 0, focusTimeUnit: 25*60, tomatoPerCycle: 6, shortBreakUnit: 1*60, longBreakUnit: 30*60),
-    PomoTimer(index: 1, focusTimeUnit: 5*60, tomatoPerCycle: 8, shortBreakUnit: 1*60, longBreakUnit: 15*60),
-    PomoTimer(index: 2, focusTimeUnit: 60*60, tomatoPerCycle: 4, shortBreakUnit: 1*60, longBreakUnit: 60*60)
-  ]
-  @Published var pomoName: [String] = ["기본 뽀모도로","짧은 뽀모도로","긴 뽀모도로"]
+final class SettingViewModel: ObservableObject {
+  @Published var options: [Tag] = []
+  @Published var timers: [PomoTimer] = []
+  @Published var pomoName: [String] = ["1번 프리셋","2번 프리셋","3번 프리셋"]
   
-  func optionsSave() {
-    print("options의 값을 디비에 저장")
-    // 태그 편집버튼 완료 클릭 시 실행
+  struct State {
+    var config = AppConfig(pomoTimers: [], tags: [])
   }
-  func timerSave() {
-    print("timers에 있는 값을 디비에 저장")
-    // 각 뽀모도로의 속성을 변경완료 시 실행
-    // 빈 공간 클릭 시 실행되지 않음
+  enum Action {
+    case focusTimeUnitChanged(index: Int, value: Int)
+    case tomatoPerCycleChanged(index: Int, value: Int)
+    case shortBreakUnitChanged(index: Int, value: Int)
+    case longBreakUnitChanged(index: Int, value: Int)
+    case tagChanged
   }
-  func viewModelLoad(){
-    print("디비에서 options와 timers의 정보를 불러옴")
-    // 아마 설정을 들어올때 한번 로드
+  
+  private(set) var state: State = .init()
+  private var pomoTodoUseCase: PomoTodoUseCase
+  
+  init (pomoTodoUseCase: PomoTodoUseCase) {
+    self.pomoTodoUseCase = pomoTodoUseCase
+    self.state.config = pomoTodoUseCase.getAppConfig()
+    self.options = self.state.config.tags
+    self.timers = self.state.config.pomoTimers
+  }
+  
+  func send(_ action: Action) {
+    switch action {
+    case .focusTimeUnitChanged(let index, let value):
+      self.timers[index].focusTimeUnit = Double(value*60)
+      pomoTodoUseCase.setAppConfig(
+        AppConfig(pomoTimers: self.timers, tags: options)
+      )
+    case .tomatoPerCycleChanged(let index, let value):
+      self.timers[index].tomatoPerCycle = value
+      pomoTodoUseCase.setAppConfig(
+        AppConfig(pomoTimers: self.timers, tags: options)
+      )
+    case .shortBreakUnitChanged(let index, let value):
+      self.timers[index].shortBreakUnit = Double(value*60)
+      pomoTodoUseCase.setAppConfig(
+        AppConfig(pomoTimers: self.timers, tags: options)
+      )
+    case .longBreakUnitChanged(let index, let value):
+      self.timers[index].longBreakUnit = Double(value*60)
+      pomoTodoUseCase.setAppConfig(
+        AppConfig(pomoTimers: self.timers, tags: options)
+      )
+    case .tagChanged:
+      pomoTodoUseCase.setAppConfig(
+        AppConfig(pomoTimers: self.timers, tags: options)
+      )
+    }
+    
   }
 }
-
-

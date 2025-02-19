@@ -7,61 +7,63 @@
 
 import SwiftUI
 
-fileprivate enum elementBtn: Int {
-  case focusTimeUnit = 0
-  case tomatoPerCycle
-  case shortBreakUnit
-  case longBreakUnit
-}
-
-struct PomoDetailSettingView: View {
-  @EnvironmentObject var viewModel: SettingViewModel
-  @Binding var pomo: PomoTimer
-  @State private var showModal: Bool = false
-  @State private var selected: elementBtn = .focusTimeUnit
-
+struct PomoDetailSettingView1: View {
+  let viewModel: SettingViewModel_
+  @State private var showModal: Bool = false // 모달이 올라오는게 만듬
+  var pomo: PomoTimer
+  
+//  let range: [ClosedRange<Int>] = [0...100, 1...8, 1...30, 1...100] // 각 요소별 피커 값의 범위
+  let names: [String] = ["집중 시간", "한 사이클의 토마토 개수", "짧은 휴식시간", "긴 휴식시간"] // 각 요소의 이름
+  
+  @State var value: Int = 0
+  @State var range: ClosedRange<Int> = 1...8
+  
   var body: some View {
     NavigationView {
       List{
-        
+
         Button {
+          value = Int(pomo.focusTimeUnit / 60)
+          range = 1...100
           showModal = true
-          selected = .focusTimeUnit
         } label: {
           DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
         }.foregroundStyle(.primary)
         
         Button {
+          value = pomo.tomatoPerCycle
+          range = 1...8
           showModal = true
-          selected = .tomatoPerCycle
         } label: {
           DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
         }.foregroundStyle(.primary)
         
         Button {
+          value = Int(pomo.shortBreakUnit / 60)
+          range = 1...30
           showModal = true
-          selected = .shortBreakUnit
         } label: {
           DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
         }.foregroundStyle(.primary)
         
         Button {
+          value = Int(pomo.longBreakUnit / 60)
+          range = 1...100
           showModal = true
-          selected = .longBreakUnit
         } label: {
           DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
         }.foregroundStyle(.primary)
         
       }
-      .sheet(isPresented: $showModal){
-        modal(pomo: $pomo, selected: selected)
+      .sheet(isPresented: $showModal) {
+        // 모달 뷰
+        modal(viewModal: viewModel, value: value, range: range, pomo: pomo)
           .presentationDetents([.medium])
           .presentationCornerRadius(48)
       }
     }
-    .navigationTitle(viewModel.pomoName[pomo.index])
+    .navigationTitle("\(pomo.index+1)번 프리셋")
     .navigationBarTitleDisplayMode(.inline)
-    .environmentObject(viewModel)
   }
 }
 
@@ -81,42 +83,28 @@ fileprivate struct DetailRow: View {
   }
 }
 
-// 뽀모도로 내부의 정보 변경하는 모달
 fileprivate struct modal: View {
-  @EnvironmentObject var viewModel: SettingViewModel
+  let viewModal: SettingViewModel_
   @Environment(\.dismiss) var dismiss
-  @Binding var pomo: PomoTimer
-  var selected: elementBtn
+  @State var value: Int = 0 // 피커가 선택한 값
+  let range: ClosedRange<Int>
+  let pomo: PomoTimer
   
-  let range: [ClosedRange<Int>] = [1...100, 1...8, 1...30, 1...100]
-  let names: [String] = ["집중 시간", "한 사이클의 토마토 개수", "짧은 휴식시간", "긴 휴식시간"]
-  
-  @State var info: Int = 0
   
   var body: some View {
     VStack {
-      Text(names[selected.rawValue])
+      Text("타이틀")
         .fontWeight(.semibold)
         .font(.system(size: 18))
-      
-      Picker("", selection: $info) {
-        ForEach(range[selected.rawValue], id: \.self) {
+
+      Picker("", selection: $value) {
+        ForEach(range, id: \.self) {
           Text("\($0)")
         }
       }
       .pickerStyle(.wheel)
       
       Button {
-        switch selected {
-        case .focusTimeUnit:
-          viewModel.send(.focusTimeUnitChanged(index: pomo.index, value: info))
-        case .tomatoPerCycle:
-          viewModel.send(.tomatoPerCycleChanged(index: pomo.index, value: info))
-        case .shortBreakUnit:
-          viewModel.send(.shortBreakUnitChanged(index: pomo.index, value: info))
-        case .longBreakUnit:
-          viewModel.send(.longBreakUnitChanged(index: pomo.index, value: info))
-        }
         dismiss()
       } label: {
         Text("완료")
@@ -127,16 +115,8 @@ fileprivate struct modal: View {
       .frame(height: 60)
       .background(Color.indigoDark)
       .cornerRadius(40)
+      
     }
     .frame(width: 200)
-    .onAppear {
-      switch selected {
-      case .focusTimeUnit: info = Int(pomo.focusTimeUnit / 60)
-      case .tomatoPerCycle: info = pomo.tomatoPerCycle
-      case .shortBreakUnit: info = Int(pomo.shortBreakUnit / 60)
-      case .longBreakUnit: info = Int(pomo.longBreakUnit / 60)
-      }
-    }
-
   }
 }
