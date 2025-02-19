@@ -17,15 +17,24 @@ protocol PomoTodoUseCase {
   /// - Returns: 오늘 날짜의 `PomoDay`
   func getTodayPomoDay() -> PomoDay
   
-  /// 특정 타이머 프리셋에 따라 `tagTimeRecord`를 추가하는 메서드
+  /// `tagTimeRecord`를 추가하는 메서드
   /// - Parameters:
-  ///   - presetIndex: 타이머 프리셋의 인덱스
-  ///   - todayPomoDay: 오늘의 `PomoDay`
+  ///   - todayPomoDay: 업데이트할 오늘의 `PomoDay`
   ///   - tagTimeRecord: 추가할 `TagTimeRecord`
   func addTagTimeRecords(
-    presetIndex: Int,
     todayPomoDay: PomoDay,
     tagTimeRecord: TagTimeRecord
+  )
+  
+  /// `PomoDay`의 `tomatoCnt`와 `cycleCnt` 값을 설정하는 메서드
+  /// - Parameters:
+  ///   - todayPomoDay: 업데이트할 오늘의 `PomoDay`
+  ///   - tomatoCnt: 설정할 토마토 개수
+  ///   - cycleCnt: 설정할 사이클 비율
+  func setTomatoAndCycle(
+    todayPomoDay: PomoDay,
+    tomatoCnt: Int,
+    cycleCnt: Double
   )
   
   // MARK: - StatsUseCase

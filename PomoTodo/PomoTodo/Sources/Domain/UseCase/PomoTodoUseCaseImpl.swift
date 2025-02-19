@@ -41,29 +41,38 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
   
   
   func addTagTimeRecords(
-    presetIndex: Int,
     todayPomoDay: PomoDay,
     tagTimeRecord: TagTimeRecord
   ) {
     print("Impl:", #function)
     
     let newRecords = todayPomoDay.tagTimeRecords + [tagTimeRecord]
+    let updatedPomoDay = PomoDay(
+      date: todayPomoDay.date,
+      tomatoCnt: todayPomoDay.tomatoCnt,
+      cycleCnt: todayPomoDay.cycleCnt,
+      tagTimeRecords: newRecords,
+      todos: todayPomoDay.todos
+    )
+    pomoDayRepository.updatePomoDay(updatedPomoDay)
     
-    let result = appConfigRepository.fetchPomoTimer(index: presetIndex)
-    switch result {
-    case .success(let pomoTimer):
-      let tomatoPerCycle = Double(pomoTimer.tomatoPerCycle)
-      let updatedPomoDay = PomoDay(
-        date: todayPomoDay.date,
-        tomatoCnt: todayPomoDay.tomatoCnt + 1,
-        cycleCnt: todayPomoDay.cycleCnt + (1 / tomatoPerCycle),
-        tagTimeRecords: newRecords,
-        todos: todayPomoDay.todos
-      )
-      pomoDayRepository.updatePomoDay(updatedPomoDay)
-    case .failure(let error):
-      print(error)
-    }
+  }
+  
+  func setTomatoAndCycle(
+    todayPomoDay: PomoDay,
+    tomatoCnt: Int,
+    cycleCnt: Double
+  ) {
+    print("Impl:", #function)
+    
+    let updatedPomoDay = PomoDay(
+      date: todayPomoDay.date,
+      tomatoCnt: tomatoCnt,
+      cycleCnt: cycleCnt,
+      tagTimeRecords: todayPomoDay.tagTimeRecords,
+      todos: todayPomoDay.todos
+    )
+    pomoDayRepository.updatePomoDay(updatedPomoDay)
   }
   
   func getAllPomoDays() -> [PomoDay] {
