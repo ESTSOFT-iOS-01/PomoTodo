@@ -11,21 +11,17 @@ struct MainTabBarView: View {
     @State private var selectedTab: Tab = .Pomo
     @Environment(DIContainer.self) private var container: DIContainer
     
-    init() {
-      setupTabBarAppearance()
-    }
-    
     var body: some View {
         TabView(selection: $selectedTab) {
-            EmptyView()
+            PomoView()
                 .tabItem {
-                    tabItemView(for: .Pomo)
+                    tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
                 }
                 .tag(Tab.Pomo)
             
             EmptyView()
                 .tabItem {
-                    tabItemView(for: .Chart)
+                    tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
                 }
                 .tag(Tab.Chart)
             
@@ -34,19 +30,20 @@ struct MainTabBarView: View {
                 pomoTodoUseCase: container.pomoTodoUseCase
               )
             )
-            .tabItem {
-              tabItemView(for: .Todo)
-            }
-            .tag(Tab.Todo)
+          .tabItem {
+                    tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
+                }
+                .tag(Tab.Todo)
             
             EmptyView()
                 .tabItem {
-                    tabItemView(for: .Setting)
+                    tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
                 }
                 .tag(Tab.Setting)
         }
         .tint(.indigoNormal)
         .onAppear {
+          setupTabBarAppearance()
           let _ = container.pomoTodoUseCase.getTodayPomoDay()
         }
     }
@@ -54,15 +51,13 @@ struct MainTabBarView: View {
     //MARK: - Funcs
     
     /// 탭바 아이템 세팅
-    private func tabItemView(for currentTab: Tab) -> some View {
-        let isSelected = selectedTab == currentTab
-        
-        return VStack {
+    private func tabItemView(for currentTab: Tab, isSelected: Bool) -> some View {
+        VStack {
             Image(systemName: isSelected ? currentTab.selectedIcon : currentTab.unselectedIcon)
                 .environment(\.symbolVariants, .none)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(isSelected ? .primary : .secondary)
-                .scaleEffect(isSelected ? 1.2 : 1.0)
+                .scaleEffect(isSelected ? 1.1 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isSelected)
             
             Text(currentTab.labelName)
@@ -74,9 +69,7 @@ struct MainTabBarView: View {
     /// 탭바 스타일 세팅
     private func setupTabBarAppearance() {
         let appearance = UITabBarAppearance()
-        appearance.stackedLayoutAppearance.selected.iconColor = .indigoNormal
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.indigoNormal]
-
+        appearance.configureWithOpaqueBackground()
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }

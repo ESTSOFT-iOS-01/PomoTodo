@@ -8,32 +8,24 @@
 import SwiftUI
 
 struct PomoView: View {
-    // dummy datas
-    var options = ["취미", "짧은 옵션", "중간 길이의 옵션", "정말 길~~~~~~~~~~~~~어 보이는 선택 옵션"]
-    let timers = ["25 : 00", "40 : 00", "50 : 00" ]
-    
-    
-    @State private var selectionTag = 0
-    @State private var curTomato = 1
-    @State private var totalTomato = 4
-    @State private var currentPage = 0
+//    @State private var tabBarOpacity: Double = 1.0
+    @StateObject private var pomoVM = PomoViewModel()
     
     var body: some View {
-        VStack(alignment: .center) {
-            PomoTopView(
-                options: options,
-                selectionTag: $selectionTag,
-                curTomato: curTomato,
-                totalTomato: totalTomato
-            )
-            Spacer().frame(height: DynamicPadding.getHeight(36))
-            
-            PomoTimerView(timers: timers, currentPage: $currentPage)
-            Spacer().frame(height: DynamicPadding.getHeight(64))
-            
-            PomoBottomView()
-        }
-        Spacer().frame(height: DynamicPadding.getHeight(60))
+        VStack {
+            if pomoVM.isTimerRunning {
+                TimerRunningView()
+                .transition(.scale(scale: 1.05).combined(with: .opacity))
+            } else {
+                TimerSetupView()
+                .transition(.scale(scale: 0.95).combined(with: .opacity))
+            }
+            Spacer().frame(height: DynamicPadding.getHeight(40))
+        } // : vstack
+        .environmentObject(pomoVM)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning)
+        .toolbar(pomoVM.isTimerRunning ? .hidden : .visible, for: .tabBar)
     }
 }
 
