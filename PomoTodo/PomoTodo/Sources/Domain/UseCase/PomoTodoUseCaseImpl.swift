@@ -46,15 +46,22 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
   ) {
     print("Impl:", #function)
     
-    let newRecords = todayPomoDay.tagTimeRecords + [tagTimeRecord]
-    let updatedPomoDay = PomoDay(
-      date: todayPomoDay.date,
-      tomatoCnt: todayPomoDay.tomatoCnt,
-      cycleCnt: todayPomoDay.cycleCnt,
-      tagTimeRecords: newRecords,
-      todos: todayPomoDay.todos
-    )
-    pomoDayRepository.updatePomoDay(updatedPomoDay)
+    let result = pomoDayRepository.fetchPomoDay(date: todayPomoDay.date)
+    switch result {
+    case .success(let pomoDay):
+      guard let pomoDay else { return }
+      let newRecords = pomoDay.tagTimeRecords + [tagTimeRecord]
+      let updatedPomoDay = PomoDay(
+        date: pomoDay.date,
+        tomatoCnt: pomoDay.tomatoCnt,
+        cycleCnt: pomoDay.cycleCnt,
+        tagTimeRecords: newRecords,
+        todos: pomoDay.todos
+      )
+      pomoDayRepository.updatePomoDay(updatedPomoDay)
+    case .failure(let error):
+      print(error)
+    }
     
   }
   
@@ -65,14 +72,21 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
   ) {
     print("Impl:", #function)
     
-    let updatedPomoDay = PomoDay(
-      date: todayPomoDay.date,
-      tomatoCnt: tomatoCnt,
-      cycleCnt: cycleCnt,
-      tagTimeRecords: todayPomoDay.tagTimeRecords,
-      todos: todayPomoDay.todos
-    )
-    pomoDayRepository.updatePomoDay(updatedPomoDay)
+    let result = pomoDayRepository.fetchPomoDay(date: todayPomoDay.date)
+    switch result {
+    case .success(let pomoDay):
+      guard let pomoDay else { return }
+      let updatedPomoDay = PomoDay(
+        date: pomoDay.date,
+        tomatoCnt: tomatoCnt,
+        cycleCnt: cycleCnt,
+        tagTimeRecords: pomoDay.tagTimeRecords,
+        todos: pomoDay.todos
+      )
+      pomoDayRepository.updatePomoDay(updatedPomoDay)
+    case .failure(let error):
+      print(error)
+    }
   }
   
   func getAllPomoDays() -> [PomoDay] {
