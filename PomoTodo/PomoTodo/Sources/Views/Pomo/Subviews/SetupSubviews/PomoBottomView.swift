@@ -49,7 +49,7 @@ struct PomoActionButton: View {
     }) {
       ZStack(alignment: .center) {
         RoundedRectangle(cornerRadius: 30)
-          .foregroundStyle(isDisabled ? backgroundColor.opacity(0.5) : backgroundColor)
+          .foregroundStyle(backgroundColor)
           .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
         
         Image(systemName: icon)
