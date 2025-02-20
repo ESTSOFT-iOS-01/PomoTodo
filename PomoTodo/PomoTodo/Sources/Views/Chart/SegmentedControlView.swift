@@ -19,13 +19,14 @@ struct SegmentedControlView: View {
     
     // Segmented Control 색상 설정
     // 선택된 항목 배경색 (선택된 버튼 색)
-    UISegmentedControl.appearance().selectedSegmentTintColor = .white
+    UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.00)
     
     // 비활성화된 버튼 배경색 (전체 배경색)
     UISegmentedControl.appearance().backgroundColor = .chartBackground
     
     let attributes: [NSAttributedString.Key: Any] = [
-      .foregroundColor: UIColor.black  // 선택된 텍스트 색상
+      .foregroundColor: UIColor.black,  // 선택된 텍스트 색상
+      .font: UIFont.systemFont(ofSize: 18, weight: .bold) // Bold 처리
     ]
     UISegmentedControl.appearance().setTitleTextAttributes(attributes, for: .selected)
   }
