@@ -34,11 +34,22 @@ struct PomoActionButton: View {
   let action: () -> Void
   let backgroundColor: Color
   
+  @State private var isDisabled = false
+  
   var body: some View {
-    Button(action: action) {
+    Button(action: {
+      guard !isDisabled else { return }
+  
+      isDisabled = true
+      action()
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        isDisabled = false
+      }
+    }) {
       ZStack(alignment: .center) {
         RoundedRectangle(cornerRadius: 30)
-          .foregroundStyle(backgroundColor)
+          .foregroundStyle(isDisabled ? backgroundColor.opacity(0.5) : backgroundColor)
           .frame(width: DynamicPadding.getWidth(128), height: DynamicPadding.getHeight(88), alignment: .center)
         
         Image(systemName: icon)
@@ -48,6 +59,7 @@ struct PomoActionButton: View {
           .frame(height: DynamicPadding.getHeight(24))
       }
     }
+    .disabled(isDisabled) // 비활성화 상태 반영
   }
 }
 
