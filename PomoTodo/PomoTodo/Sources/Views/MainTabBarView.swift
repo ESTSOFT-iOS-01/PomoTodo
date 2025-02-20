@@ -35,12 +35,17 @@ struct MainTabBarView: View {
         tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
       }
       .tag(Tab.Todo)
-      
+
       SettingView()
-        .tabItem {
-          tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
-        }
-        .tag(Tab.Setting)
+      .environmentObject(
+        SettingViewModel(
+          pomoTodoUseCase: container.pomoTodoUseCase
+        )
+      )
+      .tabItem {
+        tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
+      }
+      .tag(Tab.Setting)
       
     }
     .tint(.indigoNormal)
