@@ -10,22 +10,22 @@ import Charts
 
 // MARK: - 바 차트 뷰
 struct BarChartView: View {
-  @ObservedObject var viewModel: StatisticsViewModel
+  @Bindable var viewModel: StatisticsViewModel
   
   private var totalFocusTime: TimeInterval {
-    viewModel.totalFocusTime
+    viewModel.state.totalFocusTime
   }
   
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      ForEach(viewModel.tagFocusData, id: \.tagId) { record in
+      ForEach(viewModel.state.tagFocusData, id: \.tagId) { record in
         HStack(spacing: 12) {
           // 바 차트 바 (ZStack만 분리)
-          BarChartBarView(viewModel: viewModel, record: record, totalFocusTime: totalFocusTime)
+          BarChartBarView(record: record, totalFocusTime: totalFocusTime)
           
           // 태그명 & 시간
           VStack(alignment: .leading) {
-            let tagName = viewModel.getTagName(for: record.tagId)
+            let tagName = record.tagId
             let formattedTime = record.focusTime.formattedTime()
             
             Text(tagName)
@@ -43,6 +43,3 @@ struct BarChartView: View {
   }
 }
 
-#Preview {
-  BarChartView(viewModel: StatisticsViewModel())
-}
