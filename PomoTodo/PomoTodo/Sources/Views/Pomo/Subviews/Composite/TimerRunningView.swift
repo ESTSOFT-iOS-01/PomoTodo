@@ -12,7 +12,7 @@ struct TimerRunningView: View {
   
   var body: some View {
     VStack(alignment: .center) {
-      // 상단 태구
+      // 상단 태그
       TimerTagLabelView()
       Spacer().frame(height: DynamicPadding.getHeight(72))
       
