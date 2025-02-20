@@ -53,7 +53,7 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
     print("Impl:", #function)
     
     let now = Date().formattedDate
-    let predicate = #Predicate<PomoDayDTO> { $0.date >= now }
+    let predicate = #Predicate<PomoDayDTO> { $0.date <= now }
     let sort = SortDescriptor(\PomoDayDTO.date, order: .forward)
     let descriptor = FetchDescriptor(predicate: predicate, sortBy: [sort])
     
