@@ -14,9 +14,6 @@ final class SettingViewModel: ObservableObject {
   @Published var timers: [PomoTimer] = []
   @Published var pomoName: [String] = ["1번 프리셋","2번 프리셋","3번 프리셋"]
   
-  struct State {
-    var config = AppConfig(pomoTimers: [], tags: [])
-  }
   enum Action {
     case focusTimeUnitChanged(index: Int, value: Int)
     case tomatoPerCycleChanged(index: Int, value: Int)
@@ -25,15 +22,15 @@ final class SettingViewModel: ObservableObject {
     case tagChanged
   }
   
-  private(set) var state: State = .init()
+  private var config = AppConfig(pomoTimers: [], tags: [])
   private var pomoTodoUseCase: PomoTodoUseCase
   private var m: Int = Int(TimeInterval.minute)
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
-    self.state.config = pomoTodoUseCase.getAppConfig()
-    self.tags = self.state.config.tags
-    self.timers = self.state.config.pomoTimers
+    self.config = pomoTodoUseCase.getAppConfig()
+    self.tags = self.config.tags
+    self.timers = self.config.pomoTimers
   }
   
   func send(_ action: Action) {
