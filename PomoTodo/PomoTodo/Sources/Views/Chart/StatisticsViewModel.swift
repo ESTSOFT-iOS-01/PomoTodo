@@ -22,6 +22,10 @@ class StatisticsViewModel: ObservableObject {
   @Published var averageSessions: Double = 0
   @Published var tagFocusData: [TagTimeRecord] = []
   
+  // 버튼 활성화 상태를 위한 Published 변수 추가
+  @Published var isPreviousAvailable: Bool = false
+  @Published var isNextAvailable: Bool = false
+  
   private let calendar = Calendar.current
   private var currentDate = Date()
   private var pomoDayData: [PomoDay] = []
@@ -35,7 +39,23 @@ class StatisticsViewModel: ObservableObject {
   // 저장된 포모도로 데이터 불러오기
   private func loadPomoData() {
     self.pomoDayData = pomoTodoUseCase.getAllPomoDays()
+    
+    // 가장 최신 날짜로 설정
+    if let latestDate = pomoDayData.map({ $0.date }).max() {
+      currentDate = latestDate
+    }
+    
     updateData()
+    
+    // 초기에 버튼 활성화 상태 업데이트
+    updateButtonStates()
+  }
+  
+  // 버튼 활성화 상태 업데이트 함수 추가
+  private func updateButtonStates() {
+    isPreviousAvailable = getPreviousAvailableDate() != nil
+    isNextAvailable = getNextAvailableDate() != nil
+    
   }
   
   // 연도와 주를 포함하는 구조체 (Hashable 준수)
@@ -145,6 +165,9 @@ class StatisticsViewModel: ObservableObject {
     }
     
     updateDisplayDate()
+    
+    // 버튼 상태 업데이트
+    updateButtonStates()
   }
   
   // 실제 사용한 "주"와 "월" 개수 반환
@@ -207,7 +230,7 @@ class StatisticsViewModel: ObservableObject {
       displayDate = dateFormatter.string(from: currentDate)
       
     case "주":
-      // 🔥 주간 범위 표시 수정
+      // 주간 범위 표시 수정
       guard let weekStart = calendar.dateInterval(of: .weekOfYear, for: currentDate)?.start else { return }
       guard let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else { return }
       
@@ -270,7 +293,7 @@ class StatisticsViewModel: ObservableObject {
   // 다음 날짜
   func getNextAvailableDate() -> Date? {
     let sortedDates = pomoDayData.map { $0.date }.sorted(by: <) // 과거순 정렬
-    
+
     switch selectedPeriod {
     case "일":
       return sortedDates.first(where: { $0 > currentDate }) // 가장 가까운 미래 날짜
