@@ -14,6 +14,7 @@ struct MainTabBarView: View {
   var body: some View {
     TabView(selection: $selectedTab) {
       PomoView()
+        .environmentObject(PomoViewModel(pomoTodoUseCase: container.pomoTodoUseCase))
         .tabItem {
           tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
@@ -52,6 +53,7 @@ struct MainTabBarView: View {
     .tint(.indigoNormal)
     .onAppear {
       setupTabBarAppearance()
+      _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
   }
   
@@ -80,6 +82,7 @@ struct MainTabBarView: View {
     UITabBar.appearance().standardAppearance = appearance
     UITabBar.appearance().scrollEdgeAppearance = appearance
   }
+  
 }
 
 #Preview {

@@ -31,7 +31,7 @@ protocol PomoTodoUseCase {
   ///   - todayPomoDay: 업데이트할 오늘의 `PomoDay`
   ///   - tomatoCnt: 설정할 토마토 개수
   ///   - cycleCnt: 설정할 사이클 비율
-  func setTomatoAndCycle(
+  func updateTomatoAndCycle(
     todayPomoDay: PomoDay,
     tomatoCnt: Int,
     cycleCnt: Double
