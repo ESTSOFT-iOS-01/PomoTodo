@@ -91,7 +91,7 @@ fileprivate struct TodoRow: View {
         isCompleted.toggle()
         viewModel.send(.toggleTodo(id: todoId, status: isCompleted))
       } label: {
-        Label("", systemImage: isCompleted ? "checkmark.circle" : "circle")
+        Label("", systemImage: isCompleted ? "checkmark.circle.fill" : "circle")
       }.foregroundStyle(color)
       
       TextField("내용을 입력해주세요", text: $name)
@@ -105,13 +105,13 @@ fileprivate struct TodoRow: View {
            }
          }
     }
-    .swipeActions(content: {
+    .swipeActions(allowsFullSwipe: false) {
       Button(role: .destructive) {
         viewModel.send(.deleteTodo(id: todoId))
       } label: {
         Label("삭제", systemImage: "trash.fill")
       }
-    }).tint(.red)
+    }.tint(.red)
   }
 }
 
