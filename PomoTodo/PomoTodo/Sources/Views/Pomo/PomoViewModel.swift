@@ -134,7 +134,7 @@ final class PomoViewModel: ObservableObject {
   
   //MARK: - Data Funcs
   // 집중 시간 이랑 전체 시간(집중 + 휴식) 저장
-  func saveFocusTime() {
+  private func saveFocusTime() {
     if currentPhase == .focus {
       accumulatedFocusTime += (totalTime - remainingTime)
       pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asTimeInterval))
@@ -147,14 +147,15 @@ final class PomoViewModel: ObservableObject {
   private func resetFocusTime() {
     accumulatedFocusTime = 0
 //    print("집중 시간 기록 후, 데이터 삭제")
-    let data = pomoTodoUseCase.getTodayPomoDay()
+//    let data = pomoTodoUseCase.getTodayPomoDay()
 //    print(data)
   }
   
   // 완성한 토마토 개수 랑 단위 토마토 개수 저장
-  func saveTomatoProgress() {
+  private func saveTomatoProgress() {
     let cycleCount : Double = completedTomatoes.asDouble / totalTomato.asDouble
     pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: cycleCount)
+    
     resetTomatoProgress()
   }
   
