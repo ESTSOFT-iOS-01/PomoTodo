@@ -11,4 +11,8 @@ extension Int {
   var asTimeInterval: TimeInterval {
     return TimeInterval(self)
   }
+  
+  var asDouble: Double {
+    return Double(self)
+  }
 }
