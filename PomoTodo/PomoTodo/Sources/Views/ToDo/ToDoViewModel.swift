@@ -61,5 +61,10 @@ extension ToDoViewModel {
   private func loadData() {
     self.tags = pomoTodoUseCase.getAppConfig().tags
     self.todos = pomoTodoUseCase.getTodayTodos()
+    if todos.isEmpty {
+      tags.forEach {
+        todos.append(Todo(tagId: $0.id, name: ""))
+      }
+    }
   }
 }
