@@ -94,17 +94,19 @@ fileprivate struct modal: View {
   
   var body: some View {
     VStack {
+      Spacer().frame(height: DynamicPadding.getHeight(24))
       Text(names[selected.rawValue])
         .fontWeight(.semibold)
         .font(.system(size: 18))
-      
+      Spacer()
       Picker("", selection: $info) {
         ForEach(range[selected.rawValue], id: \.self) {
           Text("\($0)")
         }
       }
       .pickerStyle(.wheel)
-      
+      .padding(.horizontal, DynamicPadding.getWidth(16))
+      Spacer()
       Button {
         switch selected {
         case .focusTimeUnit:
@@ -131,11 +133,11 @@ fileprivate struct modal: View {
           .font(.pretendard(.semiBold, size: 18))
           .frame(maxWidth: .infinity)
       }
-      .frame(height: 60)
+      .frame(width: DynamicPadding.getWidth(200), height: DynamicPadding.getHeight(60))
       .background(Color.indigoDark)
-      .cornerRadius(40)
+      .cornerRadius(DynamicPadding.getWidth(40))
+      Spacer().frame(height: DynamicPadding.getHeight(64))
     }
-    .frame(width: 200)
     .onAppear {
       switch selected {
       case .focusTimeUnit:

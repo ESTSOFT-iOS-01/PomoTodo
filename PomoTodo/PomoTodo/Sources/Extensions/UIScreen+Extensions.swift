@@ -26,5 +26,4 @@ struct DynamicPadding {
   static func getWidth(_ size: CGFloat) -> CGFloat {
     return size * UIScreen.screenWidth / 402
   }
-  
 }

@@ -16,7 +16,6 @@ extension UIApplication: @retroactive UIGestureRecognizerDelegate {
 
 extension UIApplication {
   func hideKeyboard() {
-
     let scenes = UIApplication.shared.connectedScenes
     let windowScene = scenes.first as? UIWindowScene
     guard let window = windowScene?.windows.first else { return }
