@@ -82,5 +82,6 @@ fileprivate struct TagSettingRow: View {
   var body: some View {
     TextField("태그를 입력해주세요", text: $tag.name)
       .disabled(!isEditMode)
+      .tint(.blue)
   }
 }
