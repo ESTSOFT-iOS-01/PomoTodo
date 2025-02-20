@@ -53,12 +53,13 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
     print("Impl:", #function)
     
     let now = Date().formattedDate
-    let predicate = #Predicate<PomoDayDTO> { $0.date >= now }
+    let predicate = #Predicate<PomoDayDTO> { $0.date <= now }
     let sort = SortDescriptor(\PomoDayDTO.date, order: .forward)
     let descriptor = FetchDescriptor(predicate: predicate, sortBy: [sort])
     
     do {
       let datas = try modelContext.fetch(descriptor)
+      datas.forEach { print("   - \($0.date.formattedDateToString)") }
       return .success(datas.map { $0.toEntity() })
     } catch {
       return .failure(SwiftDataError.fetchError)
