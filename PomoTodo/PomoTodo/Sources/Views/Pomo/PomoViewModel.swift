@@ -21,6 +21,9 @@ final class PomoViewModel: ObservableObject {
   @Published var currentPage = 0 {
     didSet {
       updateTotalTime()
+      if oldValue != currentPage {
+        saveTomatoProgress()
+      }
     }
   }
   
@@ -146,24 +149,26 @@ final class PomoViewModel: ObservableObject {
   
   private func resetFocusTime() {
     accumulatedFocusTime = 0
-//    print("집중 시간 기록 후, 데이터 삭제")
-//    let data = pomoTodoUseCase.getTodayPomoDay()
-//    print(data)
+    //    print("집중 시간 기록 후, 데이터 삭제")
+    //    let data = pomoTodoUseCase.getTodayPomoDay()
+    //    print(data)
   }
   
   // 완성한 토마토 개수 랑 단위 토마토 개수 저장
-  private func saveTomatoProgress() {
+  func saveTomatoProgress() {
     let cycleCount : Double = completedTomatoes.asDouble / totalTomato.asDouble
-    pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: cycleCount)
-    
-    resetTomatoProgress()
+    if completedTomatoes != 0 {
+      pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: cycleCount)
+      
+      resetTomatoProgress()
+    }
+    curTomato = 1 // 암튼 무조건 세션 초기화
   }
   
   private func resetTomatoProgress() {
-    curTomato = 1
     completedTomatoes = 0
-//    print("태그 변경, 토마토 기록 삭제")
-//    print(pomoTodoUseCase.getTodayPomoDay())
+    //    print("태그 변경, 토마토 기록 삭제")
+    //    print(pomoTodoUseCase.getTodayPomoDay())
   }
   
 }

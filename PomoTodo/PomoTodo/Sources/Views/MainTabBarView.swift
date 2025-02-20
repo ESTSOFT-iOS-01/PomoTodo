@@ -37,17 +37,17 @@ struct MainTabBarView: View {
         tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
       }
       .tag(Tab.Todo)
-
+      
       SettingView()
-      .environmentObject(
-        SettingViewModel(
-          pomoTodoUseCase: container.pomoTodoUseCase
+        .environmentObject(
+          SettingViewModel(
+            pomoTodoUseCase: container.pomoTodoUseCase
+          )
         )
-      )
-      .tabItem {
-        tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
-      }
-      .tag(Tab.Setting)
+        .tabItem {
+          tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
+        }
+        .tag(Tab.Setting)
       
     }
     .tint(.indigoNormal)
@@ -55,6 +55,11 @@ struct MainTabBarView: View {
       setupTabBarAppearance()
       _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
+//    .onChange(of: selectedTab) { oldTab, newTab in
+//      if newTab != .Pomo {
+//        // pomoVM.saveTomatoProgress()
+//      }
+//    }
   }
   
   //MARK: - Funcs
