@@ -45,7 +45,6 @@ struct MainTabBarView: View {
     .tint(.indigoNormal)
     .onAppear {
       setupTabBarAppearance()
-      let _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
   }
   
