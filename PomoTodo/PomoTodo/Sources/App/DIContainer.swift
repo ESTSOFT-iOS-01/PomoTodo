@@ -12,26 +12,18 @@ final class DIContainer {
   
   static let shared = DIContainer()
   
-  private let storage: SwiftDataStorage
-  private let appConfigRepository: AppConfigRepository
-  private let pomoDayRepository: PomoDayRepository
-  private let pomoTodoUseCase: PomoTodoUseCase
+  private let repositoryProvider: RepositoryProvider
   
   init() {
-    self.storage = SwiftDataStorage()
-    self.appConfigRepository = AppConfigRepositoryImpl(
-      modelContext: storage.modelContext
-    )
-    self.pomoDayRepository = PomoDayRepositoryImpl(
-      modelContext: storage.modelContext
-    )
-    self.pomoTodoUseCase = PomoTodoUseCaseImpl(
-      pomoDayRepository: pomoDayRepository,
-      appConfigRepository: appConfigRepository
-    )
+    self.repositoryProvider = RepositoryProvider()
   }
   
   func makeToDoViewModel() -> ToDoViewModel {
-    ToDoViewModel(pomoTodoUseCase: pomoTodoUseCase)
+    ToDoViewModel(
+      pomoTodoUseCase: PomoTodoUseCaseImpl(
+        pomoDayRepository: repositoryProvider.pomoDayRepository,
+        appConfigRepository: repositoryProvider.appConfigRepository
+      )
+    )
   }
 }
