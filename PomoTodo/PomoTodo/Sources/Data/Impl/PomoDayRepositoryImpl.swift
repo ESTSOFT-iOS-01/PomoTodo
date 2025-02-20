@@ -65,18 +65,6 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
     }
   }
   
-  //  func updatePomoDay(_ pomoDay: PomoDay) {
-  //    print("Impl:", #function)
-  //
-  //    let result = findPomoDayByDate(pomoDay.date)
-  //    switch result {
-  //    case .success(let model):
-  //      modelContext.delete(model)
-  //      modelContext.insert(model)
-  //    case .failure(let error):
-  //      print(error)
-  //    }
-  //  }
   
   func updatePomoDay(_ pomoDay: PomoDay) {
     print("Impl:", #function)

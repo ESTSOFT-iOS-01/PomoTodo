@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct PomoTodoApp: App {
-  private var container = DIContainer()
+  private var container = DIContainer.shared
   
   var body: some Scene {
     WindowGroup {

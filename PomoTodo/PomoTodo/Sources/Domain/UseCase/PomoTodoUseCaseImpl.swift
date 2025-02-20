@@ -20,7 +20,7 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
     self.appConfigRepository = appConfigRepository
   }
   
-  
+  @discardableResult
   func getTodayPomoDay() -> PomoDay {
     print("Impl:", #function)
     

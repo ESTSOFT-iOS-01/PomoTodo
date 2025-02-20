@@ -9,23 +9,42 @@ import Foundation
 
 @Observable
 final class DIContainer {
-  private let storage: SwiftDataStorage
   
-  private let appConfigRepository: AppConfigRepository
-  private let pomoDayRepository: PomoDayRepository
+  static let shared = DIContainer()
+  
+  private let repositoryProvider: RepositoryProvider
   let pomoTodoUseCase: PomoTodoUseCase
   
   init() {
-    self.storage = SwiftDataStorage()
-    self.appConfigRepository = AppConfigRepositoryImpl(
-      modelContext: storage.modelContext
+    self.repositoryProvider = RepositoryProvider()
+    pomoTodoUseCase = PomoTodoUseCaseImpl(
+      pomoDayRepository: repositoryProvider.pomoDayRepository,
+      appConfigRepository: repositoryProvider.appConfigRepository
     )
-    self.pomoDayRepository = PomoDayRepositoryImpl(
-      modelContext: storage.modelContext
+    _ = pomoTodoUseCase.getTodayPomoDay()
+  }
+  
+  func makeToDoViewModel() -> ToDoViewModel {
+    ToDoViewModel(
+      pomoTodoUseCase: pomoTodoUseCase
     )
-    self.pomoTodoUseCase = PomoTodoUseCaseImpl(
-      pomoDayRepository: pomoDayRepository,
-      appConfigRepository: appConfigRepository
+  }
+  
+  func makePomoViewModel() -> PomoViewModel {
+    PomoViewModel(
+      pomoTodoUseCase: pomoTodoUseCase
+    )
+  }
+  
+  func makeSettingViewModel() -> SettingViewModel {
+    SettingViewModel(
+      pomoTodoUseCase: pomoTodoUseCase
+    )
+  }
+  
+  func makeStatisticsViewModel() -> StatisticsViewModel {
+    StatisticsViewModel(
+      pomoTodoUseCase: pomoTodoUseCase
     )
   }
 }

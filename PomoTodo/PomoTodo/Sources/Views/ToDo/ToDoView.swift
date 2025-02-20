@@ -9,18 +9,17 @@ import SwiftUI
 
 struct ToDoView: View {
   
-  @State private var viewModel: ToDoViewModel
-  
+  @ObservedObject private var viewModel: ToDoViewModel
   private let color: [Color] = [Color.indigoNormal, Color.blue, Color.cyan, Color.teal ]
-  private var today: String = Date().formattedDateToString
   
   init(viewModel: ToDoViewModel) {
     self.viewModel = viewModel
   }
   
   var body: some View {
-    let tags = viewModel.state.tags
-    let todos = viewModel.state.todos
+    
+    let tags = viewModel.tags
+    let todos = viewModel.todos
     
     NavigationView {
       List {
@@ -44,8 +43,11 @@ struct ToDoView: View {
           }
         }
       }
-      .navigationTitle(today)
+      .navigationTitle(Date().formattedDateToString)
       .onAppear(perform: UIApplication.shared.hideKeyboard)
+      .onAppear {
+        viewModel.send(.onAppear)
+      }
     }
   }
 }

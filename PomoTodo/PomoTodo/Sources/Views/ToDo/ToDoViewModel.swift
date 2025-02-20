@@ -7,58 +7,64 @@
 
 import Foundation
 
-@Observable
-final class ToDoViewModel {
-  struct State {
-    var todos: [Todo] = []
-    var tags: [Tag] = []
-  }
+
+final class ToDoViewModel: ObservableObject {
+  
+  // MARK: - UI State
+  @Published var todos: [Todo] = []
+  @Published var tags: [Tag] = []
   
   enum Action {
+    case onAppear
     case addEmptyTodo(tagId: String)
     case deleteTodo(id: String)
     case toggleTodo(id: String, status: Bool)
     case nameChanged(id: String, name: String)
   }
   
-  private(set) var state: State = .init()
   private var pomoTodoUseCase: PomoTodoUseCase
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
-    self.state.tags = pomoTodoUseCase.getAppConfig().tags
-    self.state.todos = pomoTodoUseCase.getTodayTodos()
   }
   
   func send(_ action: Action) {
     switch action {
+    case .onAppear:
+      loadData()
+      
     case .addEmptyTodo(let tagId):
       let emptyTodo = Todo(tagId: tagId, name: "")
-      state.todos.append(emptyTodo)
-      pomoTodoUseCase.setTodayTodos(
-        state.todos
-      )
+      todos.append(emptyTodo)
+      pomoTodoUseCase.setTodayTodos(todos)
     case .deleteTodo(let id):
-      if let index = state.todos.firstIndex(where: { $0.id == id }) {
-        state.todos.remove(at: index)
+      if let index = todos.firstIndex(where: { $0.id == id }) {
+        self.todos.remove(at: index)
       }
-      pomoTodoUseCase.setTodayTodos(
-        state.todos
-      )
+      pomoTodoUseCase.setTodayTodos(todos)
     case .toggleTodo(let id, let status):
-      if let index = state.todos.firstIndex(where: { $0.id == id }) {
-        state.todos[index].isCompleted = status
+      if let index = todos.firstIndex(where: { $0.id == id }) {
+        todos[index].isCompleted = status
       }
-      pomoTodoUseCase.setTodayTodos(
-        state.todos
-      )
+      pomoTodoUseCase.setTodayTodos(todos)
     case .nameChanged(let id, let name):
-      if let index = state.todos.firstIndex(where: { $0.id == id }) {
-        state.todos[index].name = name
+      if let index = todos.firstIndex(where: { $0.id == id }) {
+        todos[index].name = name
       }
-      pomoTodoUseCase.setTodayTodos(
-        state.todos
-      )
+      pomoTodoUseCase.setTodayTodos(todos)
+    }
+  }
+}
+
+extension ToDoViewModel {
+  // MARK: - Private function
+  private func loadData() {
+    self.tags = pomoTodoUseCase.getAppConfig().tags
+    self.todos = pomoTodoUseCase.getTodayTodos()
+    if todos.isEmpty {
+      tags.forEach {
+        todos.append(Todo(tagId: $0.id, name: ""))
+      }
     }
   }
 }
