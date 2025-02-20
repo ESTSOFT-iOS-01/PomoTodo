@@ -109,8 +109,8 @@ fileprivate struct TodoRow: View {
         viewModel.send(.deleteTodo(id: todoId))
       } label: {
         Label("삭제", systemImage: "trash.fill")
-      }
-    }.tint(.red)
+      }.tint(.red)
+    }.tint(.blue)
   }
 }
 
