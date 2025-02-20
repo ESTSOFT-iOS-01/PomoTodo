@@ -74,9 +74,9 @@ fileprivate struct DetailRow: View {
       Spacer()
       Text(value)
         .foregroundStyle(.secondary)
-      Label("", systemImage: "chevron.right")
-        .labelStyle(.iconOnly)
+      Image(systemName: "chevron.right")
         .foregroundStyle(.secondary)
+        .font(.caption)
     }
   }
 }

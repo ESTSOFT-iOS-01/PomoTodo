@@ -65,7 +65,7 @@ fileprivate struct HeaderView: View {
       Button {
         viewModel.send(.addEmptyTodo(tagId: tag.id))
       } label: {
-        Label("", systemImage: "plus")
+        Image(systemName: "plus")
           .foregroundStyle(Color.black)
           .fontWeight(.semibold)
       }
@@ -87,13 +87,13 @@ fileprivate struct TodoRow: View {
         isCompleted.toggle()
         viewModel.send(.toggleTodo(id: todoId, status: isCompleted))
       } label: {
-        Label("", systemImage: isCompleted ? "checkmark.circle.fill" : "circle")
-          .labelStyle(.iconOnly)
+        Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
       }
       .foregroundStyle(color)
       .padding(.horizontal, DynamicPadding.getWidth(8))
       
       TextField("내용을 입력해주세요", text: $name)
+        .tint(.blue)
         .font(.system(size: 17))
         .strikethrough(isCompleted ? true : false)
         .disableAutocorrection(true)
@@ -108,9 +108,10 @@ fileprivate struct TodoRow: View {
       Button(role: .destructive) {
         viewModel.send(.deleteTodo(id: todoId))
       } label: {
-        Label("삭제", systemImage: "trash.fill")
-      }.tint(.red)
-    }.tint(.blue)
+        Image(systemName: "trash.fill")
+          .tint(.red)
+      }
+    }
   }
 }
 
