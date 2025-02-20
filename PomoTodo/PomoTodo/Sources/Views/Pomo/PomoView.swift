@@ -24,9 +24,6 @@ struct PomoView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .animation(.easeInOut(duration: 0.8), value: pomoVM.isTimerRunning)
     .toolbar(pomoVM.isTimerRunning ? .hidden : .visible, for: .tabBar)
-//    .onDisappear {
-//      pomoVM.saveTomatoProgress()
-//    }
   }
 }
 

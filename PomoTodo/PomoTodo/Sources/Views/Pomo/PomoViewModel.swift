@@ -13,7 +13,7 @@ final class PomoViewModel: ObservableObject {
   @Published var selectionTag = 0 {
     didSet {
       if oldValue != selectionTag {
-        saveTomatoProgress()
+        resetCycle()
       }
     }
   }
@@ -22,7 +22,7 @@ final class PomoViewModel: ObservableObject {
     didSet {
       updateTotalTime()
       if oldValue != currentPage {
-        saveTomatoProgress()
+        resetCycle()
       }
     }
   }
@@ -35,7 +35,6 @@ final class PomoViewModel: ObservableObject {
   
   @Published var curTomato = 1
   @Published var totalTomato = 2
-  @Published var completedTomatoes = 0
   @Published var isTimerRunning = false
   
   @Published var totalTime: Int = 10
@@ -92,10 +91,12 @@ final class PomoViewModel: ObservableObject {
         self.remainingTime -= 1
         self.progress = CGFloat(self.remainingTime) / CGFloat(self.totalTime)
       } else {
-        // 타이머 종료
-        self.stopTimer()
+        // 한 토마토에 해당하는 사이클 퍼센트 저장
+        saveFocusTomato()
+        self.stopTimer() // 타이머 종료
+        
         self.triggerHapticFeedback()
-        self.forwardNextTimer(true) // 완벽한 토마토 한 개 완성
+        self.forwardNextTimer()
       }
     }
   }
@@ -103,12 +104,13 @@ final class PomoViewModel: ObservableObject {
   // 타이머 멈춤
   func stopTimer() {
     timer?.invalidate()
-    saveFocusTime() // 시간 기록
+    saveFocusTime() // 시간 기록(토마토 완성 여부와 무관)
     isTimerRunning = false
     progress = 1.0
+    print(pomoTodoUseCase.getTodayPomoDay())
   }
   
-  func forwardNextTimer(_ isEnd : Bool = false) {
+  func forwardNextTimer() {
     if currentPhase == .focus {
       if curTomato < totalTomato {
         currentPhase = .shortBreak
@@ -116,10 +118,6 @@ final class PomoViewModel: ObservableObject {
       } else {
         currentPhase = .longBreak
         totalTime = timers[currentPage].longBreakUnit.asInt
-      }
-      
-      if isEnd {
-        completedTomatoes += 1
       }
     } else {
       currentPhase = .focus
@@ -141,40 +139,26 @@ final class PomoViewModel: ObservableObject {
       generator.notificationOccurred(.success)
   }
   
+  private func resetCycle() {
+    curTomato = 1 // 암튼 무조건 세션 초기화
+  }
+  
   //MARK: - Data Funcs
   // 집중 시간 이랑 전체 시간(집중 + 휴식) 저장
   private func saveFocusTime() {
     if currentPhase == .focus {
       accumulatedFocusTime += (totalTime - remainingTime)
       pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asTimeInterval))
-      resetFocusTime()
+      accumulatedFocusTime = 0
     } else {
       accumulatedTotalTime += (totalTime - remainingTime)
     }
   }
   
-  private func resetFocusTime() {
-    accumulatedFocusTime = 0
-    //    print("집중 시간 기록 후, 데이터 삭제")
-    //    let data = pomoTodoUseCase.getTodayPomoDay()
-    //    print(data)
-  }
-  
-  // 완성한 토마토 개수 랑 단위 토마토 개수 저장
-  func saveTomatoProgress() {
-    let cycleCount : Double = completedTomatoes.asDouble / totalTomato.asDouble
-    if completedTomatoes != 0 {
-      pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: cycleCount)
-      
-      resetTomatoProgress()
+  private func saveFocusTomato() {
+    if currentPhase == .focus {
+      pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: 1, cycleCnt: 1 / totalTomato.asDouble)
     }
-    curTomato = 1 // 암튼 무조건 세션 초기화
-  }
-  
-  private func resetTomatoProgress() {
-    completedTomatoes = 0
-    //    print("태그 변경, 토마토 기록 삭제")
-    //    print(pomoTodoUseCase.getTodayPomoDay())
   }
   
 }
