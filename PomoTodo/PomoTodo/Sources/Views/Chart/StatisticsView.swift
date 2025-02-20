@@ -10,35 +10,29 @@ import Charts
 
 // MARK: - 통계 탭 전체 뷰
 struct StatisticsView: View {
-  @Bindable var viewModel = StatisticsViewModel
+  @StateObject private var viewModel = StatisticsViewModel()
   // @State private var selectedPeriod = "주"
-  // let periods = ["일", "주", "월"]
-  
-  let periods: [(label: String, period: StatisticsViewModel.SelectedPeriod)] = [
-    ("일", .day),
-    ("주", .week),
-    ("월", .month)
-  ]
+  let periods = ["일", "주", "월"]
   
   var body: some View {
     NavigationStack {
       ScrollView {
         VStack(spacing: 24) {
           // Segmented Control
-          Picker("기간 선택", selection: viewModel.state.selectedPeriod) {
+          Picker("기간 선택", selection: $viewModel.selectedPeriod) {
             ForEach(periods, id: \.self) { period in
-              Text(period.label).tag(period.period)
+              Text(period).tag(period)
             }
           }
           .pickerStyle(.segmented)
           .padding(.horizontal, 24)
-          .onChange(of: viewModel.state.selectedPeriod) { newPeriod in
-            viewModel.send(.updatePeriod(newPeriod))
+          .onChange(of: viewModel.selectedPeriod) {
+            viewModel.updateData()
           }
           
           HStack(spacing: 8) {
             // 이전 날짜 버튼 (이전 날짜 없으면 비활성화)
-            Button(action: { viewModel.send(.previousDate) }) {
+            Button(action: viewModel.previousDate) {
               Image(systemName: "chevron.backward.circle.fill")
                 .foregroundStyle(.indigo)
                 .bold()
@@ -46,11 +40,11 @@ struct StatisticsView: View {
             }
             .disabled(viewModel.getPreviousAvailableDate() == nil)
             
-            Text(viewModel.state.displayDate)
+            Text(viewModel.displayDate)
               .font(.system(size: 14, weight: .bold))
             
             // 다음 날짜 버튼 (다음 날짜 없으면 비활성화)
-            Button(action: { viewModel.send(.nextDate) }) {
+            Button(action: viewModel.nextDate) {
               Image(systemName: "chevron.forward.circle.fill")
                 .foregroundStyle(.indigo)
                 .bold()
@@ -63,10 +57,10 @@ struct StatisticsView: View {
           SectionView {
             HStack {
               VStack(alignment: .leading, spacing: 16) {
-                Text("해당 \(viewModel.state.selectedPeriod)의 포모도로")
+                Text("해당 \(viewModel.selectedPeriod)의 포모도로")
                   .font(.system(size: 13))
                 // ‼️뷰모델 작성시 수정 필요
-                Text("\(viewModel.state.totalPomodoro)")
+                Text("\(viewModel.totalPomodoro)")
                   .font(.system(size: 24, weight: .bold))
               }
               .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
@@ -74,10 +68,10 @@ struct StatisticsView: View {
               Spacer()
               
               VStack(alignment: .leading, spacing: 16) {
-                Text("해당 \(viewModel.state.selectedPeriod)의 세션")
+                Text("해당 \(viewModel.selectedPeriod)의 세션")
                   .font(.system(size: 13))
                 // ‼️뷰모델 작성시 수정 필요
-                Text(String(format: "%.1f", viewModel.state.totalSessions))
+                Text(String(format: "%.1f", viewModel.totalSessions))
                   .font(.system(size: 24, weight: .bold))
               }
               .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
@@ -92,9 +86,9 @@ struct StatisticsView: View {
             VStack {
               HStack {
                 VStack(alignment: .leading, spacing: 16) {
-                  Text("\(viewModel.state.selectedPeriod)간 집중 시간")
+                  Text("\(viewModel.selectedPeriod)간 집중 시간")
                     .font(.system(size: 13))
-                  Text("\(viewModel.state.totalFocusTime.formattedTime())")
+                  Text("\(viewModel.totalFocusTime.formattedTime())")
                     .font(.system(size: 24, weight: .bold))
                 }
                 .padding(EdgeInsets(top: 24, leading: 24, bottom: 0, trailing: 0))
@@ -104,7 +98,7 @@ struct StatisticsView: View {
                 VStack(alignment: .leading, spacing: 16) {
                   Text("누적 집중 시간")
                     .font(.system(size: 13))
-                  Text("\(viewModel.state.allFocusTime.formattedTime())")
+                  Text("\(viewModel.allFocusTime.formattedTime())")
                     .font(.system(size: 24, weight: .bold))
                 }
                 .padding(EdgeInsets(top: 24, leading: 24, bottom: 0, trailing: 0))
@@ -122,9 +116,9 @@ struct StatisticsView: View {
           SectionView {
             HStack {
               VStack(alignment: .leading, spacing: 16) {
-                Text("\(viewModel.state.selectedPeriod)간 평균 세션")
+                Text("\(viewModel.selectedPeriod)간 평균 세션")
                   .font(.system(size: 13))
-                Text(String(format: "%.1f", viewModel.state.averageSessions))
+                Text(String(format: "%.1f", viewModel.averageSessions))
                   .font(.system(size: 24, weight: .bold))
               }
               .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
@@ -132,9 +126,9 @@ struct StatisticsView: View {
               Spacer()
               
               VStack(alignment: .leading, spacing: 16) {
-                Text("\(viewModel.state.selectedPeriod)간 평균 집중 시간")
+                Text("\(viewModel.selectedPeriod)간 평균 집중 시간")
                   .font(.system(size: 13))
-                Text("\(viewModel.state.averageFocusTime.formattedTime())")
+                Text("\(viewModel.averageFocusTime.formattedTime())")
                   .font(.system(size: 24, weight: .bold))
               }
               .padding(EdgeInsets(top: 13, leading: 24, bottom: 13, trailing: 0))
