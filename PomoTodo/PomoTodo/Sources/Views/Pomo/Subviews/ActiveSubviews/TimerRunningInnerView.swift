@@ -44,7 +44,7 @@ struct PauseButtonView: View {
   }
 }
 
-#Preview{
-  TimerTagLabelView()
-    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
-}
+//#Preview{
+//  TimerTagLabelView()
+//    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
+//}
