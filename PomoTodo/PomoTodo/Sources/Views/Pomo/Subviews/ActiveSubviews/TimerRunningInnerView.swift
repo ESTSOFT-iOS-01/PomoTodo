@@ -11,8 +11,20 @@ struct TimerTagLabelView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
-    Text(pomoVM.options[pomoVM.selectionTag].name)
-      .font(.pretendard(.bold, size: 18))
+    HStack(alignment: .bottom) {
+      // 휴식 시간일 때만, 아이콘 표시
+      if pomoVM.currentPhase != .focus {
+        Image(systemName: "figure.cooldown")
+          .resizable()
+          .scaledToFit()
+          .frame(height: 24, alignment: .center)
+        Spacer().frame(width: 12)
+      }
+      
+      Text(pomoVM.options[pomoVM.selectionTag].name)
+        .font(.pretendard(.bold, size: 18))
+    }
+    
   }
 }
 
@@ -30,4 +42,9 @@ struct PauseButtonView: View {
         .foregroundStyle(pomoVM.selectedColorSet.normalColor)
     }
   }
+}
+
+#Preview{
+  TimerTagLabelView()
+    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
 }
