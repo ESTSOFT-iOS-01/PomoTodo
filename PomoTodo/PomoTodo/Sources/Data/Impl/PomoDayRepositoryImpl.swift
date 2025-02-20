@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 final class PomoDayRepositoryImpl: PomoDayRepository {
-
+  
   private let modelContext: ModelContext
   
   init(modelContext: ModelContext) {
@@ -30,7 +30,7 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
       print(error)
     }
   }
-
+  
   func fetchPomoDay(date: Date) -> Result<PomoDay?, any Error> {
     print("Impl:", #function)
     
@@ -48,12 +48,12 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
       return .failure(SwiftDataError.fetchError)
     }
   }
-
+  
   func fetchAllPomoDays() -> Result<[PomoDay], any Error> {
     print("Impl:", #function)
     
     let now = Date().formattedDate
-    let predicate = #Predicate<PomoDayDTO> { $0.date >= now }
+    let predicate = #Predicate<PomoDayDTO> { $0.date <= now }
     let sort = SortDescriptor(\PomoDayDTO.date, order: .forward)
     let descriptor = FetchDescriptor(predicate: predicate, sortBy: [sort])
     
@@ -64,20 +64,37 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
       return .failure(SwiftDataError.fetchError)
     }
   }
-
+  
+  //  func updatePomoDay(_ pomoDay: PomoDay) {
+  //    print("Impl:", #function)
+  //
+  //    let result = findPomoDayByDate(pomoDay.date)
+  //    switch result {
+  //    case .success(let model):
+  //      modelContext.delete(model)
+  //      modelContext.insert(model)
+  //    case .failure(let error):
+  //      print(error)
+  //    }
+  //  }
+  
   func updatePomoDay(_ pomoDay: PomoDay) {
     print("Impl:", #function)
     
     let result = findPomoDayByDate(pomoDay.date)
     switch result {
     case .success(let model):
-      modelContext.delete(model)
-      modelContext.insert(model)
+      model.cycleCnt = pomoDay.cycleCnt
+      model.tomatoCnt = pomoDay.tomatoCnt
+      model.tagTimeRecords.forEach { modelContext.delete($0) }
+      model.todos.forEach { modelContext.delete($0) }
+      model.tagTimeRecords = pomoDay.tagTimeRecords.map { TagTimeRecordDTO($0) }
+      model.todos = pomoDay.todos.map { TodoDTO($0) }
     case .failure(let error):
       print(error)
     }
   }
-
+  
   func setTodos(pomoDay: PomoDay, todos: [Todo]) {
     print("Impl:", #function)
     

@@ -41,24 +41,47 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
   
   
   func addTagTimeRecords(
-    presetIndex: Int,
     todayPomoDay: PomoDay,
     tagTimeRecord: TagTimeRecord
   ) {
     print("Impl:", #function)
     
-    let newRecords = todayPomoDay.tagTimeRecords + [tagTimeRecord]
-    
-    let result = appConfigRepository.fetchPomoTimer(index: presetIndex)
+    let result = pomoDayRepository.fetchPomoDay(date: todayPomoDay.date)
     switch result {
-    case .success(let pomoTimer):
-      let tomatoPerCycle = Double(pomoTimer.tomatoPerCycle)
+    case .success(let pomoDay):
+      guard let pomoDay else { return }
+      let newRecords = pomoDay.tagTimeRecords + [tagTimeRecord]
       let updatedPomoDay = PomoDay(
-        date: todayPomoDay.date,
-        tomatoCnt: todayPomoDay.tomatoCnt + 1,
-        cycleCnt: todayPomoDay.cycleCnt + (1 / tomatoPerCycle),
+        date: pomoDay.date,
+        tomatoCnt: pomoDay.tomatoCnt,
+        cycleCnt: pomoDay.cycleCnt,
         tagTimeRecords: newRecords,
-        todos: todayPomoDay.todos
+        todos: pomoDay.todos
+      )
+      pomoDayRepository.updatePomoDay(updatedPomoDay)
+    case .failure(let error):
+      print(error)
+    }
+    
+  }
+  
+  func updateTomatoAndCycle(
+    todayPomoDay: PomoDay,
+    tomatoCnt: Int,
+    cycleCnt: Double
+  ) {
+    print("Impl:", #function)
+    
+    let result = pomoDayRepository.fetchPomoDay(date: todayPomoDay.date)
+    switch result {
+    case .success(let pomoDay):
+      guard let pomoDay else { return }
+      let updatedPomoDay = PomoDay(
+        date: pomoDay.date,
+        tomatoCnt: tomatoCnt + pomoDay.tomatoCnt,
+        cycleCnt: cycleCnt + pomoDay.cycleCnt,
+        tagTimeRecords: pomoDay.tagTimeRecords,
+        todos: pomoDay.todos
       )
       pomoDayRepository.updatePomoDay(updatedPomoDay)
     case .failure(let error):
@@ -162,18 +185,17 @@ extension PomoTodoUseCaseImpl {
   }
 }
 
-
 enum DefaultPreset {
   static let pomoTimers: [PomoTimer] = [
-    PomoTimer(index: 0, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
-    PomoTimer(index: 1, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
-    PomoTimer(index: 2, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
+    PomoTimer(index: 0, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 30),
+    PomoTimer(index: 1, focusTimeUnit: .minute * 10, tomatoPerCycle: 6, shortBreakUnit: .minute * 2, longBreakUnit: .minute * 30),
+    PomoTimer(index: 2, focusTimeUnit: .minute * 60, tomatoPerCycle: 4, shortBreakUnit: .minute * 10, longBreakUnit: .minute * 30),
   ]
   
   static let tags: [Tag] = [
     Tag(index: 0, name: "공부", colorId: 0),
     Tag(index: 1, name: "운동", colorId: 1),
     Tag(index: 2, name: "독서", colorId: 2),
-    Tag(index: 3, name: "휴식", colorId: 3)
+    Tag(index: 3, name: "취미", colorId: 3)
   ]
 }

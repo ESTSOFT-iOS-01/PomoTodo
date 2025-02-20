@@ -9,17 +9,19 @@ import Foundation
 import SwiftUI
 
 extension UIApplication: @retroactive UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
-    }
+  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return false
+  }
 }
 
 extension UIApplication {
-    func hideKeyboard() {
-        guard let window = windows.first else { return }
-        let tapRecognizer = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
-        tapRecognizer.cancelsTouchesInView = false
-        tapRecognizer.delegate = self
-        window.addGestureRecognizer(tapRecognizer)
-    }
+  func hideKeyboard() {
+    let scenes = UIApplication.shared.connectedScenes
+    let windowScene = scenes.first as? UIWindowScene
+    guard let window = windowScene?.windows.first else { return }
+    let tapRecognizer = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+    tapRecognizer.cancelsTouchesInView = false
+    tapRecognizer.delegate = self
+    window.addGestureRecognizer(tapRecognizer)
+  }
 }

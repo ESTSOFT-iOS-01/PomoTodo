@@ -7,10 +7,15 @@
 
 import SwiftUI
 import Charts
+import Combine
 
 // MARK: - 통계 탭 전체 뷰
 struct StatisticsView: View {
-  @StateObject private var viewModel = StatisticsViewModel()
+  @ObservedObject var viewModel: StatisticsViewModel
+  
+  init(viewModel: StatisticsViewModel) {
+    self.viewModel = viewModel
+  }
   // @State private var selectedPeriod = "주"
   let periods = ["일", "주", "월"]
   
@@ -19,14 +24,8 @@ struct StatisticsView: View {
       ScrollView {
         VStack(spacing: 24) {
           // Segmented Control
-          Picker("기간 선택", selection: $viewModel.selectedPeriod) {
-            ForEach(periods, id: \.self) { period in
-              Text(period).tag(period)
-            }
-          }
-          .pickerStyle(.segmented)
-          .padding(.horizontal, 24)
-          .onChange(of: viewModel.selectedPeriod) {
+          // 새로운 Segmented Control 뷰 사용
+          SegmentedControlView(selectedPeriod: $viewModel.selectedPeriod) {
             viewModel.updateData()
           }
           
@@ -34,11 +33,10 @@ struct StatisticsView: View {
             // 이전 날짜 버튼 (이전 날짜 없으면 비활성화)
             Button(action: viewModel.previousDate) {
               Image(systemName: "chevron.backward.circle.fill")
-                .foregroundStyle(.indigo)
+                .foregroundStyle(viewModel.isPreviousAvailable ? .indigoNormal : .indigoLightHover)
                 .bold()
-                .opacity(viewModel.getPreviousAvailableDate() == nil ? 0.5 : 1.0)
             }
-            .disabled(viewModel.getPreviousAvailableDate() == nil)
+            .disabled(!viewModel.isPreviousAvailable)
             
             Text(viewModel.displayDate)
               .font(.system(size: 14, weight: .bold))
@@ -46,11 +44,10 @@ struct StatisticsView: View {
             // 다음 날짜 버튼 (다음 날짜 없으면 비활성화)
             Button(action: viewModel.nextDate) {
               Image(systemName: "chevron.forward.circle.fill")
-                .foregroundStyle(.indigo)
+                .foregroundStyle(viewModel.isNextAvailable ? .indigoNormal : .indigoLightHover)
                 .bold()
-                .opacity(viewModel.getNextAvailableDate() == nil ? 0.5 : 1.0)
             }
-            .disabled(viewModel.getNextAvailableDate() == nil)
+            .disabled(!viewModel.isNextAvailable)
           }
           
           // 누적 포모도로 & 세션 뷰
@@ -144,7 +141,7 @@ struct StatisticsView: View {
     }
   }
 }
-
-#Preview {
-  StatisticsView()
-}
+//
+//#Preview {
+//  StatisticsView(viewModel: StatisticsViewModel(pomoTodoUseCase: PomoTodoUseCaseImpl))
+//}

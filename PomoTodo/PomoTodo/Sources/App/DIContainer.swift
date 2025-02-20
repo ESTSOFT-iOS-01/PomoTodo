@@ -26,4 +26,31 @@ final class DIContainer {
       )
     )
   }
+  
+  func makePomoViewModel() -> PomoViewModel {
+    PomoViewModel(
+      pomoTodoUseCase: PomoTodoUseCaseImpl(
+        pomoDayRepository: repositoryProvider.pomoDayRepository,
+        appConfigRepository: repositoryProvider.appConfigRepository
+      )
+    )
+  }
+  
+  func makeSettingViewModel() -> SettingViewModel {
+    SettingViewModel(
+      pomoTodoUseCase: PomoTodoUseCaseImpl(
+        pomoDayRepository: repositoryProvider.pomoDayRepository,
+        appConfigRepository: repositoryProvider.appConfigRepository
+      )
+    )
+  }
+  
+  func makeStatisticsViewModel() -> StatisticsViewModel {
+    StatisticsViewModel(
+      pomoTodoUseCase: PomoTodoUseCaseImpl(
+        pomoDayRepository: repositoryProvider.pomoDayRepository,
+        appConfigRepository: repositoryProvider.appConfigRepository
+      )
+    )
+  }
 }

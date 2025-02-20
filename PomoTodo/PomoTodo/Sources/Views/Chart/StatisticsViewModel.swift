@@ -22,10 +22,41 @@ class StatisticsViewModel: ObservableObject {
   @Published var averageSessions: Double = 0
   @Published var tagFocusData: [TagTimeRecord] = []
   
+  // 버튼 활성화 상태를 위한 Published 변수 추가
+  @Published var isPreviousAvailable: Bool = false
+  @Published var isNextAvailable: Bool = false
+  
   private let calendar = Calendar.current
   private var currentDate = Date()
   private var pomoDayData: [PomoDay] = []
+  private let pomoTodoUseCase: PomoTodoUseCase
   
+  init(pomoTodoUseCase: PomoTodoUseCase) {
+    self.pomoTodoUseCase = pomoTodoUseCase
+    loadPomoData()
+  }
+  
+  // 저장된 포모도로 데이터 불러오기
+  private func loadPomoData() {
+    self.pomoDayData = pomoTodoUseCase.getAllPomoDays()
+    
+    // 가장 최신 날짜로 설정
+    if let latestDate = pomoDayData.map({ $0.date }).max() {
+      currentDate = latestDate
+    }
+    
+    updateData()
+    
+    // 초기에 버튼 활성화 상태 업데이트
+    updateButtonStates()
+  }
+  
+  // 버튼 활성화 상태 업데이트 함수 추가
+  private func updateButtonStates() {
+    isPreviousAvailable = getPreviousAvailableDate() != nil
+    isNextAvailable = getNextAvailableDate() != nil
+    
+  }
   
   // 연도와 주를 포함하는 구조체 (Hashable 준수)
   private struct YearWeek: Hashable {
@@ -39,57 +70,55 @@ class StatisticsViewModel: ObservableObject {
     let month: Int
   }
   
-  // 태그 정보 (이제 뷰모델에서 관리)
-  let fixedTags: [Tag] = [
-    Tag(id: "1", index: 1, name: "공부", colorId: 1),
-    Tag(id: "2", index: 2, name: "운동", colorId: 2),
-    Tag(id: "3", index: 3, name: "독서", colorId: 3),
-    Tag(id: "4", index: 4, name: "취미", colorId: 4)
-  ]
+  //  // 태그 정보 (이제 뷰모델에서 관리)
+  //  let fixedTags: [Tag] = [
+  //    Tag(id: "1", index: 1, name: "공부", colorId: 1),
+  //    Tag(id: "2", index: 2, name: "운동", colorId: 2),
+  //    Tag(id: "3", index: 3, name: "독서", colorId: 3),
+  //    Tag(id: "4", index: 4, name: "취미", colorId: 4)
+  //  ]
+  //
   
-  init() {
-    loadSampleData()
-  }
   
-  // 더미 데이터 로드 (고정된 날짜)
-  private func loadSampleData() {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyyMMdd" // 날짜 형식 변경 (250219 → 2025-02-19 변환)
-    
-    // 사용자가 지정한 날짜 리스트
-    let sampleDates = [
-      "250219", "250211", "250206", "250204", "250116",
-      "241225", "241023", "241021", "241010"
-    ]
-    
-    pomoDayData = sampleDates.compactMap { dateString in
-      guard let date = formatter.date(from: dateString) else { return nil }
-      
-      let tomatoCnt = 8  // 고정된 포모도로 수 (원하면 수정 가능)
-      let cycleCnt = Double(tomatoCnt) / 8.0  // 8포모도로 1세션 기준
-      let tagRecords: [TagTimeRecord] = [
-        TagTimeRecord(tagId: "1", focusTime: 7200), // 공부 (2시간)
-        TagTimeRecord(tagId: "2", focusTime: 3600), // 운동 (1시간)
-        TagTimeRecord(tagId: "3", focusTime: 1800), // 독서 (30분)
-        TagTimeRecord(tagId: "4", focusTime: 600)   // 취미 (10분)
-      ]
-      
-      return PomoDay(
-        date: date,
-        tomatoCnt: tomatoCnt,
-        cycleCnt: cycleCnt,
-        tagTimeRecords: tagRecords,
-        todos: [
-          Todo(tagId: "1", name: "공부"),
-          Todo(tagId: "2", name: "운동"),
-          Todo(tagId: "3", name: "독서"),
-          Todo(tagId: "4", name: "취미")
-        ]
-      )
-    }
-    
-    updateData()
-  }
+  //  // 더미 데이터 로드 (고정된 날짜)
+  //  private func loadSampleData() {
+  //    let formatter = DateFormatter()
+  //    formatter.dateFormat = "yyyyMMdd" // 날짜 형식 변경 (250219 → 2025-02-19 변환)
+  //
+  //    // 사용자가 지정한 날짜 리스트
+  //    let sampleDates = [
+  //      "250219", "250211", "250206", "250204", "250116",
+  //      "241225", "241023", "241021", "241010"
+  //    ]
+  //
+  //    pomoDayData = sampleDates.compactMap { dateString in
+  //      guard let date = formatter.date(from: dateString) else { return nil }
+  //
+  //      let tomatoCnt = 8  // 고정된 포모도로 수 (원하면 수정 가능)
+  //      let cycleCnt = Double(tomatoCnt) / 8.0  // 8포모도로 1세션 기준
+  //      let tagRecords: [TagTimeRecord] = [
+  //        TagTimeRecord(tagId: "1", focusTime: 7200), // 공부 (2시간)
+  //        TagTimeRecord(tagId: "2", focusTime: 3600), // 운동 (1시간)
+  //        TagTimeRecord(tagId: "3", focusTime: 1800), // 독서 (30분)
+  //        TagTimeRecord(tagId: "4", focusTime: 600)   // 취미 (10분)
+  //      ]
+  //
+  //      return PomoDay(
+  //        date: date,
+  //        tomatoCnt: tomatoCnt,
+  //        cycleCnt: cycleCnt,
+  //        tagTimeRecords: tagRecords,
+  //        todos: [
+  //          Todo(tagId: "1", name: "공부"),
+  //          Todo(tagId: "2", name: "운동"),
+  //          Todo(tagId: "3", name: "독서"),
+  //          Todo(tagId: "4", name: "취미")
+  //        ]
+  //      )
+  //    }
+  //
+  //    updateData()
+  //  }
   
   // 데이터 필터링 후 업데이트
   func updateData() {
@@ -129,12 +158,16 @@ class StatisticsViewModel: ObservableObject {
     // 태그별 집중시간 데이터 정렬
     tagFocusData = aggregateTagFocusTime(from: filteredData)
     tagFocusData.sort { (tag1, tag2) in
-      let index1 = fixedTags.first { $0.id == tag1.tagId }?.index ?? Int.max
-      let index2 = fixedTags.first { $0.id == tag2.tagId }?.index ?? Int.max
+      let appTags = pomoTodoUseCase.getAppConfig().tags
+      let index1 = appTags.first { $0.id == tag1.tagId }?.index ?? Int.max
+      let index2 = appTags.first { $0.id == tag2.tagId }?.index ?? Int.max
       return index1 < index2
     }
     
     updateDisplayDate()
+    
+    // 버튼 상태 업데이트
+    updateButtonStates()
   }
   
   // 실제 사용한 "주"와 "월" 개수 반환
@@ -197,7 +230,7 @@ class StatisticsViewModel: ObservableObject {
       displayDate = dateFormatter.string(from: currentDate)
       
     case "주":
-      // 🔥 주간 범위 표시 수정
+      // 주간 범위 표시 수정
       guard let weekStart = calendar.dateInterval(of: .weekOfYear, for: currentDate)?.start else { return }
       guard let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else { return }
       
@@ -260,7 +293,7 @@ class StatisticsViewModel: ObservableObject {
   // 다음 날짜
   func getNextAvailableDate() -> Date? {
     let sortedDates = pomoDayData.map { $0.date }.sorted(by: <) // 과거순 정렬
-    
+
     switch selectedPeriod {
     case "일":
       return sortedDates.first(where: { $0 > currentDate }) // 가장 가까운 미래 날짜
@@ -293,23 +326,16 @@ class StatisticsViewModel: ObservableObject {
   
   // 태그 ID를 기반으로 태그 이름 찾기
   func getTagName(for tagId: String) -> String {
-    return fixedTags.first { $0.id == tagId }?.name ?? "Unknown"
+    return pomoTodoUseCase.getAppConfig().tags.first { $0.id == tagId }?.name ?? "Unknown"
   }
   
   // 태그 ID 기반으로 색상 찾기
   func getTagColor(for tagId: String) -> Color {
-    let colorMapping: [Int: Color] = [
-      1: .indigoNormal,   // 공부
-      2: .blueNormal,   // 운동
-      3: .cyanNormal,   // 독서
-      4: .tealNormal  // 취미
-    ]
-    
-    let colorId = fixedTags.first { $0.id == tagId }?.colorId ?? 0
-    let color = colorMapping[colorId] ?? .gray
-    
-    print("태그 ID: \(tagId), 매칭된 색상: \(color)") // 디버깅 로그 추가
-    
-    return color
+    guard let colorId = pomoTodoUseCase.getAppConfig().tags.first(where: { $0.id == tagId })?.colorId,
+          let colorSet = Constants.Timer.colorSets.first(where: { $0.id == colorId }) else {
+      return .gray // 기본 색상 (예외 처리)
+    }
+    return colorSet.normalColor
   }
+  
 }

@@ -8,95 +8,80 @@
 import SwiftUI
 
 struct SettingView: View {
-  @StateObject var pomoVM: SettingViewModel = SettingViewModel()
-  @State private var isEditMode: Bool = false // 편집모드
+  @EnvironmentObject var viewModel: SettingViewModel
+  @State private var isEditMode: Bool = false
   
   var body: some View {
     NavigationView {
       List {
         // 뽀모도로 타이머 섹션
         Section(header: Text("뽀모도로 설정")) {
-          ForEach($pomoVM.timers, id: \.index) { pomo in
-            NavigationLink(destination: PomoDetailSettingView(pomo: pomo).environmentObject(pomoVM)) {
-              PomoSettingRow(pomo: pomo).environmentObject(pomoVM)
+          ForEach($viewModel.timers, id: \.index) { pomo in
+            NavigationLink(destination: PomoDetailSettingView(pomo: pomo)) {
+              PomoSettingRow(timer: pomo)
             }
           }
         }
         // 투두 태그 섹션
-        Section(header:TagSettingHeader(isEditMode: $isEditMode).environmentObject(pomoVM)) {
-          ForEach($pomoVM.options, id: \.id) { tag in
-            TagSettingRow(option: tag, isEditMode: $isEditMode)
+        Section(header:TagSettingHeader(isEditMode: $isEditMode)) {
+          ForEach($viewModel.tags, id: \.id) { tag in
+            TagSettingRow(tag: tag, isEditMode: $isEditMode)
           }
         }
       }
       .headerProminence(.increased)
       .navigationTitle("설정")
-    }.tint(.indigoNormal)
-  }
-}
-
-// 헤더 공통 속성
-
-fileprivate struct HeaderMdifier: ViewModifier {
-  var fontsize: CGFloat
-  
-  func body(content: Content) -> some View {
-    content
-      .font(.system(size: fontsize))
-      .foregroundStyle(.secondary)
-      .fontWeight(.semibold)
-      
+    }
+    .tint(.indigoNormal)
+    .environmentObject(viewModel)
   }
 }
 
 // 뽀모도로 설정 Row
 fileprivate struct PomoSettingRow: View {
-  @EnvironmentObject var pomoVM: SettingViewModel
-  @Binding var pomo: PomoTimer // 타이머 설정 정보
+  @EnvironmentObject var viewModel: SettingViewModel
+  @Binding var timer: PomoTimer // 타이머 설정 정보
   
   var body: some View {
     VStack(alignment: .leading) {
-      Text(pomoVM.pomoName[pomo.index])
+      Text(viewModel.pomoName[timer.index])
         .foregroundStyle(.primary)
-      Text("\(Int(pomo.focusTimeUnit / 60))분 / \(pomo.tomatoPerCycle)개 / \(Int(pomo.shortBreakUnit / 60))분 / \(Int(pomo.longBreakUnit / 60))분")
+      Text("\(timer.focusTimeUnit.intMin)분 / \(timer.tomatoPerCycle)개 / \(timer.shortBreakUnit.intMin)분 / \(timer.longBreakUnit.intMin)분")
         .foregroundStyle(.secondary)
     }
   }
 }
 
+// 태그 설정 헤더
 fileprivate struct TagSettingHeader: View {
-  @EnvironmentObject var pomoVM: SettingViewModel
+  @EnvironmentObject var viewModel: SettingViewModel
   @Binding var isEditMode: Bool
+  
   var body: some View {
     HStack {
       Text("태그 설정")
-        
       Spacer()
       Button {
-        editBntTouch()
+        isEditMode.toggle()
+        if !isEditMode {
+          viewModel.send(.tagChanged)
+        }
       } label: {
         Text(isEditMode ? "완료" : "편집")
           .foregroundStyle(Color.indigoNormal)
-          
           .font(.caption)
       }
-    }
-  }
-  func editBntTouch() {
-    isEditMode.toggle()
-    print(isEditMode ? "편집모드" : "편집불가")
-    if !isEditMode {
-      pomoVM.optionsSave()
     }
   }
 }
 // 태그 설정 Row
 fileprivate struct TagSettingRow: View {
-  @Binding var option: Tag
+  @Binding var tag: Tag
   @Binding var isEditMode: Bool
   
   var body: some View {
-    TextField("태그를 입력해주세요", text: $option.name)
+    TextField("태그를 입력해주세요", text: $tag.name)
       .disabled(!isEditMode)
+      .tint(.blue)
   }
 }

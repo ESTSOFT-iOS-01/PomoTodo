@@ -14,16 +14,19 @@ struct MainTabBarView: View {
   var body: some View {
     TabView(selection: $selectedTab) {
       PomoView()
+        .environmentObject(container.makePomoViewModel())
         .tabItem {
           tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
         .tag(Tab.Pomo)
       
-      StatisticsView()
-        .tabItem {
-          tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
-        }
-        .tag(Tab.Chart)
+      StatisticsView(
+        viewModel: container.makeStatisticsViewModel()
+      )
+      .tabItem {
+        tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
+      }
+      .tag(Tab.Chart)
       
       ToDoView(viewModel: container.makeToDoViewModel())
         .tabItem {
@@ -32,10 +35,13 @@ struct MainTabBarView: View {
         .tag(Tab.Todo)
       
       SettingView()
-        .tabItem {
-          tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
-        }
-        .tag(Tab.Setting)
+      .environmentObject(
+        container.makeSettingViewModel()
+      )
+      .tabItem {
+        tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
+      }
+      .tag(Tab.Setting)
       
     }
     .tint(.indigoNormal)
@@ -69,6 +75,7 @@ struct MainTabBarView: View {
     UITabBar.appearance().standardAppearance = appearance
     UITabBar.appearance().scrollEdgeAppearance = appearance
   }
+  
 }
 
 #Preview {
