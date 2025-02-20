@@ -59,7 +59,6 @@ final class PomoDayRepositoryImpl: PomoDayRepository {
     
     do {
       let datas = try modelContext.fetch(descriptor)
-      datas.forEach { print("   - \($0.date.formattedDateToString)") }
       return .success(datas.map { $0.toEntity() })
     } catch {
       return .failure(SwiftDataError.fetchError)
