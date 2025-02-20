@@ -13,6 +13,7 @@ struct TimerDisplayView: View {
   var body: some View {
     VStack(alignment: .center) {
       Text(timeString(from: pomoVM.remainingTime))
+        .monospacedDigit()
         .font(.pretendard(.extraBold, size: 56))
         .frame(width: 280, alignment: .center)
         .foregroundStyle(pomoVM.selectedColorSet.darkerColor)

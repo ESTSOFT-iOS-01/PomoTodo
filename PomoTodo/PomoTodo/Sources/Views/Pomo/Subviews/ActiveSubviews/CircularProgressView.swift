@@ -11,6 +11,7 @@ struct CircularProgressView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
+    // 여기는 사이즈 조절 없이
     ZStack(alignment: .bottom) {
       // progress bar
       CircularProgressBar()
