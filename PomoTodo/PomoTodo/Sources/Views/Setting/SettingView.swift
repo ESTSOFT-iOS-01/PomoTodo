@@ -24,7 +24,7 @@ struct SettingView: View {
         }
         // 투두 태그 섹션
         Section(header:TagSettingHeader(isEditMode: $isEditMode)) {
-          ForEach($viewModel.options, id: \.id) { tag in
+          ForEach($viewModel.tags, id: \.id) { tag in
             TagSettingRow(tag: tag, isEditMode: $isEditMode)
           }
         }
@@ -46,7 +46,7 @@ fileprivate struct PomoSettingRow: View {
     VStack(alignment: .leading) {
       Text(viewModel.pomoName[timer.index])
         .foregroundStyle(.primary)
-      Text("\(Int(timer.focusTimeUnit / 60))분 / \(timer.tomatoPerCycle)개 / \(Int(timer.shortBreakUnit / 60))분 / \(Int(timer.longBreakUnit / 60))분")
+      Text("\(timer.focusTimeUnit.intMin)분 / \(timer.tomatoPerCycle)개 / \(timer.shortBreakUnit.intMin)분 / \(timer.longBreakUnit.intMin)분")
         .foregroundStyle(.secondary)
     }
   }

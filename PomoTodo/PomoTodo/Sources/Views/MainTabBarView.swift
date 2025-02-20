@@ -35,11 +35,6 @@ struct MainTabBarView: View {
       }
       .tag(Tab.Todo)
 
-//      SettingView1( // SettingViewModel_ 를 적용한 뷰 - 이슈있음
-//        viewModel: SettingViewModel_(
-//          pomoTodoUseCase: container.pomoTodoUseCase
-//        )
-//      )
       SettingView()
       .environmentObject(
         SettingViewModel(

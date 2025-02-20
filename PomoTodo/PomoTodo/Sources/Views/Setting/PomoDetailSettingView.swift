@@ -28,7 +28,7 @@ struct PomoDetailSettingView: View {
           showModal = true
           selected = .focusTimeUnit
         } label: {
-          DetailRow(name: "집중 시간", value: "\(Int(pomo.focusTimeUnit / 60))분")
+          DetailRow(name: "집중 시간", value: "\(pomo.focusTimeUnit.intMin)분")
         }.foregroundStyle(.primary)
         
         Button {
@@ -42,14 +42,14 @@ struct PomoDetailSettingView: View {
           showModal = true
           selected = .shortBreakUnit
         } label: {
-          DetailRow(name: "짧은 휴식시간", value: "\(Int(pomo.shortBreakUnit / 60))분")
+          DetailRow(name: "짧은 휴식시간", value: "\(pomo.shortBreakUnit.intMin)분")
         }.foregroundStyle(.primary)
         
         Button {
           showModal = true
           selected = .longBreakUnit
         } label: {
-          DetailRow(name: "긴 휴식시간", value: "\(Int(pomo.longBreakUnit / 60))분")
+          DetailRow(name: "긴 휴식시간", value: "\(pomo.longBreakUnit.intMin)분")
         }.foregroundStyle(.primary)
         
       }
@@ -87,11 +87,10 @@ fileprivate struct modal: View {
   @Environment(\.dismiss) var dismiss
   @Binding var pomo: PomoTimer
   var selected: elementBtn
+  @State var info: Int = 0
   
   let range: [ClosedRange<Int>] = [1...100, 1...8, 1...30, 1...100]
   let names: [String] = ["집중 시간", "한 사이클의 토마토 개수", "짧은 휴식시간", "긴 휴식시간"]
-  
-  @State var info: Int = 0
   
   var body: some View {
     VStack {
@@ -109,13 +108,21 @@ fileprivate struct modal: View {
       Button {
         switch selected {
         case .focusTimeUnit:
-          viewModel.send(.focusTimeUnitChanged(index: pomo.index, value: info))
+          viewModel.send(
+            .focusTimeUnitChanged(index: pomo.index, value: info)
+          )
         case .tomatoPerCycle:
-          viewModel.send(.tomatoPerCycleChanged(index: pomo.index, value: info))
+          viewModel.send(
+            .tomatoPerCycleChanged(index: pomo.index, value: info)
+          )
         case .shortBreakUnit:
-          viewModel.send(.shortBreakUnitChanged(index: pomo.index, value: info))
+          viewModel.send(
+            .shortBreakUnitChanged(index: pomo.index, value: info)
+          )
         case .longBreakUnit:
-          viewModel.send(.longBreakUnitChanged(index: pomo.index, value: info))
+          viewModel.send(
+            .longBreakUnitChanged(index: pomo.index, value: info)
+          )
         }
         dismiss()
       } label: {
@@ -131,12 +138,15 @@ fileprivate struct modal: View {
     .frame(width: 200)
     .onAppear {
       switch selected {
-      case .focusTimeUnit: info = Int(pomo.focusTimeUnit / 60)
-      case .tomatoPerCycle: info = pomo.tomatoPerCycle
-      case .shortBreakUnit: info = Int(pomo.shortBreakUnit / 60)
-      case .longBreakUnit: info = Int(pomo.longBreakUnit / 60)
+      case .focusTimeUnit:
+        info = pomo.focusTimeUnit.intMin
+      case .tomatoPerCycle:
+        info = pomo.tomatoPerCycle
+      case .shortBreakUnit:
+        info = pomo.shortBreakUnit.intMin
+      case .longBreakUnit:
+        info = pomo.longBreakUnit.intMin
       }
     }
-
   }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 final class SettingViewModel: ObservableObject {
-  @Published var options: [Tag] = []
+  @Published var tags: [Tag] = []
   @Published var timers: [PomoTimer] = []
   @Published var pomoName: [String] = ["1번 프리셋","2번 프리셋","3번 프리셋"]
   
@@ -27,41 +27,41 @@ final class SettingViewModel: ObservableObject {
   
   private(set) var state: State = .init()
   private var pomoTodoUseCase: PomoTodoUseCase
+  private var m: Int = Int(TimeInterval.minute)
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
     self.state.config = pomoTodoUseCase.getAppConfig()
-    self.options = self.state.config.tags
+    self.tags = self.state.config.tags
     self.timers = self.state.config.pomoTimers
   }
   
   func send(_ action: Action) {
     switch action {
     case .focusTimeUnitChanged(let index, let value):
-      self.timers[index].focusTimeUnit = Double(value*60)
+      self.timers[index].focusTimeUnit = Double(value * m)
       pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: options)
+        AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .tomatoPerCycleChanged(let index, let value):
       self.timers[index].tomatoPerCycle = value
       pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: options)
+        AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .shortBreakUnitChanged(let index, let value):
-      self.timers[index].shortBreakUnit = Double(value*60)
+      self.timers[index].shortBreakUnit = Double(value * m)
       pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: options)
+        AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .longBreakUnitChanged(let index, let value):
-      self.timers[index].longBreakUnit = Double(value*60)
+      self.timers[index].longBreakUnit = Double(value * m)
       pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: options)
+        AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .tagChanged:
       pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: options)
+        AppConfig(pomoTimers: self.timers, tags: tags)
       )
     }
-    
   }
 }
