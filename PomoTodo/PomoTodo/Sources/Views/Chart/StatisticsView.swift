@@ -10,7 +10,12 @@ import Charts
 
 // MARK: - 통계 탭 전체 뷰
 struct StatisticsView: View {
-  @StateObject private var viewModel = StatisticsViewModel()
+  @StateObject private var viewModel: StatisticsViewModel
+  
+  init(viewModel: StatisticsViewModel) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+  }
+  
   // @State private var selectedPeriod = "주"
   let periods = ["일", "주", "월"]
   
@@ -144,7 +149,7 @@ struct StatisticsView: View {
     }
   }
 }
-
-#Preview {
-  StatisticsView()
-}
+//
+//#Preview {
+//  StatisticsView(viewModel: StatisticsViewModel(pomoTodoUseCase: PomoTodoUseCaseImpl))
+//}
