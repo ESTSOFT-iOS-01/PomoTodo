@@ -94,6 +94,7 @@ final class PomoViewModel: ObservableObject {
       } else {
         // 타이머 종료
         self.stopTimer()
+        self.triggerHapticFeedback()
         self.forwardNextTimer(true) // 완벽한 토마토 한 개 완성
       }
     }
@@ -133,6 +134,11 @@ final class PomoViewModel: ObservableObject {
     
     remainingTime = totalTime
     progress = 1.0
+  }
+  
+  private func triggerHapticFeedback() {
+      let generator = UINotificationFeedbackGenerator()
+      generator.notificationOccurred(.success)
   }
   
   //MARK: - Data Funcs
