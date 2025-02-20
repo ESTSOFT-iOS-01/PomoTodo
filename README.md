@@ -47,7 +47,7 @@
 | <img src="https://img.shields.io/badge/-Git-F05032?style=flat&logo=git&logoColor=white"> | iOS 앱의 UI를 구축하고 사용자 인터페이스를 관리하는 기본 프레임워크.|
 | <img src="https://img.shields.io/badge/-Git-F05032?style=flat&logo=git&logoColor=white"> | 분산 버전 관리 시스템으로, 코드 히스토리 관리와 협업을 효율적으로 지원.|
 | <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=notion&logoColor=white"> | 작업 관리 및 문서화를 위한 통합 협업 도구.|
-| <img src="https://img.shields.io/badge/-figma-5856D6?style=flat&logo=notion&logoColor=white"> | 피그마 |
+| <img src="https://img.shields.io/badge/-figma-5856D6?style=flat&logo=figma&logoColor=white"> | 피그마 |
 | <img src=""> | SwiftData |
 
 ## 💻 Convention 💻
