@@ -18,7 +18,7 @@ struct SettingView: View {
         Section(header: Text("뽀모도로 설정")) {
           ForEach($viewModel.timers, id: \.index) { pomo in
             NavigationLink(destination: PomoDetailSettingView(pomo: pomo)) {
-              PomoSettingRow(pomo: pomo)
+              PomoSettingRow(timer: pomo)
             }
           }
         }
@@ -40,13 +40,13 @@ struct SettingView: View {
 // 뽀모도로 설정 Row
 fileprivate struct PomoSettingRow: View {
   @EnvironmentObject var viewModel: SettingViewModel
-  @Binding var pomo: PomoTimer // 타이머 설정 정보
+  @Binding var timer: PomoTimer // 타이머 설정 정보
   
   var body: some View {
     VStack(alignment: .leading) {
-      Text(viewModel.pomoName[pomo.index])
+      Text(viewModel.pomoName[timer.index])
         .foregroundStyle(.primary)
-      Text("\(Int(pomo.focusTimeUnit / 60))분 / \(pomo.tomatoPerCycle)개 / \(Int(pomo.shortBreakUnit / 60))분 / \(Int(pomo.longBreakUnit / 60))분")
+      Text("\(Int(timer.focusTimeUnit / 60))분 / \(timer.tomatoPerCycle)개 / \(Int(timer.shortBreakUnit / 60))분 / \(Int(timer.longBreakUnit / 60))분")
         .foregroundStyle(.secondary)
     }
   }
