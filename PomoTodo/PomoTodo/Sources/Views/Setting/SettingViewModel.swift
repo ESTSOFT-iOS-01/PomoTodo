@@ -24,7 +24,6 @@ final class SettingViewModel: ObservableObject {
   
   private var config = AppConfig(pomoTimers: [], tags: [])
   private var pomoTodoUseCase: PomoTodoUseCase
-  private var m: Int = Int(TimeInterval.minute)
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
@@ -36,7 +35,7 @@ final class SettingViewModel: ObservableObject {
   func send(_ action: Action) {
     switch action {
     case .focusTimeUnitChanged(let index, let value):
-      self.timers[index].focusTimeUnit = Double(value * m)
+      self.timers[index].focusTimeUnit = Double(value) * .minute
       pomoTodoUseCase.setAppConfig(
         AppConfig(pomoTimers: self.timers, tags: tags)
       )
@@ -46,12 +45,12 @@ final class SettingViewModel: ObservableObject {
         AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .shortBreakUnitChanged(let index, let value):
-      self.timers[index].shortBreakUnit = Double(value * m)
+      self.timers[index].shortBreakUnit = Double(value) * .minute
       pomoTodoUseCase.setAppConfig(
         AppConfig(pomoTimers: self.timers, tags: tags)
       )
     case .longBreakUnitChanged(let index, let value):
-      self.timers[index].longBreakUnit = Double(value * m)
+      self.timers[index].longBreakUnit = Double(value) * .minute
       pomoTodoUseCase.setAppConfig(
         AppConfig(pomoTimers: self.timers, tags: tags)
       )
