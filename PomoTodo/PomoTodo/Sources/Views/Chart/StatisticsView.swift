@@ -26,12 +26,14 @@ struct StatisticsView: View {
           // Segmented Control
           // 새로운 Segmented Control 뷰 사용
           SegmentedControlView(selectedPeriod: $viewModel.selectedPeriod) {
-            viewModel.updateData()
+            viewModel.send(.changePeriod(viewModel.selectedPeriod))
           }
           
           HStack(spacing: 8) {
             // 이전 날짜 버튼 (이전 날짜 없으면 비활성화)
-            Button(action: viewModel.previousDate) {
+            Button(action: {
+              viewModel.send(.previousDate)
+            }) {
               Image(systemName: "chevron.backward.circle.fill")
                 .foregroundStyle(viewModel.isPreviousAvailable ? .indigoNormal : .indigoLightHover)
                 .bold()
@@ -42,7 +44,9 @@ struct StatisticsView: View {
               .font(.system(size: 14, weight: .bold))
             
             // 다음 날짜 버튼 (다음 날짜 없으면 비활성화)
-            Button(action: viewModel.nextDate) {
+            Button(action: {
+              viewModel.send(.nextDate)
+            }) {
               Image(systemName: "chevron.forward.circle.fill")
                 .foregroundStyle(viewModel.isNextAvailable ? .indigoNormal : .indigoLightHover)
                 .bold()
@@ -139,6 +143,10 @@ struct StatisticsView: View {
       }
       .navigationTitle("통계")
     }
+    
+    .onAppear {
+          viewModel.send(.onAppear)
+        }
   }
 }
 //
