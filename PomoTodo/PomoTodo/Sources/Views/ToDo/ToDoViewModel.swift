@@ -10,10 +10,12 @@ import Foundation
 
 final class ToDoViewModel: ObservableObject {
   
+  // MARK: - UI State
   @Published var todos: [Todo] = []
   @Published var tags: [Tag] = []
   
   enum Action {
+    case onAppear
     case addEmptyTodo(tagId: String)
     case deleteTodo(id: String)
     case toggleTodo(id: String, status: Bool)
@@ -24,12 +26,13 @@ final class ToDoViewModel: ObservableObject {
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
-    self.tags = pomoTodoUseCase.getAppConfig().tags
-    self.todos = pomoTodoUseCase.getTodayTodos()
   }
   
   func send(_ action: Action) {
     switch action {
+    case .onAppear:
+      loadData()
+      
     case .addEmptyTodo(let tagId):
       let emptyTodo = Todo(tagId: tagId, name: "")
       todos.append(emptyTodo)
@@ -54,5 +57,9 @@ final class ToDoViewModel: ObservableObject {
 }
 
 extension ToDoViewModel {
-  // Private function
+  // MARK: - Private function
+  private func loadData() {
+    self.tags = pomoTodoUseCase.getAppConfig().tags
+    self.todos = pomoTodoUseCase.getTodayTodos()
+  }
 }

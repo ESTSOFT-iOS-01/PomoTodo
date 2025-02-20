@@ -46,6 +46,9 @@ struct ToDoView: View {
       }
       .navigationTitle(Date().formattedDateToString)
       .onAppear(perform: UIApplication.shared.hideKeyboard)
+      .onAppear {
+        viewModel.send(.onAppear)
+      }
     }
   }
 }

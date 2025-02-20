@@ -9,11 +9,13 @@ import Foundation
 
 @Observable
 final class DIContainer {
-  private let storage: SwiftDataStorage
   
+  static let shared = DIContainer()
+  
+  private let storage: SwiftDataStorage
   private let appConfigRepository: AppConfigRepository
   private let pomoDayRepository: PomoDayRepository
-  let pomoTodoUseCase: PomoTodoUseCase
+  private let pomoTodoUseCase: PomoTodoUseCase
   
   init() {
     self.storage = SwiftDataStorage()
@@ -27,5 +29,9 @@ final class DIContainer {
       pomoDayRepository: pomoDayRepository,
       appConfigRepository: appConfigRepository
     )
+  }
+  
+  func makeToDoViewModel() -> ToDoViewModel {
+    ToDoViewModel(pomoTodoUseCase: pomoTodoUseCase)
   }
 }

@@ -25,15 +25,11 @@ struct MainTabBarView: View {
         }
         .tag(Tab.Chart)
       
-      ToDoView(
-        viewModel: ToDoViewModel(
-          pomoTodoUseCase: container.pomoTodoUseCase
-        )
-      )
-      .tabItem {
-        tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
-      }
-      .tag(Tab.Todo)
+      ToDoView(viewModel: container.makeToDoViewModel())
+        .tabItem {
+          tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
+        }
+        .tag(Tab.Todo)
       
       SettingView()
         .tabItem {
@@ -45,7 +41,6 @@ struct MainTabBarView: View {
     .tint(.indigoNormal)
     .onAppear {
       setupTabBarAppearance()
-      let _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
   }
   
