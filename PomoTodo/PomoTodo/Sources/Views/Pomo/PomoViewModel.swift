@@ -31,12 +31,12 @@ final class PomoViewModel: ObservableObject {
   }
   
   @Published var curTomato = 1
-  @Published var totalTomato = 4
+  @Published var totalTomato = 2
   @Published var completedTomatoes = 0
   @Published var isTimerRunning = false
   
-  @Published var totalTime: Int = 1500
-  @Published var remainingTime: Int = 1500
+  @Published var totalTime: Int = 10
+  @Published var remainingTime: Int = 10
   @Published var progress: CGFloat = 1.0
   
   @Published var options: [Tag]
@@ -109,6 +109,7 @@ final class PomoViewModel: ObservableObject {
       if curTomato < totalTomato {
         currentPhase = .shortBreak
         totalTime = timers[currentPage].shortBreakUnit.asInt
+      } else {
         currentPhase = .longBreak
         totalTime = timers[currentPage].longBreakUnit.asInt
       }
@@ -136,29 +137,32 @@ final class PomoViewModel: ObservableObject {
   func saveFocusTime() {
     if currentPhase == .focus {
       accumulatedFocusTime += (totalTime - remainingTime)
+      pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asTimeInterval))
+      resetFocusTime()
     } else {
       accumulatedTotalTime += (totalTime - remainingTime)
     }
-    
-    pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asTimeInterval))
-    resetFocusTime()
   }
   
   private func resetFocusTime() {
     accumulatedFocusTime = 0
-    print("집중 시간 기록 후, 데이터 삭제")
+//    print("집중 시간 기록 후, 데이터 삭제")
+    let data = pomoTodoUseCase.getTodayPomoDay()
+//    print(data)
   }
   
   // 완성한 토마토 개수 랑 단위 토마토 개수 저장
   func saveTomatoProgress() {
-    pomoTodoUseCase.setTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: totalTomato.asDouble)
+    let cycleCount : Double = completedTomatoes.asDouble / totalTomato.asDouble
+    pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: completedTomatoes, cycleCnt: cycleCount)
     resetTomatoProgress()
   }
   
   private func resetTomatoProgress() {
     curTomato = 1
     completedTomatoes = 0
-    print("태그 변경, 토마토 기록 삭제")
+//    print("태그 변경, 토마토 기록 삭제")
+//    print(pomoTodoUseCase.getTodayPomoDay())
   }
   
 }
