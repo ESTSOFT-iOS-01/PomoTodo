@@ -19,11 +19,13 @@ struct MainTabBarView: View {
         }
         .tag(Tab.Pomo)
       
-      StatisticsView()
-        .tabItem {
-          tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
-        }
-        .tag(Tab.Chart)
+      StatisticsView(
+        viewModel: StatisticsViewModel(pomoTodoUseCase: container.pomoTodoUseCase)
+      )
+      .tabItem {
+        tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
+      }
+      .tag(Tab.Chart)
       
       ToDoView(
         viewModel: ToDoViewModel(

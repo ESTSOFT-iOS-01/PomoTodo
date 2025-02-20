@@ -42,7 +42,7 @@ struct BarChartView: View {
     )
   }
 }
-
-#Preview {
-  BarChartView(viewModel: StatisticsViewModel())
-}
+//
+//#Preview {
+//  BarChartView(viewModel: StatisticsViewModel())
+//}
