@@ -13,7 +13,8 @@ struct MainTabBarView: View {
   
   var body: some View {
     TabView(selection: $selectedTab) {
-      PomoView(pomoVM: PomoViewModel(pomoTodoUseCase: container.pomoTodoUseCase))
+      PomoView()
+        .environmentObject(PomoViewModel(pomoTodoUseCase: container.pomoTodoUseCase))
         .tabItem {
           tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
