@@ -42,12 +42,16 @@ struct MainTabBarView: View {
         tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
       }
       .tag(Tab.Setting)
-      
     }
     .tint(.indigoNormal)
     .onAppear {
       setupTabBarAppearance()
     }
+//    .onChange(of: selectedTab) { oldTab, newTab in
+//      if newTab != .Pomo {
+//        // pomoVM.saveTomatoProgress()
+//      }
+//    }
   }
   
   //MARK: - Funcs

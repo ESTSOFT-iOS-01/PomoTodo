@@ -18,13 +18,20 @@ struct PomoTopView: View {
   }
 }
 
-//MARK: - 토마토 개수 표시 라벨 Subview
+//MARK: - 토마토 개수 표시 Subview
 struct TomatoCountView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
-    Text("\(pomoVM.curTomato) / \(pomoVM.totalTomato)")
-      .font(.pretendard(.semiBold, size: 18))
+    HStack(alignment: .bottom, spacing: 12) {
+      Image(systemName: pomoVM.currentPhase == .focus ? "figure.run" : "figure.cooldown")
+        .resizable()
+        .scaledToFit()
+        .frame(height: 24, alignment: .center)
+      
+      Text("\(pomoVM.curTomato) / \(pomoVM.totalTomato)")
+        .font(.pretendard(.semiBold, size: 18))
+    }
   }
 }
 
@@ -72,4 +79,9 @@ struct TagSelectionMenu: View {
       .foregroundColor(.white)
       .frame(maxWidth: DynamicPadding.getWidth(354))
   }
+}
+
+#Preview{
+  PomoTopView()
+    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
 }
