@@ -20,4 +20,9 @@ extension TimeInterval {
     let minutes = (Int(self) % 3600) / 60
     return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
   }
+
+  var intMin: Int {
+    get { return Int(self / .minute) }
+  }
+  
 }
