@@ -19,7 +19,8 @@ struct PomoDetailSettingView: View {
   @Binding var pomo: PomoTimer
   @State private var showModal: Bool = false
   @State private var selected: elementBtn = .focusTimeUnit
-
+  let name: String
+  
   var body: some View {
     NavigationView {
       List{
@@ -59,7 +60,7 @@ struct PomoDetailSettingView: View {
           .presentationCornerRadius(48)
       }
     }
-    .navigationTitle(viewModel.pomoName[pomo.index])
+    .navigationTitle(name)
     .navigationBarTitleDisplayMode(.inline)
     .environmentObject(viewModel)
   }
