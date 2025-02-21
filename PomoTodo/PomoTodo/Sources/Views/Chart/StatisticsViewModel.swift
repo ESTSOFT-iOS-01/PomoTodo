@@ -8,7 +8,7 @@
 import SwiftUI
 
 // 통계 뷰 모델
-class StatisticsViewModel: ObservableObject {
+final class StatisticsViewModel: ObservableObject {
   
   // MARK: - UI 변수
   @Published var selectedPeriod: String = "일"
