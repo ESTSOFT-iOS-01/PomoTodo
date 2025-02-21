@@ -11,6 +11,7 @@ extension TimeInterval {
   /// TimeInterval의 1분 (60초)
   static var minute: TimeInterval { return 60 }
   
+  /// TimeInterval → Int 변환
   var asInt: Int {
     return Int(self)
   }

@@ -24,7 +24,7 @@ struct TomatoCountView: View {
   
   var body: some View {
     HStack(alignment: .bottom, spacing: 12) {
-      Image(systemName: pomoVM.currentPhase == .focus ? "figure.run" : "figure.cooldown")
+      Image(systemName: pomoVM.currentPhase == .focus ? Constants.Timer.Symbol.running : Constants.Timer.Symbol.stretching)
         .resizable()
         .scaledToFit()
         .frame(height: 24, alignment: .center)
@@ -61,7 +61,7 @@ struct TagSelectionMenu: View {
     HStack {
       Text(pomoVM.options[index].name)
       if pomoVM.selectionTag == index {
-        Image(systemName: "checkmark")
+        Image(systemName: Constants.Timer.Symbol.checkmark)
       }
     }
   }

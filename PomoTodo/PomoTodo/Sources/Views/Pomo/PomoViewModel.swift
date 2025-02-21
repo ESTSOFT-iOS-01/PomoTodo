@@ -183,7 +183,7 @@ extension PomoViewModel {
   private func saveFocusTime() {
     if currentPhase == .focus {
       accumulatedFocusTime += (totalTime - remainingTime)
-      pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asTimeInterval))
+      pomoTodoUseCase.addTagTimeRecords(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tagTimeRecord: TagTimeRecord(tagId: options[selectionTag].id, focusTime: accumulatedFocusTime.asDouble))
       accumulatedFocusTime = 0
     } else {
       accumulatedTotalTime += (totalTime - remainingTime)

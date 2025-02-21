@@ -14,7 +14,7 @@ struct TimerTagLabelView: View {
     HStack(alignment: .bottom) {
       // 휴식 시간일 때만, 아이콘 표시
       if pomoVM.currentPhase != .focus {
-        Image(systemName: "figure.cooldown")
+        Image(systemName: Constants.Timer.Symbol.stretching)
           .resizable()
           .scaledToFit()
           .frame(height: 24, alignment: .center)
@@ -35,7 +35,7 @@ struct PauseButtonView: View {
     Button {
       pomoVM.send(.stopTimer)
     } label: {
-      Image(systemName: "pause.fill")
+      Image(systemName: Constants.Timer.Symbol.pause)
         .resizable()
         .scaledToFit()
         .frame(height: 36)

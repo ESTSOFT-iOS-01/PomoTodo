@@ -39,15 +39,15 @@ struct TimerDisplayView: View {
   @ViewBuilder
   private func tomatoIcons() -> some View {
     ForEach(0..<(pomoVM.curTomato - 1), id: \.self) { _ in
-      createTomatoIcon(systemName: "circle.fill")
+      createTomatoIcon(systemName: Constants.Timer.Symbol.fullCircle)
     }
     
     if pomoVM.curTomato > 0 {
-      createTomatoIcon(systemName: "circle.righthalf.filled.inverse")
+      createTomatoIcon(systemName: Constants.Timer.Symbol.halfCircle)
     }
     
     ForEach(0..<(pomoVM.totalTomato - pomoVM.curTomato), id: \.self) { _ in
-      createTomatoIcon(systemName: "circle")
+      createTomatoIcon(systemName: Constants.Timer.Symbol.emptyCircle)
     }
   }
   

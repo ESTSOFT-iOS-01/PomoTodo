@@ -14,14 +14,14 @@ struct PomoBottomView: View {
     HStack(alignment: .center, spacing: DynamicPadding.getWidth(32)) {
       // 타이머 재생 버튼
       PomoActionButton(
-        icon: "play.fill",
+        icon: Constants.Timer.Symbol.play,
         action: { pomoVM.send(.startTimer) },
         backgroundColor: pomoVM.selectedColorSet.normalColor
       )
       
       // 토마토/쉬는시간 넘어가기 버튼
       PomoActionButton(
-        icon: "forward.fill",
+        icon: Constants.Timer.Symbol.forward,
         action: { pomoVM.send(.forwardNextTimer) },
         backgroundColor: pomoVM.selectedColorSet.normalColor
       )

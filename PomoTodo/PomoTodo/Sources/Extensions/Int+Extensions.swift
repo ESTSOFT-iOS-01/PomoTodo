@@ -8,10 +8,7 @@
 import Foundation
 
 extension Int {
-  var asTimeInterval: TimeInterval {
-    return TimeInterval(self)
-  }
-  
+  /// Int → Double 변환
   var asDouble: Double {
     return Double(self)
   }
