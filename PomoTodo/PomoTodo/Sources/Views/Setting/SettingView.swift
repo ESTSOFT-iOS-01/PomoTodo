@@ -19,7 +19,7 @@ struct SettingView: View {
   var body: some View {
     let tags = viewModel.config.tags
     let pomoTimers = viewModel.config.pomoTimers
-  
+    
     NavigationView {
       List {
         // 뽀모도로 타이머 섹션
@@ -77,6 +77,7 @@ fileprivate struct TagSettingHeader: View {
     }
   }
 }
+
 // 태그 설정 Row
 fileprivate struct TagSettingRow: View {
   let viewModel: SettingViewModel
@@ -97,3 +98,4 @@ fileprivate struct TagSettingRow: View {
       }
   }
 }
+
