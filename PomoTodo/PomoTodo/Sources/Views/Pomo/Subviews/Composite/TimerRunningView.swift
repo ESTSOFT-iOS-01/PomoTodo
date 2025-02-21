@@ -7,20 +7,24 @@
 
 import SwiftUI
 
+/// 타이머 진행 화면
+/// - 현재 진행 중인 태그
+/// - 원형 타이머
+/// - 일시정지 버튼
 struct TimerRunningView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
     VStack(alignment: .center) {
-      // 상단 태그
+      /// 현재 진행 중인 태그 표시
       TimerTagLabelView()
       Spacer().frame(height: DynamicPadding.getHeight(72))
       
-      // 타이머
+      /// 원형 타이머 뷰
       CircularProgressView()
       Spacer().frame(height: DynamicPadding.getHeight(110))
       
-      // 버튼
+      /// 일시정지 버튼
       PauseButtonView()
     } // : vstack
   }

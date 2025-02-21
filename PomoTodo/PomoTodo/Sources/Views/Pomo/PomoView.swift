@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// **포모도로 타이머 메인 뷰**
+/// - 타이머 실행 여부에 따라 `TimerSetupView` 또는 `TimerRunningView` 전환
+/// - 애니메이션 효과 적용 및 `TabBar` 가시성 조절
 struct PomoView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   

@@ -7,16 +7,18 @@
 
 import SwiftUI
 
+/// 원형 타이머 뷰 (타이머 진행률 및 시간 표시)
+/// - 진행 바 (타이머 진행 상태 표시)
+/// - 타이머 정보 (남은 시간 및 토마토 개수)
 struct CircularProgressView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
-    // 여기는 사이즈 조절 없이
     ZStack(alignment: .bottom) {
-      // progress bar
+      /// 진행 바 (타이머 진행 상태 표시)
       CircularProgressBar()
       
-      // Texts
+      /// 타이머 정보 (남은 시간 및 토마토 개수)
       TimerDisplayView()
     }
   }

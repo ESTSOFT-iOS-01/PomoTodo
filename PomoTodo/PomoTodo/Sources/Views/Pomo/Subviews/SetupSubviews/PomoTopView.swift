@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// 타이머 상단 정보 뷰
+/// - **토마토 진행 상태** 및 **태그 선택 메뉴** 표시
 struct PomoTopView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
@@ -18,7 +20,7 @@ struct PomoTopView: View {
   }
 }
 
-//MARK: - 토마토 개수 표시 Subview
+/// 현재 진행 중인 토마토 개수 및 총 토마토 개수 표시
 struct TomatoCountView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
@@ -35,7 +37,7 @@ struct TomatoCountView: View {
   }
 }
 
-//MARK: - 태그 메뉴 버튼 Subview
+/// 현재 선택된 태그(카테고리)를 표시하고 변경할 수 있는 메뉴
 struct TagSelectionMenu: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
@@ -45,17 +47,18 @@ struct TagSelectionMenu: View {
         Button(action: {
           pomoVM.selectionTag = index
         }) {
-          // label
+          /// 선택 가능한 태그 리스트 표시
           menuItem(for: index)
         }
       }
     } label: {
+      /// 현재 선택된 태그를 보여주는 버튼/
       menuLabel()
     }
   }
   
-  //MARK: - UI Settings funcs
-  
+  // MARK: - UI Helper Methods
+  /// 태그 리스트 내 개별 항목 (선택 가능)
   @ViewBuilder
   private func menuItem(for index: Int) -> some View {
     HStack {
@@ -66,6 +69,7 @@ struct TagSelectionMenu: View {
     }
   }
   
+  /// 현재 선택된 태그를 표시하는 버튼
   @ViewBuilder
   private func menuLabel() -> some View {
     Text(pomoVM.options[pomoVM.selectionTag].name)
@@ -79,9 +83,4 @@ struct TagSelectionMenu: View {
       .foregroundColor(.white)
       .frame(maxWidth: DynamicPadding.getWidth(354))
   }
-}
-
-#Preview{
-  PomoTopView()
-    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
 }

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// **타이머 하단 컨트롤 바**
+/// - 타이머 시작 및 다음 단계 진행 버튼 제공
+/// - `PomoActionButton`을 활용하여 코드 중복 최소화
 struct PomoBottomView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
@@ -29,6 +32,9 @@ struct PomoBottomView: View {
   }
 }
 
+/// **하단 버튼 UI**
+/// - **기능**: 아이콘 버튼을 생성하고 일정 시간 동안 연속 입력 방지
+/// - **애니메이션**: 버튼 클릭 후 0.5초간 비활성화 처리
 struct PomoActionButton: View {
   let icon: String
   let action: () -> Void
@@ -59,10 +65,7 @@ struct PomoActionButton: View {
           .frame(height: DynamicPadding.getHeight(24))
       }
     }
-    .disabled(isDisabled) // 비활성화 상태 반영
+    .disabled(isDisabled) // 연속 클릭 방지
   }
 }
 
-//#Preview {
-//    PomoBottomView(backgroundColor: .tealNormal)
-//}

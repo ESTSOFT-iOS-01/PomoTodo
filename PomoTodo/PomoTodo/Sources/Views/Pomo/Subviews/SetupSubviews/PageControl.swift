@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+/// **페이지 컨트롤 뷰**
+/// - 현재 선택된 페이지를 나타내는 인디케이터
+/// - 선택된 페이지는 검은색, 나머지는 반투명 회색
+/// - 탭하면 해당 페이지로 전환
 struct PageControl: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
@@ -32,6 +36,3 @@ struct PageControl: View {
   }
 }
 
-//#Preview {
-//    PageControl(numberOfPages: 3, currentPage: .constant(0))
-//}
