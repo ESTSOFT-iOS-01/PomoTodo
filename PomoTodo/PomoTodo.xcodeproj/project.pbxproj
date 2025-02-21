@@ -26,6 +26,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Sources/Views/Setting/PomoDetailSettingView.swift,
 			);
 			target = 35BD25152D6360BD000BEF24 /* PomoTodo */;
 		};
@@ -377,7 +378,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PomoTodo/Preview Content\"";
-				DEVELOPMENT_TEAM = Q9ZQRQHB5K;
+				DEVELOPMENT_TEAM = C5K6DF875Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PomoTodo/Info.plist;
@@ -392,7 +393,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.do.PomoTodo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PomoTodo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -413,7 +414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PomoTodo/Preview Content\"";
-				DEVELOPMENT_TEAM = Q9ZQRQHB5K;
+				DEVELOPMENT_TEAM = C5K6DF875Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PomoTodo/Info.plist;
@@ -428,7 +429,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.do.PomoTodo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PomoTodo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

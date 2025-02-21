@@ -34,14 +34,11 @@ struct MainTabBarView: View {
         }
         .tag(Tab.Todo)
       
-      SettingView()
-      .environmentObject(
-        container.makeSettingViewModel()
-      )
-      .tabItem {
-        tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
-      }
-      .tag(Tab.Setting)
+      SettingView(viewModel: container.makeSettingViewModel())
+        .tabItem {
+          tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
+        }
+        .tag(Tab.Setting)
     }
     .tint(.indigoNormal)
     .onAppear {
