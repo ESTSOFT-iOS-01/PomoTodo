@@ -15,54 +15,57 @@ fileprivate enum elementBtn: Int {
 }
 
 struct PomoDetailSettingView: View {
-  @EnvironmentObject var viewModel: SettingViewModel
-  @Binding var pomo: PomoTimer
+  let viewModel: SettingViewModel
+  let pomo: PomoTimer
+  let name: String
   @State private var showModal: Bool = false
   @State private var selected: elementBtn = .focusTimeUnit
-  let name: String
+  
+  
+  
+  
   
   var body: some View {
     NavigationView {
       List{
         
-        Button {
-          showModal = true
-          selected = .focusTimeUnit
-        } label: {
-          DetailRow(name: "집중 시간", value: "\(pomo.focusTimeUnit.intMin)분")
-        }.foregroundStyle(.primary)
-        
-        Button {
-          showModal = true
-          selected = .tomatoPerCycle
-        } label: {
-          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
-        }.foregroundStyle(.primary)
-        
-        Button {
-          showModal = true
-          selected = .shortBreakUnit
-        } label: {
-          DetailRow(name: "짧은 휴식시간", value: "\(pomo.shortBreakUnit.intMin)분")
-        }.foregroundStyle(.primary)
-        
-        Button {
-          showModal = true
-          selected = .longBreakUnit
-        } label: {
-          DetailRow(name: "긴 휴식시간", value: "\(pomo.longBreakUnit.intMin)분")
-        }.foregroundStyle(.primary)
+//        Button {
+//          showModal = true
+//          selected = .focusTimeUnit
+//        } label: {
+//          DetailRow(name: "집중 시간", value: "\(pomo.focusTimeUnit.intMin)분")
+//        }.foregroundStyle(.primary)
+//        
+//        Button {
+//          showModal = true
+//          selected = .tomatoPerCycle
+//        } label: {
+//          DetailRow(name: "한 사이클의 토마토 개수", value: "\(pomo.tomatoPerCycle)개")
+//        }.foregroundStyle(.primary)
+//        
+//        Button {
+//          showModal = true
+//          selected = .shortBreakUnit
+//        } label: {
+//          DetailRow(name: "짧은 휴식시간", value: "\(pomo.shortBreakUnit.intMin)분")
+//        }.foregroundStyle(.primary)
+//        
+//        Button {
+//          showModal = true
+//          selected = .longBreakUnit
+//        } label: {
+//          DetailRow(name: "긴 휴식시간", value: "\(pomo.longBreakUnit.intMin)분")
+//        }.foregroundStyle(.primary)
         
       }
-      .sheet(isPresented: $showModal){
-        modal(pomo: $pomo, selected: selected)
-          .presentationDetents([.medium])
-          .presentationCornerRadius(48)
-      }
+//      .sheet(isPresented: $showModal){
+//        modal(pomo: $pomo, selected: selected)
+//          .presentationDetents([.medium])
+//          .presentationCornerRadius(48)
+//      }
     }
     .navigationTitle(name)
     .navigationBarTitleDisplayMode(.inline)
-    .environmentObject(viewModel)
   }
 }
 
@@ -109,24 +112,24 @@ fileprivate struct modal: View {
       .padding(.horizontal, DynamicPadding.getWidth(16))
       Spacer()
       Button {
-        switch selected {
-        case .focusTimeUnit:
-          viewModel.send(
-            .focusTimeUnitChanged(index: pomo.index, value: info)
-          )
-        case .tomatoPerCycle:
-          viewModel.send(
-            .tomatoPerCycleChanged(index: pomo.index, value: info)
-          )
-        case .shortBreakUnit:
-          viewModel.send(
-            .shortBreakUnitChanged(index: pomo.index, value: info)
-          )
-        case .longBreakUnit:
-          viewModel.send(
-            .longBreakUnitChanged(index: pomo.index, value: info)
-          )
-        }
+//        switch selected {
+//        case .focusTimeUnit:
+//          viewModel.send(
+//            .focusTimeUnitChanged(index: pomo.index, value: info)
+//          )
+//        case .tomatoPerCycle:
+//          viewModel.send(
+//            .tomatoPerCycleChanged(index: pomo.index, value: info)
+//          )
+//        case .shortBreakUnit:
+//          viewModel.send(
+//            .shortBreakUnitChanged(index: pomo.index, value: info)
+//          )
+//        case .longBreakUnit:
+//          viewModel.send(
+//            .longBreakUnitChanged(index: pomo.index, value: info)
+//          )
+//        }
         dismiss()
       } label: {
         Text("완료")

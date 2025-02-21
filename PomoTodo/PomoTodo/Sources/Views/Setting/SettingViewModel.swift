@@ -15,6 +15,7 @@ final class SettingViewModel: ObservableObject {
   
   enum Action {
     case onAppear
+    case tagNameChanged(index: Int, name: String)
   }
 //case focusTimeUnitChanged(index: Int, value: Int)
 //case tomatoPerCycleChanged(index: Int, value: Int)
@@ -33,7 +34,9 @@ final class SettingViewModel: ObservableObject {
     switch action {
     case .onAppear:
       loadDate()
-      
+    case .tagNameChanged(let index, let name):
+      config.tags[index].name = name
+      pomoTodoUseCase.setAppConfig(config)
     }
   }
   

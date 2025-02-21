@@ -25,7 +25,9 @@ struct SettingView: View {
         // 뽀모도로 타이머 섹션
         Section(header: Text("뽀모도로 설정")) {
           ForEach(pomoTimers, id: \.index) { timer in
-            PomoSettingRow(timer: timer, name: pomoName[timer.index])
+            NavigationLink(destination: PomoDetailSettingView(viewModel: viewModel, pomo: timer, name: pomoName[timer.index])) {
+              PomoSettingRow(timer: timer, name: pomoName[timer.index])
+            }
           }
         }
         
@@ -86,10 +88,17 @@ fileprivate struct TagSettingRow: View {
   let tagIndex: Int
   @State var name: String = ""
   @Binding var isEditMode: Bool
+  @FocusState private var isFocused: Bool
   
   var body: some View {
     TextField("태그를 입력해주세요", text: $name)
       .disabled(!isEditMode)
       .tint(.blue)
+      .focused($isFocused)
+      .onChange(of: isFocused) { _, focused in
+        if !focused {
+          viewModel.send(.tagNameChanged(index: tagIndex, name: name))
+        }
+      }
   }
 }

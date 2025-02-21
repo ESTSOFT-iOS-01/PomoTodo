@@ -26,7 +26,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				Sources/Views/Setting/PomoDetailSettingView.swift,
 			);
 			target = 35BD25152D6360BD000BEF24 /* PomoTodo */;
 		};
