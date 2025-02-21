@@ -26,6 +26,7 @@ final class ToDoViewModel: ObservableObject {
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
+    loadData()
   }
   
   func send(_ action: Action) {
