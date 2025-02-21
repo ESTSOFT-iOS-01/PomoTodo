@@ -30,11 +30,6 @@ struct SettingView: View {
             }
           }
         }
-        
-        
-
-//            NavigationLink(destination: PomoDetailSettingView(pomo: pomo, name: pomoName[pomo.index])) {
-
         // 투두 태그 섹션
         Section(header: TagSettingHeader(isEditMode: $isEditMode)) {
           ForEach(tags, id: \.id) { tag in

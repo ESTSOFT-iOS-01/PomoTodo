@@ -37,6 +37,7 @@ final class SettingViewModel: ObservableObject {
     case .tagNameChanged(let index, let name):
       config.tags[index].name = name
       pomoTodoUseCase.setAppConfig(config)
+
     }
   }
   

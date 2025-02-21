@@ -20,10 +20,7 @@ struct PomoDetailSettingView: View {
   let name: String
   @State private var showModal: Bool = false
   @State private var selected: elementBtn = .focusTimeUnit
-  
-  
-  
-  
+
   
   var body: some View {
     NavigationView {
