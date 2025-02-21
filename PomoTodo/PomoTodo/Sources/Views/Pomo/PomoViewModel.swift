@@ -8,16 +8,20 @@
 import SwiftUI
 
 final class PomoViewModel: ObservableObject {
-  private var pomoTodoUseCase: PomoTodoUseCase
-  
+  // MARK: - UI 변수
+  /// 태그 관련
+  @Published var options: [Tag]
   @Published var selectionTag = 0 {
     didSet {
       if oldValue != selectionTag {
+        changeColorSet()
         resetCycle()
       }
     }
   }
   
+  /// 타이머 세트 관련
+  @Published var timers: [PomoTimer]
   @Published var currentPage = 0 {
     didSet {
       updateTotalTime()
@@ -27,59 +31,68 @@ final class PomoViewModel: ObservableObject {
     }
   }
   
+  var selectedColorSet: TimerColorSet = Constants.Timer.indigoSet
+  
+  /// 현재 타이머 상태 관련
+  @Published var curTomato = 1
+  @Published var totalTomato = 2
   @Published var currentPhase: TimerPhase = .focus {
     didSet {
       updateTotalTime()
     }
   }
   
-  @Published var curTomato = 1
-  @Published var totalTomato = 2
   @Published var isTimerRunning = false
+  @Published var progress: CGFloat = 1.0
   
   @Published var totalTime: Int = 10
   @Published var remainingTime: Int = 10
-  @Published var progress: CGFloat = 1.0
   
-  @Published var options: [Tag]
-  @Published var timers: [PomoTimer]
-  
-  var selectedColorSet: TimerColorSet {
-    Constants.Timer.colorSets.first { $0.id == options[selectionTag].colorId } ?? Constants.Timer.indigoSet
+  // MARK: - Action Case 정의
+  enum pomoAction {
+    case onAppear
+    case startTimer
+    case stopTimer
+    case forwardNextTimer
   }
   
+  // MARK: - Private 변수: 데이터 관련
+  private var pomoTodoUseCase: PomoTodoUseCase
+
   private var timer: Timer?
   private var accumulatedFocusTime: Int = 0
   private var accumulatedTotalTime: Int = 0
   
-  //MARK: - UI Funcs
+  // MARK: - Initialization
   init (pomoTodoUseCase: PomoTodoUseCase) {
-    // 데이터 세팅
     self.pomoTodoUseCase = pomoTodoUseCase
+    self.options = pomoTodoUseCase.getAppConfig().tags
+    self.timers = pomoTodoUseCase.getAppConfig().pomoTimers
+  }
+  
+  // MARK: - Actions
+  func send(_ action: pomoAction) {
+    switch action {
+    case .onAppear:
+      setUI()
+    case .startTimer:
+      startTimer()
+    case .stopTimer:
+      stopTimer()
+    case .forwardNextTimer:
+      forwardNextTimer()
+    }
+  }
+  
+  // MARK: - Action Funcs
+  func setUI() {
     self.options = pomoTodoUseCase.getAppConfig().tags
     self.timers = pomoTodoUseCase.getAppConfig().pomoTimers
     
     updateTotalTime()
+    changeColorSet()
   }
   
-  private func updateTotalTime() {
-    let selectedTimer = timers[currentPage]
-    
-    switch currentPhase {
-    case .focus:
-      totalTime = selectedTimer.focusTimeUnit.asInt
-    case .shortBreak:
-      totalTime = selectedTimer.shortBreakUnit.asInt
-    case .longBreak:
-      totalTime = selectedTimer.longBreakUnit.asInt
-    }
-    
-    remainingTime = totalTime
-    totalTomato = selectedTimer.tomatoPerCycle
-    progress = 1.0
-  }
-  
-  //MARK: - Action Funcs
   func startTimer() {
     isTimerRunning = true
     remainingTime = totalTime
@@ -101,13 +114,11 @@ final class PomoViewModel: ObservableObject {
     }
   }
   
-  // 타이머 멈춤
   func stopTimer() {
     timer?.invalidate()
     saveFocusTime() // 시간 기록(토마토 완성 여부와 무관)
     isTimerRunning = false
     progress = 1.0
-    print(pomoTodoUseCase.getTodayPomoDay())
   }
   
   func forwardNextTimer() {
@@ -134,6 +145,26 @@ final class PomoViewModel: ObservableObject {
     progress = 1.0
   }
   
+}
+
+extension PomoViewModel {
+  private func updateTotalTime() {
+    let selectedTimer = timers[currentPage]
+    
+    switch currentPhase {
+    case .focus:
+      totalTime = selectedTimer.focusTimeUnit.asInt
+    case .shortBreak:
+      totalTime = selectedTimer.shortBreakUnit.asInt
+    case .longBreak:
+      totalTime = selectedTimer.longBreakUnit.asInt
+    }
+    
+    remainingTime = totalTime
+    totalTomato = selectedTimer.tomatoPerCycle
+    progress = 1.0
+  }
+  
   private func triggerHapticFeedback() {
       let generator = UINotificationFeedbackGenerator()
       generator.notificationOccurred(.success)
@@ -143,8 +174,12 @@ final class PomoViewModel: ObservableObject {
     curTomato = 1 // 암튼 무조건 세션 초기화
   }
   
-  //MARK: - Data Funcs
-  // 집중 시간 이랑 전체 시간(집중 + 휴식) 저장
+  private func changeColorSet() {
+    selectedColorSet = Constants.Timer.colorSets.first { $0.id == options[selectionTag].colorId } ?? Constants.Timer.indigoSet
+  }
+  
+  // MARK: - Data Funcs
+  // 집중 시간이랑 전체 시간(집중 + 휴식) 저장
   private func saveFocusTime() {
     if currentPhase == .focus {
       accumulatedFocusTime += (totalTime - remainingTime)
@@ -160,5 +195,4 @@ final class PomoViewModel: ObservableObject {
       pomoTodoUseCase.updateTomatoAndCycle(todayPomoDay: pomoTodoUseCase.getTodayPomoDay(), tomatoCnt: 1, cycleCnt: 1 / totalTomato.asDouble)
     }
   }
-  
 }

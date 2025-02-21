@@ -33,7 +33,7 @@ struct PauseButtonView: View {
   
   var body: some View {
     Button {
-      pomoVM.stopTimer()
+      pomoVM.send(.stopTimer)
     } label: {
       Image(systemName: "pause.fill")
         .resizable()
