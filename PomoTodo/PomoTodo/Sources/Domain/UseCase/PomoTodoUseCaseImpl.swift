@@ -20,7 +20,7 @@ final class PomoTodoUseCaseImpl: PomoTodoUseCase {
     self.appConfigRepository = appConfigRepository
   }
   
-  
+  @discardableResult
   func getTodayPomoDay() -> PomoDay {
     print("Impl:", #function)
     
@@ -185,12 +185,11 @@ extension PomoTodoUseCaseImpl {
   }
 }
 
-
 enum DefaultPreset {
   static let pomoTimers: [PomoTimer] = [
-    PomoTimer(index: 0, focusTimeUnit: 10, tomatoPerCycle: 2, shortBreakUnit: 2, longBreakUnit: 4),
-    PomoTimer(index: 1, focusTimeUnit: 5, tomatoPerCycle: 4, shortBreakUnit: 3, longBreakUnit: 6),
-    PomoTimer(index: 2, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 15),
+    PomoTimer(index: 0, focusTimeUnit: .minute * 25, tomatoPerCycle: 4, shortBreakUnit: .minute * 5, longBreakUnit: .minute * 30),
+    PomoTimer(index: 1, focusTimeUnit: .minute * 10, tomatoPerCycle: 6, shortBreakUnit: .minute * 2, longBreakUnit: .minute * 30),
+    PomoTimer(index: 2, focusTimeUnit: .minute * 60, tomatoPerCycle: 4, shortBreakUnit: .minute * 10, longBreakUnit: .minute * 30),
   ]
   
   static let tags: [Tag] = [

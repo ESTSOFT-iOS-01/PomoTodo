@@ -9,10 +9,8 @@ import SwiftUI
 
 struct ToDoView: View {
   
-  @State private var viewModel: ToDoViewModel
-  
+  @ObservedObject private var viewModel: ToDoViewModel
   private let color: [Color] = [Color.indigoNormal, Color.blue, Color.cyan, Color.teal ]
-  private var today: String = Date().formattedDateToString
   
   init(viewModel: ToDoViewModel) {
     self.viewModel = viewModel
@@ -20,8 +18,8 @@ struct ToDoView: View {
   
   var body: some View {
     
-    let tags = viewModel.state.tags
-    let todos = viewModel.state.todos
+    let tags = viewModel.tags
+    let todos = viewModel.todos
     
     NavigationView {
       List {
@@ -40,14 +38,16 @@ struct ToDoView: View {
                   name: todo.name,
                   color: color[tag.colorId]
                 )
-                .frame(width: UIScreen.main.bounds.width-48)
               }
             }
           }
         }
       }
-      .navigationTitle(today)
+      .navigationTitle(Date().formattedDateToString)
       .onAppear(perform: UIApplication.shared.hideKeyboard)
+      .onAppear {
+        viewModel.send(.onAppear)
+      }
     }
   }
 }
@@ -63,17 +63,15 @@ fileprivate struct HeaderView: View {
         .foregroundStyle(Color.black)
         .fontWeight(.semibold)
         .font(.system(size: 20))
-      
       Spacer()
-      
       Button {
         viewModel.send(.addEmptyTodo(tagId: tag.id))
       } label: {
-        Label("", systemImage: "plus")
+        Image(systemName: "plus")
           .foregroundStyle(Color.black)
           .fontWeight(.semibold)
       }
-    }.frame(width: UIScreen.main.bounds.width-54)
+    }
   }
 }
 
@@ -91,10 +89,13 @@ fileprivate struct TodoRow: View {
         isCompleted.toggle()
         viewModel.send(.toggleTodo(id: todoId, status: isCompleted))
       } label: {
-        Label("", systemImage: isCompleted ? "checkmark.circle" : "circle")
-      }.foregroundStyle(color)
+        Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
+      }
+      .foregroundStyle(color)
+      .padding(.horizontal, DynamicPadding.getWidth(8))
       
       TextField("내용을 입력해주세요", text: $name)
+        .tint(.blue)
         .font(.system(size: 17))
         .strikethrough(isCompleted ? true : false)
         .disableAutocorrection(true)
@@ -105,13 +106,14 @@ fileprivate struct TodoRow: View {
            }
          }
     }
-    .swipeActions(content: {
+    .swipeActions(allowsFullSwipe: false) {
       Button(role: .destructive) {
         viewModel.send(.deleteTodo(id: todoId))
       } label: {
-        Label("삭제", systemImage: "trash.fill")
+        Image(systemName: "trash.fill")
+          .tint(.red)
       }
-    }).tint(.red)
+    }
   }
 }
 

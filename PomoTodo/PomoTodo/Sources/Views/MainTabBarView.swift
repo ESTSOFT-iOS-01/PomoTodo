@@ -14,47 +14,44 @@ struct MainTabBarView: View {
   var body: some View {
     TabView(selection: $selectedTab) {
       PomoView()
-        .environmentObject(PomoViewModel(pomoTodoUseCase: container.pomoTodoUseCase))
+        .environmentObject(container.makePomoViewModel())
         .tabItem {
           tabItemView(for: .Pomo, isSelected: selectedTab == .Pomo)
         }
         .tag(Tab.Pomo)
       
       StatisticsView(
-        viewModel: StatisticsViewModel(pomoTodoUseCase: container.pomoTodoUseCase)
+        viewModel: container.makeStatisticsViewModel()
       )
       .tabItem {
         tabItemView(for: .Chart, isSelected: selectedTab == .Chart)
       }
       .tag(Tab.Chart)
       
-      ToDoView(
-        viewModel: ToDoViewModel(
-          pomoTodoUseCase: container.pomoTodoUseCase
-        )
-      )
-      .tabItem {
-        tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
-      }
-      .tag(Tab.Todo)
-
+      ToDoView(viewModel: container.makeToDoViewModel())
+        .tabItem {
+          tabItemView(for: .Todo, isSelected: selectedTab == .Todo)
+        }
+        .tag(Tab.Todo)
+      
       SettingView()
       .environmentObject(
-        SettingViewModel(
-          pomoTodoUseCase: container.pomoTodoUseCase
-        )
+        container.makeSettingViewModel()
       )
       .tabItem {
         tabItemView(for: .Setting, isSelected: selectedTab == .Setting)
       }
       .tag(Tab.Setting)
-      
     }
     .tint(.indigoNormal)
     .onAppear {
       setupTabBarAppearance()
-      _ = container.pomoTodoUseCase.getTodayPomoDay()
     }
+//    .onChange(of: selectedTab) { oldTab, newTab in
+//      if newTab != .Pomo {
+//        // pomoVM.saveTomatoProgress()
+//      }
+//    }
   }
   
   //MARK: - Funcs
