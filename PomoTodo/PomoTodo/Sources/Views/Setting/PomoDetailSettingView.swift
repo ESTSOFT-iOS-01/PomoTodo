@@ -19,7 +19,7 @@ struct PomoDetailSettingView: View {
   let pomo: PomoTimer
   let name: String
   @State private var showModal: Bool = false
-  @State private var selected: elementBtn = .focusTimeUnit
+  @State private var selected: elementBtn = .tomatoPerCycle
   
   var body: some View {
     NavigationView {
@@ -53,7 +53,7 @@ struct PomoDetailSettingView: View {
         }.foregroundStyle(.primary)
       }
       .sheet(isPresented: $showModal) {
-        modal(viewModel: viewModel, pomo: pomo, selected: selected)
+        modal(viewModel: viewModel, pomo: pomo, selected: $selected)
           .presentationDetents([.medium])
           .presentationCornerRadius(48)
       }
@@ -84,7 +84,7 @@ fileprivate struct modal: View {
   @Environment(\.dismiss) var dismiss
   let viewModel: SettingViewModel
   let pomo: PomoTimer
-  let selected: elementBtn
+  @Binding var selected: elementBtn
   @State var info: Int = 0
   
   let ranges: [ClosedRange<Int>] = [1...100, 1...8, 1...30, 1...100]
