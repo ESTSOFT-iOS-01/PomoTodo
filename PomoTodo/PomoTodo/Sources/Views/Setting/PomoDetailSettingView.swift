@@ -53,7 +53,7 @@ struct PomoDetailSettingView: View {
         }.foregroundStyle(.primary)
       }
       .sheet(isPresented: $showModal) {
-        modal(viewModel: viewModel, pomo: pomo, selected: $selected)
+        Modal(viewModel: viewModel, pomo: pomo, selected: $selected)
           .presentationDetents([.medium])
           .presentationCornerRadius(48)
       }
@@ -80,7 +80,7 @@ fileprivate struct DetailRow: View {
 }
 
 // 뽀모도로 내부의 정보 변경하는 모달
-fileprivate struct modal: View {
+fileprivate struct Modal: View {
   @Environment(\.dismiss) var dismiss
   let viewModel: SettingViewModel
   let pomo: PomoTimer
