@@ -10,54 +10,51 @@ import SwiftUI
 import Combine
 
 final class SettingViewModel: ObservableObject {
-  @Published var tags: [Tag] = []
-  @Published var timers: [PomoTimer] = []
-  @Published var pomoName: [String] = ["1번 프리셋","2번 프리셋","3번 프리셋"]
+  
+  @Published var config = AppConfig(pomoTimers: [], tags: [])
   
   enum Action {
+    case onAppear
+    case tagNameChanged(index: Int, name: String)
     case focusTimeUnitChanged(index: Int, value: Int)
     case tomatoPerCycleChanged(index: Int, value: Int)
     case shortBreakUnitChanged(index: Int, value: Int)
     case longBreakUnitChanged(index: Int, value: Int)
-    case tagChanged
   }
   
-  private var config = AppConfig(pomoTimers: [], tags: [])
   private var pomoTodoUseCase: PomoTodoUseCase
   
   init (pomoTodoUseCase: PomoTodoUseCase) {
     self.pomoTodoUseCase = pomoTodoUseCase
     self.config = pomoTodoUseCase.getAppConfig()
-    self.tags = self.config.tags
-    self.timers = self.config.pomoTimers
   }
   
   func send(_ action: Action) {
     switch action {
+    case .onAppear:
+      loadDate()
+    case .tagNameChanged(let index, let name):
+      config.tags[index].name = name
+      pomoTodoUseCase.setAppConfig(config)
     case .focusTimeUnitChanged(let index, let value):
-      self.timers[index].focusTimeUnit = Double(value) * .minute
-      pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: tags)
-      )
+      config.pomoTimers[index].focusTimeUnit = value.asDouble * .minute
+      pomoTodoUseCase.setAppConfig(config)
     case .tomatoPerCycleChanged(let index, let value):
-      self.timers[index].tomatoPerCycle = value
-      pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: tags)
-      )
+      config.pomoTimers[index].tomatoPerCycle = value
+      pomoTodoUseCase.setAppConfig(config)
     case .shortBreakUnitChanged(let index, let value):
-      self.timers[index].shortBreakUnit = Double(value) * .minute
-      pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: tags)
-      )
+      config.pomoTimers[index].shortBreakUnit = value.asDouble * .minute
+      pomoTodoUseCase.setAppConfig(config)
     case .longBreakUnitChanged(let index, let value):
-      self.timers[index].longBreakUnit = Double(value) * .minute
-      pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: tags)
-      )
-    case .tagChanged:
-      pomoTodoUseCase.setAppConfig(
-        AppConfig(pomoTimers: self.timers, tags: tags)
-      )
+      config.pomoTimers[index].longBreakUnit = value.asDouble * .minute
+      pomoTodoUseCase.setAppConfig(config)
     }
   }
 }
+
+extension SettingViewModel {
+  private func loadDate() {
+    self.config = pomoTodoUseCase.getAppConfig()
+  }
+}
+

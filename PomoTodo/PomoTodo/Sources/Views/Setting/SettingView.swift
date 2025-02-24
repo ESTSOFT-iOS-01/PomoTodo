@@ -8,24 +8,32 @@
 import SwiftUI
 
 struct SettingView: View {
-  @EnvironmentObject var viewModel: SettingViewModel
+  @ObservedObject private var viewModel: SettingViewModel
+  let pomoName: [String] = ["1번 프리셋","2번 프리셋","3번 프리셋"]
   @State private var isEditMode: Bool = false
   
+  init(viewModel: SettingViewModel) {
+    self.viewModel = viewModel
+  }
+  
   var body: some View {
+    let tags = viewModel.config.tags
+    let pomoTimers = viewModel.config.pomoTimers
+    
     NavigationView {
       List {
         // 뽀모도로 타이머 섹션
         Section(header: Text("뽀모도로 설정")) {
-          ForEach($viewModel.timers, id: \.index) { pomo in
-            NavigationLink(destination: PomoDetailSettingView(pomo: pomo)) {
-              PomoSettingRow(timer: pomo)
+          ForEach(pomoTimers, id: \.index) { timer in
+            NavigationLink(destination: PomoDetailSettingView(viewModel: viewModel, pomo: timer, name: pomoName[timer.index])) {
+              PomoSettingRow(timer: timer, name: pomoName[timer.index])
             }
           }
         }
         // 투두 태그 섹션
-        Section(header:TagSettingHeader(isEditMode: $isEditMode)) {
-          ForEach($viewModel.tags, id: \.id) { tag in
-            TagSettingRow(tag: tag, isEditMode: $isEditMode)
+        Section(header: TagSettingHeader(isEditMode: $isEditMode)) {
+          ForEach(tags, id: \.id) { tag in
+            TagSettingRow(viewModel: viewModel, tagIndex: tag.index, name: tag.name, isEditMode: $isEditMode)
           }
         }
       }
@@ -33,18 +41,17 @@ struct SettingView: View {
       .navigationTitle("설정")
     }
     .tint(.indigoNormal)
-    .environmentObject(viewModel)
   }
 }
 
 // 뽀모도로 설정 Row
 fileprivate struct PomoSettingRow: View {
-  @EnvironmentObject var viewModel: SettingViewModel
-  @Binding var timer: PomoTimer // 타이머 설정 정보
+  let timer: PomoTimer
+  let name: String
   
   var body: some View {
     VStack(alignment: .leading) {
-      Text(viewModel.pomoName[timer.index])
+      Text(name)
         .foregroundStyle(.primary)
       Text("\(timer.focusTimeUnit.intMin)분 / \(timer.tomatoPerCycle)개 / \(timer.shortBreakUnit.intMin)분 / \(timer.longBreakUnit.intMin)분")
         .foregroundStyle(.secondary)
@@ -54,7 +61,6 @@ fileprivate struct PomoSettingRow: View {
 
 // 태그 설정 헤더
 fileprivate struct TagSettingHeader: View {
-  @EnvironmentObject var viewModel: SettingViewModel
   @Binding var isEditMode: Bool
   
   var body: some View {
@@ -63,9 +69,6 @@ fileprivate struct TagSettingHeader: View {
       Spacer()
       Button {
         isEditMode.toggle()
-        if !isEditMode {
-          viewModel.send(.tagChanged)
-        }
       } label: {
         Text(isEditMode ? "완료" : "편집")
           .foregroundStyle(Color.indigoNormal)
@@ -74,14 +77,25 @@ fileprivate struct TagSettingHeader: View {
     }
   }
 }
+
 // 태그 설정 Row
 fileprivate struct TagSettingRow: View {
-  @Binding var tag: Tag
+  let viewModel: SettingViewModel
+  let tagIndex: Int
+  @State var name: String = ""
   @Binding var isEditMode: Bool
+  @FocusState private var isFocused: Bool
   
   var body: some View {
-    TextField("태그를 입력해주세요", text: $tag.name)
+    TextField("태그를 입력해주세요", text: $name)
       .disabled(!isEditMode)
       .tint(.blue)
+      .focused($isFocused)
+      .onChange(of: isFocused) { _, focused in
+        if !focused {
+          viewModel.send(.tagNameChanged(index: tagIndex, name: name))
+        }
+      }
   }
 }
+

@@ -15,15 +15,15 @@ fileprivate enum elementBtn: Int {
 }
 
 struct PomoDetailSettingView: View {
-  @EnvironmentObject var viewModel: SettingViewModel
-  @Binding var pomo: PomoTimer
+  let viewModel: SettingViewModel
+  let pomo: PomoTimer
+  let name: String
   @State private var showModal: Bool = false
-  @State private var selected: elementBtn = .focusTimeUnit
-
+  @State private var selected: elementBtn = .tomatoPerCycle
+  
   var body: some View {
     NavigationView {
       List{
-        
         Button {
           showModal = true
           selected = .focusTimeUnit
@@ -51,17 +51,15 @@ struct PomoDetailSettingView: View {
         } label: {
           DetailRow(name: "긴 휴식시간", value: "\(pomo.longBreakUnit.intMin)분")
         }.foregroundStyle(.primary)
-        
       }
-      .sheet(isPresented: $showModal){
-        modal(pomo: $pomo, selected: selected)
+      .sheet(isPresented: $showModal) {
+        Modal(viewModel: viewModel, pomo: pomo, selected: $selected)
           .presentationDetents([.medium])
           .presentationCornerRadius(48)
       }
     }
-    .navigationTitle(viewModel.pomoName[pomo.index])
+    .navigationTitle(name)
     .navigationBarTitleDisplayMode(.inline)
-    .environmentObject(viewModel)
   }
 }
 
@@ -82,14 +80,14 @@ fileprivate struct DetailRow: View {
 }
 
 // 뽀모도로 내부의 정보 변경하는 모달
-fileprivate struct modal: View {
-  @EnvironmentObject var viewModel: SettingViewModel
+fileprivate struct Modal: View {
   @Environment(\.dismiss) var dismiss
-  @Binding var pomo: PomoTimer
-  var selected: elementBtn
+  let viewModel: SettingViewModel
+  let pomo: PomoTimer
+  @Binding var selected: elementBtn
   @State var info: Int = 0
   
-  let range: [ClosedRange<Int>] = [1...100, 1...8, 1...30, 1...100]
+  let ranges: [ClosedRange<Int>] = [1...100, 1...8, 1...30, 1...100]
   let names: [String] = ["집중 시간", "한 사이클의 토마토 개수", "짧은 휴식시간", "긴 휴식시간"]
   
   var body: some View {
@@ -100,7 +98,7 @@ fileprivate struct modal: View {
         .font(.system(size: 18))
       Spacer()
       Picker("", selection: $info) {
-        ForEach(range[selected.rawValue], id: \.self) {
+        ForEach(ranges[selected.rawValue], id: \.self) {
           Text("\($0)")
         }
       }
@@ -110,22 +108,15 @@ fileprivate struct modal: View {
       Button {
         switch selected {
         case .focusTimeUnit:
-          viewModel.send(
-            .focusTimeUnitChanged(index: pomo.index, value: info)
-          )
+          viewModel.send(.focusTimeUnitChanged(index: pomo.index, value: info))
         case .tomatoPerCycle:
-          viewModel.send(
-            .tomatoPerCycleChanged(index: pomo.index, value: info)
-          )
+          viewModel.send(.tomatoPerCycleChanged(index: pomo.index, value: info))
         case .shortBreakUnit:
-          viewModel.send(
-            .shortBreakUnitChanged(index: pomo.index, value: info)
-          )
+          viewModel.send(.shortBreakUnitChanged(index: pomo.index, value: info))
         case .longBreakUnit:
-          viewModel.send(
-            .longBreakUnitChanged(index: pomo.index, value: info)
-          )
+          viewModel.send(.longBreakUnitChanged(index: pomo.index, value: info))
         }
+        viewModel.send(.onAppear)
         dismiss()
       } label: {
         Text("완료")
@@ -152,3 +143,4 @@ fileprivate struct modal: View {
     }
   }
 }
+
