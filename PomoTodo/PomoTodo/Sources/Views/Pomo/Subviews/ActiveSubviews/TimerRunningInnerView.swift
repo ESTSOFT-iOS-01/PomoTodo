@@ -7,14 +7,16 @@
 
 import SwiftUI
 
+/// **현재 선택된 태그 라벨 뷰**
+/// - 포커스 상태일 때는 태그명만 표시
+/// - 휴식 시간일 때는 아이콘과 함께 표시
 struct TimerTagLabelView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
     HStack(alignment: .bottom) {
-      // 휴식 시간일 때만, 아이콘 표시
       if pomoVM.currentPhase != .focus {
-        Image(systemName: "figure.cooldown")
+        Image(systemName: Constants.Timer.Symbol.stretching.rawValue)
           .resizable()
           .scaledToFit()
           .frame(height: 24, alignment: .center)
@@ -28,23 +30,20 @@ struct TimerTagLabelView: View {
   }
 }
 
+/// **타이머 정지(일시정지) 버튼**
+/// - 버튼을 누르면 타이머를 멈춤
 struct PauseButtonView: View {
   @EnvironmentObject var pomoVM: PomoViewModel
   
   var body: some View {
     Button {
-      pomoVM.stopTimer()
+      pomoVM.send(.stopTimer)
     } label: {
-      Image(systemName: "pause.fill")
+      Image(systemName: Constants.Timer.Symbol.pause.rawValue)
         .resizable()
         .scaledToFit()
         .frame(height: 36)
-        .foregroundStyle(pomoVM.selectedColorSet.normalColor)
+        .foregroundStyle(pomoVM.selectedColorSet.normal)
     }
   }
 }
-
-//#Preview{
-//  TimerTagLabelView()
-//    .environmentObject(PomoViewModel(pomoTodoUseCase: DIContainer().pomoTodoUseCase))
-//}

@@ -7,12 +7,47 @@
 
 import SwiftUI
 
+/// 앱 공통 상수 정의
 public struct Constants {
-    public struct Timer {
-        public static let colorSets: [TimerColorSet] = [indigoSet, blueSet, cyanSet, tealSet]
-        public static let indigoSet = TimerColorSet(id: 0, normalColor: .indigoNormal, darkColor: .indigoDark, darkerColor: .indigoDarker)
-        public static let blueSet = TimerColorSet(id: 1, normalColor: .blueNormal, darkColor: .blueDark, darkerColor: .blueDarker)
-        public static let cyanSet = TimerColorSet(id: 2, normalColor: .cyanNormal, darkColor: .cyanDark, darkerColor: .cyanDarker)
-        public static let tealSet = TimerColorSet(id: 3, normalColor: .tealNormal, darkColor: .tealDark, darkerColor: .tealDarker)
+  
+  /// 사용 가능한 타이머 색상 세트 목록
+  public enum TimerColorSet: Int, CaseIterable {
+    case indigo
+    case blue
+    case cyan
+    case teal
+    
+    var colors: (normal: Color, dark: Color, darker: Color) {
+      switch self {
+      case .indigo :
+        return (.indigoNormal, .indigoDark, .indigoDarker)
+      case .blue :
+        return (.indigoNormal, .indigoDark, .indigoDarker)
+      case .cyan :
+        return (.indigoNormal, .indigoDark, .indigoDarker)
+      case .teal :
+        return (.indigoNormal, .indigoDark, .indigoDarker)
+      }
     }
+    
+    var id: Int {
+      return self.rawValue
+    }
+  }
+  
+  /// 타이머 관련 상수
+  public struct Timer {
+    /// 타이머에서 사용하는 SFSymbol 정리
+    public enum Symbol: String {
+      case play = "play.fill"
+      case forward = "forward.fill"
+      case pause = "pause.fill"
+      case stretching = "figure.cooldown"
+      case running = "figure.run"
+      case fullCircle = "circle.fill"
+      case halfCircle = "circle.righthalf.filled.inverse"
+      case emptyCircle = "circle"
+      case checkmark = "checkmark"
+    }
+  }
 }

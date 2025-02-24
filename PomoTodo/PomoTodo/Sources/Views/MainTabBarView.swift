@@ -44,11 +44,6 @@ struct MainTabBarView: View {
     .onAppear {
       setupTabBarAppearance()
     }
-//    .onChange(of: selectedTab) { oldTab, newTab in
-//      if newTab != .Pomo {
-//        // pomoVM.saveTomatoProgress()
-//      }
-//    }
   }
   
   //MARK: - Funcs
