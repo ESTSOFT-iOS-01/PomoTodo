@@ -39,7 +39,7 @@ extension PomoViewModel {
   
   /// **선택한 태그에 맞는 컬러 세트 변경**
   internal func changeColorSet() {
-    selectedColorSet = Constants.Timer.colorSets.first { $0.id == options[selectionTag].colorId } ?? Constants.Timer.indigoSet
+    selectedColorSet = Constants.TimerColorSet(rawValue: options[selectionTag].colorId)?.colors ?? Constants.TimerColorSet(rawValue: 0)!.colors
   }
   
   // MARK: - Data Funcs

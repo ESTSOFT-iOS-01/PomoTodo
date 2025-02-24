@@ -26,7 +26,7 @@ struct TomatoCountView: View {
   
   var body: some View {
     HStack(alignment: .bottom, spacing: 12) {
-      Image(systemName: pomoVM.currentPhase == .focus ? Constants.Timer.Symbol.running : Constants.Timer.Symbol.stretching)
+      Image(systemName: pomoVM.currentPhase == .focus ? Constants.Timer.Symbol.running.rawValue : Constants.Timer.Symbol.stretching.rawValue)
         .resizable()
         .scaledToFit()
         .frame(height: 24, alignment: .center)
@@ -64,7 +64,7 @@ struct TagSelectionMenu: View {
     HStack {
       Text(pomoVM.options[index].name)
       if pomoVM.selectionTag == index {
-        Image(systemName: Constants.Timer.Symbol.checkmark)
+        Image(systemName: Constants.Timer.Symbol.checkmark.rawValue)
       }
     }
   }
@@ -78,7 +78,7 @@ struct TagSelectionMenu: View {
       .padding(.vertical, 10)
       .background(
         RoundedRectangle(cornerRadius: 24)
-          .fill(pomoVM.selectedColorSet.normalColor)
+          .fill(pomoVM.selectedColorSet.normal)
       )
       .foregroundColor(.white)
       .frame(maxWidth: DynamicPadding.getWidth(354))

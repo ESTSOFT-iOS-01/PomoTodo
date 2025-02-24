@@ -20,7 +20,7 @@ struct TimerDisplayView: View {
         .monospacedDigit()
         .font(.pretendard(.extraBold, size: 56))
         .frame(width: 280, alignment: .center)
-        .foregroundStyle(pomoVM.selectedColorSet.darkerColor)
+        .foregroundStyle(pomoVM.selectedColorSet.darker)
       
       Spacer().frame(height: 32)
       
@@ -39,15 +39,15 @@ struct TimerDisplayView: View {
   @ViewBuilder
   private func tomatoIcons() -> some View {
     ForEach(0..<(pomoVM.curTomato - 1), id: \.self) { _ in
-      createTomatoIcon(systemName: Constants.Timer.Symbol.fullCircle)
+      createTomatoIcon(systemName: Constants.Timer.Symbol.fullCircle.rawValue)
     }
     
     if pomoVM.curTomato > 0 {
-      createTomatoIcon(systemName: Constants.Timer.Symbol.halfCircle)
+      createTomatoIcon(systemName: Constants.Timer.Symbol.halfCircle.rawValue)
     }
     
     ForEach(0..<(pomoVM.totalTomato - pomoVM.curTomato), id: \.self) { _ in
-      createTomatoIcon(systemName: Constants.Timer.Symbol.emptyCircle)
+      createTomatoIcon(systemName: Constants.Timer.Symbol.emptyCircle.rawValue)
     }
   }
   
@@ -57,7 +57,7 @@ struct TimerDisplayView: View {
     Image(systemName: systemName)
       .resizable()
       .scaledToFit()
-      .foregroundColor(pomoVM.selectedColorSet.darkColor)
+      .foregroundColor(pomoVM.selectedColorSet.dark)
       .frame(height: 15)
   }
 }

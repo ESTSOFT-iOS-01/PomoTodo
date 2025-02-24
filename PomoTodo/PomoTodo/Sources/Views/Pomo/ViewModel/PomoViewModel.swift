@@ -34,7 +34,7 @@ final class PomoViewModel: ObservableObject {
   }
   
   /// 현재 선택된 컬러 세트
-  var selectedColorSet: TimerColorSet = Constants.Timer.indigoSet
+  var selectedColorSet = Constants.TimerColorSet(rawValue: 0)!.colors
   
   /// 타이머 진행 상태 관련 변수
   @Published var curTomato = 1
@@ -162,4 +162,3 @@ final class PomoViewModel: ObservableObject {
   }
   
 }
-

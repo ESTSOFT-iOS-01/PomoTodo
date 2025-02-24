@@ -16,7 +16,7 @@ struct TimerTagLabelView: View {
   var body: some View {
     HStack(alignment: .bottom) {
       if pomoVM.currentPhase != .focus {
-        Image(systemName: Constants.Timer.Symbol.stretching)
+        Image(systemName: Constants.Timer.Symbol.stretching.rawValue)
           .resizable()
           .scaledToFit()
           .frame(height: 24, alignment: .center)
@@ -39,11 +39,11 @@ struct PauseButtonView: View {
     Button {
       pomoVM.send(.stopTimer)
     } label: {
-      Image(systemName: Constants.Timer.Symbol.pause)
+      Image(systemName: Constants.Timer.Symbol.pause.rawValue)
         .resizable()
         .scaledToFit()
         .frame(height: 36)
-        .foregroundStyle(pomoVM.selectedColorSet.normalColor)
+        .foregroundStyle(pomoVM.selectedColorSet.normal)
     }
   }
 }

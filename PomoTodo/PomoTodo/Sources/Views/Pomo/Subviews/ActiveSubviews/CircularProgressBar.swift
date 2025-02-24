@@ -23,7 +23,7 @@ struct CircularProgressBar: View {
       /// 진행률 원 (타이머 진행 상태 표시)
       Circle()
         .trim(from: 0.0, to: pomoVM.progress)
-        .stroke(pomoVM.selectedColorSet.normalColor, style: StrokeStyle(lineWidth: 10, lineCap: .round))
+        .stroke(pomoVM.selectedColorSet.normal, style: StrokeStyle(lineWidth: 10, lineCap: .round))
         .rotationEffect(.degrees(-90))
         .animation(.linear(duration: 1), value: pomoVM.progress)
     }
