@@ -3,6 +3,9 @@
 # PomoTodo
 **⏳ Pomodoro와 To-Do 리스트를 결합하여 효율적인 시간 관리와 목표 달성을 돕는 앱입니다!**
 
+[📑 PomoTodo 발표자료 📑](https://github.com/user-attachments/files/19274185/_.1.pdf)
+
+
 ## 🍎 Developers
 <img width="160px" src="https://avatars.githubusercontent.com/u/132960058?v=4"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/80318425?v=4"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/68256612?v=4"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/55975937?v=4"/> |
 |:-----:|:-----:|:-----:|:-----:|
